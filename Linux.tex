@@ -113,9 +113,9 @@
 \author[Alex Pacheco]{\large{Alexander~B.~Pacheco}}
        
 %\institute[High Performance Computing @ Louisiana State University - http://www.hpc.lsu.edu] {\inst{}\footnotesize{User Services Consultant\\LSU HPC \& LONI\\sys-help@loni.org}}
-\institute[HPC Training: Spring 2013] {\inst{}\footnotesize{User Services Consultant\\LSU HPC \& LONI\\sys-help@loni.org}}
+\institute[HPC Training: Fall 2013] {\inst{}\footnotesize{User Services Consultant\\LSU HPC \& LONI\\sys-help@loni.org}}
 
-\date[\hfill{February 6, 2013\hspace{2cm}\insertframenumber/\inserttotalframenumber}]{\scriptsize{HPC Training Spring 2013\\Louisiana State University\\Baton Rouge\\Februrary 6, 2013}}
+\date[\hfill{Sep. 11, 2013\hspace{2cm}\insertframenumber/\inserttotalframenumber}]{\scriptsize{HPC Training Fall 2013\\Louisiana State University\\Baton Rouge\\September 11, 2013}}
      
 \subject{Talks}
 \keywords{LONI \& LSU HPC Computing Resources, Introduction to Linux}
@@ -185,18 +185,21 @@
 %  \begin{itemize}
     \item Frustated with licensing issues with MINIX, Linus Torvalds, a student at University of Helsinki began working on his own operating system which eventually became the "Linux Kernel"
     \item Linus released his kernel for anyone to download and help further development.
-    \begin{eblock}{Linus's message to comp.os.minix on Aug 26, 1991}
-      \begin{itemize}
-        {\tiny
-        \item[]Hello everybody out there using minix -
-        \item[] I'm doing a (free) operating system (just a hobby, won't be big and professional like gnu) for 386(486) AT clones.  This has been brewing since april, and is starting to get ready.  I'd like any feedback on things people like/dislike in minix, as my OS resembles it somewhat (same physical layout of the file-system (due to practical reasons) among other things).
-        \item[] I've currently ported bash(1.08) and gcc(1.40), and things seem to work. This implies that I'll get something practical within a few months, and I'd like to know what features most people would want.  Any suggestions are welcome, but I won't promise I'll implement them :-)
-        \item[]Linus (email address)
-        \item[]PS.  Yes - it's free of any minix code, and it has a multi-threaded fs. It is NOT protable (uses 386 task switching etc), and it probably never will support anything other than AT-harddisks, as that's all I have :-(.
-        \item[]{\fontsize{5}{7}\selectfont{\url{https://groups.google.com/forum/?fromgroups=\#!msg/comp.os.minix/dlNtH7RRrGA/SwRavCzVE7gJ}}}
-        }
-      \end{itemize}
-    \end{eblock}
+    \begin{columns}
+      \column{11cm}
+      \begin{eblock}{Linus's message to comp.os.minix on Aug 26, 1991}
+        \begin{itemize}
+          {\tiny
+          \item[]Hello everybody out there using minix -
+          \item[] I'm doing a (free) operating system (just a hobby, won't be big and professional like gnu) for 386(486) AT clones.  This has been brewing since april, and is starting to get ready.  I'd like any feedback on things people like/dislike in minix, as my OS resembles it somewhat (same physical layout of the file-system (due to practical reasons) among other things).
+          \item[] I've currently ported bash(1.08) and gcc(1.40), and things seem to work. This implies that I'll get something practical within a few months, and I'd like to know what features most people would want.  Any suggestions are welcome, but I won't promise I'll implement them :-)
+          \item[]Linus (email address)
+          \item[]PS.  Yes - it's free of any minix code, and it has a multi-threaded fs. It is NOT protable (uses 386 task switching etc), and it probably never will support anything other than AT-harddisks, as that's all I have :-(.
+          \item[]{\fontsize{5}{7}\selectfont{\url{https://groups.google.com/forum/?fromgroups=\#!msg/comp.os.minix/dlNtH7RRrGA/SwRavCzVE7gJ}}}
+          }
+        \end{itemize}
+      \end{eblock}
+    \end{columns}
     \item Linux is only the kernel, an Operating System also requires applications that users can use.
     \item combined with free software available from the GNU project gave birth to a new Operating System known as "GNU/Linux"
     \item GNU/Linux or simply Linux is released under the GNU Public License: Free to use, modify and distribute provided you distribute under the GNU Public License.\let\thefootnote\relax\footnote{\tiny http://en.wikipedia.org/wiki/Linux}
@@ -220,9 +223,9 @@
           \begin{tabularx}{0.5\textwidth}{ccc}
             \arrayrulecolor{tigersgold}
             \textcolor{white}{\textbf{OS Family} }& \textcolor{white}{\textbf{Count}} &\textcolor{white}{\textbf {Share \%}}\\
-            Linux \rule{0pt}{3.5ex} & 469 & 93.8 \\
-            Unix & 20 & 4 \\
-            Mixed & 7 & 1.4 \\
+            Linux \rule{0pt}{3.5ex} & 476 & 95.2 \\
+            Unix & 16 & 3.2 \\
+            Mixed & 4 & 0.8 \\
             Windows & 3 & 0.6 \\
             BSD Based & 1 & 0.2 \\
             [1.0ex]
@@ -509,8 +512,7 @@
     \column{1.1\textwidth}
     \vspace{-0.5cm}
   \begin{itemize}
-    \item All files are grouped in a directory structure
-    \item The file-system is arranged in a hierarchial structure, like an inverted tree.
+    \item All files are arranged in a hierarchial structure, like an inverted tree.
     \item The top of the hierarchy is traditionally called \textbf{root} (written as a slash / )
   \end{itemize}
 \tikzstyle{every node}=[draw=black,thick,anchor=west]
@@ -599,6 +601,9 @@
     \item[/usr:] contains user documentations, binaries, libraries etc
     \item[/home:] contains home directories of all users. This is the directory where you are at when you login to a Linux/UNIX system.
   \end{description}
+  \begin{itemize}
+    \item Installing your own OS: /bin,/lib\{64\},/etc,/dev and /sbin must be on the same partition.
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -859,6 +864,26 @@
 \end{frame}
 
 \begin{frame}{\small Commands (contd)}
+  \begin{bblock}{alias}
+    \begin{itemize}
+      \item \texttt{alias} is a command to create a shortcut to another command or name to execute a long string.
+      \item Usage 
+      \begin{itemize}
+        {\scriptsize
+          \item[$\vardiamond$] bash/sh/ksh: \texttt{alias <name>="<actual command>"}
+          \item[$\vardiamond$] csh/tcsh: \texttt{alias <name> "<actual command>"}
+        }
+      \end{itemize}
+      \item Example: \texttt{alias lla="ls -al"}
+      \item The \texttt{alias} command is very useful tool to create shortcuts to other commands and is most often used by paranoid users to prevent accidental deletion of files. 
+      \item \texttt{unalias} is a command to remove an alias.
+      \item Usage: \texttt{unalias <name>}
+      \item Example: \texttt{unalias lla} will remove the shortcut to \texttt{ls -al}
+    \end{itemize}
+  \end{bblock}
+\end{frame}
+
+\begin{frame}{\small Commands (contd)}
   \begin{bblock}{Create a Directory}
     \begin{itemize}
       \item \textbf{mkdir}: create a directory
@@ -887,11 +912,11 @@
           \item \texttt{-p}: preserve file access times, ownership etc.
         }
       \end{enumerate}
-      \item If there are more than one source file, then the last file is the destination.
+      \item If there are more than one source files, then the last file is the destination and must be a directory.
       \item If the source(s) is(are) a file(s) and the destination is a directory, then the file(s) will be copied into the directory
       \item[e.g.]\texttt{cp file1 file2 dir1}\enter
       \item[] \texttt{dir1} will contain the files \texttt{file1} and \texttt{file2}
-      \item[] If \texttt{dir1} is a file, then \texttt{dir1} will be the same as \texttt{file2}
+      \item[] If \texttt{dir1} is a file, then the above command will fail
     \end{itemize}
   \end{bblock}
 \end{frame}
@@ -925,12 +950,12 @@
       \item \textbf{mv}: move or rename a file or directory
       \item Usage: \texttt{mv <options> <source> <destination>}
       \item Example: \texttt{mv test test1}
-      \item If there are more than one source file, then the last file is the destination.
+      \item If there are more than one source file, then the last file is the destination and must be a directory.
       \item Use the \texttt{-i} option to prompt if a file or directory will be overwritten.
       \item If the source(s) is(are) a file(s) and the destination is a directory, then the file(s) will be copied into the directory.
       \item[e.g.]\texttt{mv file1 file2 dir1}\enter
       \item[] \texttt{dir1} will contain the files \texttt{file1} and \texttt{file2}
-      \item[] If \texttt{dir1} is a file, then \texttt{dir1} will be the same as \texttt{file2} and \texttt{file1} will be deleted.
+      \item[] If \texttt{dir1} is a file, then the above command will fail
     \end{itemize}
   \end{bblock}
 \end{frame}
@@ -1773,199 +1798,6 @@ echo "Hello World!"
       }
     \end{itemize}
   \end{itemize}
-%  \fontsize{9}{8}{
-  \tiny{
-  \begin{verbatim}
-apacheco@apacheco:~/Tutorials/BASH/scripts> cat quotes.sh 
-#!/bin/bash
-
-HI=Hello
-
-echo HI             # displays HI
-echo $HI            # displays Hello
-echo \$HI           # displays $HI
-echo "$HI"          # displays Hello
-echo '$HI'          # displays $HI
-echo "$HIAlex"      # displays nothing
-echo "${HI}Alex"    # displays HelloAlex
-echo `pwd`          # displays working directory
-apacheco@apacheco:~/Tutorials/BASH/scripts> ./quotes.sh 
-HI
-Hello
-$HI
-Hello
-$HI
-
-HelloAlex
-/home/apacheco/Tutorials/BASH/scripts
-apacheco@apacheco:~/Tutorials/BASH/scripts>
-  \end{verbatim}
-  }
-\end{frame}
-
-\begin{frame}{\small Exercises}
-  \begin{itemize}
-    \item Create shell scripts using either vi or emacs to do the following
-    \begin{enumerate}
-      {\footnotesize
-        \item Write a simple hello world script
-        \item Modify the above script to use a variable
-        \item Modify the above script to prompt you for your name and then display your name with a greeting.
-      }
-    \end{enumerate}
-    \item The goal of this exercises is three fold
-    \begin{enumerate}
-      {\footnotesize
-        \item Get you comfortable with using vi or emacs
-        \item Get you started with writing shell scripts
-        \item Let you play around with the \textbf{chmod} command
-      }
-    \end{enumerate}
-    \item Everything that goes into the scripts should have already been done by you on the command prompt. 
-  \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{\small Exercise Solution}
-  \vspace{-0.2cm}
-  \begin{eblock}{Exercise 1}
-  {\tiny
-    \begin{verbatim}
-#!/bin/bash
-
-# My First Script
-
-echo "Hello World!"
-      \end{verbatim}
-  }
-  \end{eblock}
-  \begin{eblock}{Exercise 2}
-  {\tiny
-    \begin{verbatim}
-#!/bin/bash
-
-# Hello World script using a variable
-STR="Hello World!"
-echo $STR
-    \end{verbatim}
-  }
-  \end{eblock}
-  \begin{eblock}{Exercise 3}
-    {\tiny
-    \begin{verbatim}
-#!/bin/bash
-
-# My Second Script
-
-echo Please Enter your name:
-read name
-echo Please Enter a standard Greeting
-read greet
-echo "$greet $name"
-    \end{verbatim}
-    }
-  \end{eblock}
-\end{frame}
-
-\section{Arithmetic Operations}
-\begin{frame}[fragile,allowframebreaks]
-  \frametitle{\small Arithmetic Operations}
-  \begin{itemize}
-    \item Recall: All variables are stored in memory as strings and converted to numbers when needed
-    \item You can carry out numeric operations on variables
-    %\framebreak
-    \item Arithmetic operations in \texttt{bash} can be done within the \texttt{\$(($\cdots$))} or \texttt{\$[$\cdots$]} commands
-    \begin{enumerate}
-      \fontsize{7}{10}\selectfont{
-      \item[$\bigstar$] Add two numbers: \texttt{\$((1+2))}
-      \item[$\bigstar$] Multiply two numbers: \texttt{\$[\$a*\$b]}
-      \item[$\bigstar$] You can also use the \texttt{let} command: \texttt{let c=\$a-\$b}
-      }
-    \end{enumerate}
-    \item In \texttt{tcsh},
-    \begin{enumerate}
-      \fontsize{7}{10}\selectfont{
-      \item[$\bigstar$] Add two numbers: \texttt{@ x = 1 + 2}
-      \item[$\bigstar$] Divide two numbers: \texttt{@ x = \$a / \$b}
-      }
-    \end{enumerate}
-  \end{itemize}
-  \begin{bblock}{Exercise}
-    Write a script to add/subtract/multiply/divide two numbers.
-  \end{bblock}
-  \framebreak
-  {\tiny
-    \begin{verbatim}
-apacheco@apacheco:~/Tutorials/BASH/scripts> cat dosum.sh
-#!/bin/bash
-
-FIVE=5
-SEVEN=7
-echo "5 + 7 = " $FIVE + $SEVEN
-echo "5 + 7 = " $(($FIVE + $SEVEN))
-let SUM=$FIVE+$SEVEN
-echo "sum of 5 & 7 is " $SUM
-exit
-apacheco@apacheco:~/Tutorials/BASH/scripts> ./dosum.sh 
-5 + 7 = 5 + 7
-5 + 7 =  12
-sum of 5 & 7 is  12
-apacheco@apacheco:~/Tutorials/BASH/scripts> cat dosum.csh
-#!/bin/tcsh
-
-set FIVE=5
-set SEVEN=7
-echo "5 + 7 = " $FIVE + $SEVEN
-@ SUM = $FIVE + $SEVEN
-echo "sum of 5 & 7 is " $SUM
-exit
-apacheco@apacheco:~/Tutorials/BASH/scripts> ./dosum.csh 
-5 + 7 =  5 + 7
-sum of 5 & 7 is  12
-    \end{verbatim}
-  }
-%  \framebreak
-%  \begin{itemize}
-%    \item Variables defined as above can be referenced only in the current shell
-%    \item If you want to access the variables across shells i.e. universally on the system, you need to \texttt{export}  it as an environmental variable
-%  \end{itemize}
-%  {\tiny
-%    \begin{verbatim}
-%apacheco@apacheco:~/Tutorials/BASH/scripts> FIVE=5
-%apacheco@apacheco:~/Tutorials/BASH/scripts> SEVEN=7
-%apacheco@apacheco:~/Tutorials/BASH/scripts> PROD=$[$FIVE * $SEVEN]
-%apacheco@apacheco:~/Tutorials/BASH/scripts> echo $PROD
-%35
-%apacheco@apacheco:~/Tutorials/BASH/scripts> bash #start new bash shell
-%apacheco@apacheco:~/Tutorials/BASH/scripts> echo $PROD
-%
-%apacheco@apacheco:~/Tutorials/BASH/scripts> exit #exit current shell
-%exit
-%apacheco@apacheco:~/Tutorials/BASH/scripts> echo $PROD
-%35
-%apacheco@apacheco:~/Tutorials/BASH/scripts> export PROD
-%apacheco@apacheco:~/Tutorials/BASH/scripts> bash
-%apacheco@apacheco:~/Tutorials/BASH/scripts> echo $PROD
-%35
-%    \end{verbatim}
-%  }
-\end{frame}
-
-
-\begin{frame}[fragile]
-  \frametitle{\small Example for doing backups}
-  {\tiny
-  \begin{verbatim}
-apacheco@apacheco:~/Tutorials/BASH/scripts> cat backups.sh 
-#!/bin/bash
-
-BACKUPDIR=$(pwd)
-OF=$BACKUPDIR/$(date +%Y-%m-%d).tgz
-tar -czf ${OF} ./*sh
-apacheco@apacheco:~/Tutorials/BASH/scripts> ./backups.sh 
-apacheco@apacheco:~/Tutorials/BASH/scripts> ls *gz
-2012-09-18.tgz
-  \end{verbatim}
-  }
 \end{frame}
 
 \section{HPC Help}
@@ -1979,7 +1811,7 @@ apacheco@apacheco:~/Tutorials/BASH/scripts> ls *gz
         \item[$\vardiamond$]LONI: \url{http://www.hpc.lsu.edu/docs/guides.php\#loni}
       }
     \end{enumerate}
-    \item Documentation: \url{https://docs.loni.org}
+    \item Documentation: \url{http://www.hpc.lsu.edu/docs}
     \item Online Courses: \url{https://docs.loni.org/moodle}
     \item Contact us
     \begin{enumerate}
@@ -2006,8 +1838,8 @@ apacheco@apacheco:~/Tutorials/BASH/scripts> ls *gz
     {\fontsize{20}{30}\selectfont Any Questions?}\\
     \vspace{0.5cm}
     {\fontsize{15}{30}\selectfont
-      \color{red!80!black}{Feb 20: Regular Expressions}\\
-      \color{red!80!black}{Feb 27: Advanced Shell Scripting}\\
+      \color{red!80!black}{Sep 18: HPC User Environment}\\
+      \color{red!80!black}{Sep 25 \& Oct 2: Shell Scripting}\\
     }
     \vspace{0.5cm}
     {\fontsize{15}{20}\selectfont Survey: \color{red!90!white}{\url{http://www.hpc.lsu.edu/survey}}}
