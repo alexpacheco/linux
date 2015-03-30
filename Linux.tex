@@ -1,102 +1,55 @@
-\documentclass[c,compress,xcolor=svgnames]{beamer} 
-\mode<presentation>
-{  
-  \setbeamertemplate{background canvas}[vertical shading][bottom=blue!5,top=blue!5]
-  \setbeamertemplate{navigation symbols}{}%{\insertsectionnavigationsymbol}
-  \usetheme{LSU}
-}
+\documentclass[10pt,t]{beamer}
+\usepackage{graphicx}
+\setbeamersize{text margin left=10pt,text margin right=10pt}
+%get rid of junk
+\usetheme{default}
+\beamertemplatenavigationsymbolsempty
 
-\usefonttheme{professionalfonts}
-\usefonttheme{serif}
+% add packages to use
+\usepackage{tabularx}
+\usepackage{tikz}
+\usetikzlibrary{trees,matrix,shapes,arrows}
+\usetikzlibrary{calc}
+\usepackage{fancyvrb,listings}
+
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfsetlayers{background,main,foreground}
 \usepackage{pgf,pgfarrows,pgfnodes,pgfautomata,pgfheaps,pgfshade}
 \usepackage{amsmath,amssymb,amsfonts,subfigure,pifont}
 \usepackage{multirow}
-\usepackage{tabularx}
 \usepackage{booktabs}
 \usepackage{colortbl}
 \usepackage{keystroke}
 \usepackage{etex}
-\usepackage{tikz}
-\usepackage{fancyvrb,listings}
-\usetikzlibrary{trees,matrix}
-\usetikzlibrary{shapes,arrows}
-\usetikzlibrary{calc}
-\pgfdeclarelayer{background}
-\pgfdeclarelayer{foreground}
-\pgfsetlayers{background,main,foreground}
-\usepackage[latin1]{inputenc}
-\usepackage[english]{babel}
-\usepackage{hyperref}
-\usepackage[normalem]{ulem}
-% \usepackage{movie15} 
-
-\hypersetup{
-  pdftitle={HPC User Environment, Job Management with PBS/Loadleveler},
-  pdfauthor={Alexander B. Pacheco, User Services Consultant, Louisiana State University}
-}                                                         
-\usepackage{times}
-
-\setbeamercovered{dynamic}
-\beamersetaveragebackground{DarkBlue!2}
-\beamertemplateballitem
-
-\usepackage{times}
-\usepackage[T1]{fontenc}
-\usepackage{graphicx}
 
 
+% named colors
+%\definecolor{foreground}{RGB}{0,0,0}
+\definecolor{background}{RGB}{241,231,200}
+\definecolor{title}{RGB}{107,174,214}
+\definecolor{gray}{RGB}{75,75,75}
+%\definecolor{subtitle}{RGB}{102,255,204}
+%\definecolor{hilight}{RGB}{102,255,204}
+%\definecolor{vhilight}{RGB}{255,111,207}
+%\definecolor{lolight}{RGB}{155,155,155}
+\definecolor{lubrown}{RGB}{102,55,0}
+\definecolor{lucream}{RGB}{241,231,200}
+\definecolor{lugreen}{RGB}{195,207,33}
+\definecolor{luyellow}{RGB}{255,196,35}
+\definecolor{brown}{HTML}{502D0F}
+\definecolor{lupurple}{RGB}{125,129,190}
+\definecolor{lulime}{RGB}{217,226,219}
+\definecolor{lublue}{RGB}{0,164,228}
+\definecolor{lubg}{RGB}{241,231,200} % background color is lucream
+%\definecolor{lubg}{RGB}{255,255,255} % background color is white
 
-\definecolor{DarkGreen}{rgb}{0.0,0.3,0.0}
-\definecolor{Blue}{rgb}{0.0,0.0,0.8} 
-\definecolor{dodgerblue}{rgb}{0.1,0.1,1.0}
-\definecolor{indigo}{rgb}{0.41,0.1,0.0}
-\definecolor{seagreen}{rgb}{0.1,1.0,0.1}
-\DeclareSymbolFont{extraup}{U}{zavm}{m}{n}
-%\DeclareMathSymbol{\vardiamond}{\mathalpha}{extraup}{87}
-\newcommand{\cmark}{\ding{51}}
-\newcommand{\xmark}{\ding{55}}
-\newcommand{\smark}{\ding{77}}
-\newcommand*\vardiamond{\textcolor{tigerspurple}{%
-  \ensuremath{\blacklozenge}}}
-\newcommand*\up{\textcolor{green!80!black}{%
-  \ensuremath{\blacktriangle}}}
-\newcommand*\down{\textcolor{red}{%
-  \ensuremath{\blacktriangledown}}}
-\newcommand*\const{\textcolor{darkgray}%
-  {\textbf{--}}}
-\newcommand*\enter{\tikz[baseline=-0.5ex] \draw[<-] (0,0) -| (0.5,0.1);}
-\newcommand{\Verbpurple}[1]{\Verb[formatcom=\color{tigerspurple},fontseries=b]|#1|}
-\newcommand{\Verbgreen}[1]{\Verb[formatcom=\color{dkgreen},fontseries=b,commandchars=\\\{\}]|#1|}
-\newcommand{\Verbindigo}[1]{\Verb[formatcom=\color{indigo},fontseries=b,commandchars=\\\{\}]!#1!}
-\newcommand{\Verblue}[1]{\Verb[formatcom=\color{blue},fontseries=b,commandchars=\\\{\}]!#1!}
-\newcommand{\Verbblue}[2][b]{\Verb[formatcom=\color{blue},fontshape=#1,commandchars=\\\{\}]|#2|}
-\newcommand{\Verbpurplep}[1]{\Verb[formatcom=\color{tigerspurple},fontseries=b]!#1!}
-\newcommand{\Verbgreenp}[1]{\Verb[formatcom=\color{dkgreen},fontseries=b,commandchars=\\\{\}]!#1!}
+% The following color are for listing environment 
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+%\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
 
-\setbeamercolor{uppercol}{fg=white,bg=red!30!black}%
-\setbeamercolor{lowercol}{fg=black,bg=red!15!white}%
-\setbeamercolor{uppercol1}{fg=white,bg=blue!30!black}%
-\setbeamercolor{lowercol1}{fg=black,bg=blue!15!white}%%
-\setbeamercolor{uppercol2}{fg=white,bg=green!30!black}%
-\setbeamercolor{lowercol2}{fg=black,bg=green!15!white}%
-\newenvironment{colorblock}[4]
-{
-\setbeamercolor{upperblock}{fg=#1,bg=#2}
-\setbeamercolor{lowerblock}{fg=#3,bg=#4}
-\begin{beamerboxesrounded}[upper=upperblock,lower=lowerblock,shadow=true]}
-{\end{beamerboxesrounded}}
-\newenvironment{ablock}[0]
-{
-\begin{beamerboxesrounded}[upper=uppercol,lower=lowercol,shadow=true]}
-{\end{beamerboxesrounded}}
-\newenvironment{bblock}[0]
-{
-\begin{beamerboxesrounded}[upper=uppercol1,lower=lowercol1,shadow=true]}
-{\end{beamerboxesrounded}}
-\newenvironment{eblock}[0]
-{
-\begin{beamerboxesrounded}[upper=uppercol2,lower=lowercol2,shadow=true]}
-{\end{beamerboxesrounded}}
+
 
 %% Tikz Distro Watch Table
 % Defining some symbols:
@@ -117,9 +70,6 @@
     column 4/.style={minimum width=#4}]}%
 {;\end{tikzpicture}}
 
-\definecolor{dkgreen}{rgb}{0,0.6,0}
-\definecolor{gray}{rgb}{0.5,0.5,0.5}
-\definecolor{mauve}{rgb}{0.58,0,0.82}
 \lstset{%
 language=bash,                % the language of the code
 %basicstyle=\footnotesize,           % the size of the fonts that are used for the code
@@ -167,68 +117,276 @@ deletekeywords={\dots},              % if you want to delete keywords from the g
 %morecomment=[l]{//}
 }
 
+
+\DeclareSymbolFont{extraup}{U}{zavm}{m}{n}
+%\DeclareMathSymbol{\vardiamond}{\mathalpha}{extraup}{87}
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}
+\newcommand{\smark}{\ding{77}}
+\newcommand*\vardiamond{\textcolor{lubrown}{%
+  \ensuremath{\blacklozenge}}}
+\newcommand*\mybigstar{\textcolor{lubrown!90!yellow}{%
+  \ensuremath{\bigstar}}}
+\newcommand*\up{\textcolor{green!80!black}{%
+  \ensuremath{\blacktriangle}}}
+\newcommand*\down{\textcolor{red}{%
+  \ensuremath{\blacktriangledown}}}
+\newcommand*\const{\textcolor{darkgray}%
+  {\textbf{--}}}
+\newcommand*\enter{\tikz[baseline=-0.5ex] \draw[<-] (0,0) -| (0.5,0.1);}
+
+\newcommand{\Verblubrown}[1]{\Verb[formatcom=\color{lubrown},fontseries=b,commandchars=\\\{\}]|#1|}
+\newcommand{\Verblue}[1]{\Verb[formatcom=\color{lublue},fontseries=b,commandchars=\\\{\}]!#1!}
+\newcommand{\Verbblue}[2][b]{\Verb[formatcom=\color{lublue},fontshape=#1,commandchars=\\\{\}]|#2|}
+\newcommand{\Verblubrownp}[1]{\Verb[formatcom=\color{lubrown},fontseries=b,commandchars=\\\{\}]!#1!}
+
+
+% use those colors
+\setbeamercolor{titlelike}{fg=white,bg=lubrown}
+\setbeamercolor{subtitle}{fg=lucream}
+\setbeamercolor{institute}{fg=gray}
+\setbeamercolor{normal text}{fg=black,bg=white}
+\setbeamercolor{item}{fg=lubrown} % color of bullets
+\setbeamercolor{subitem}{fg=gray}
+\setbeamercolor{itemize/enumerate subbody}{fg=gray}
+\setbeamertemplate{itemize subitem}{{\textendash}}
+\setbeamerfont{itemize/enumerate subbody}{size=\footnotesize}
+\setbeamerfont{itemize/enumerate subitem}{size=\footnotesize}
+\setbeamercolor{footline}{bg=lubrown}
+
+\setbeamercolor*{palette primary}{fg=lubrown,bg=white}
+\setbeamercolor*{palette secondary}{bg=brown,fg=white} % footer
+\setbeamercolor*{palette tertiary}{fg=lubrown,bg=white} % footer
+
+% progressbar
+\definecolor{lusteelgray}{HTML}{91A1AA}
+\definecolor{luwarmgray}{HTML}{7D6A55}% background color for the progress bar
+
+\makeatletter
+\def\progressbar@progressbar{} % the progress bar
+\newcount\progressbar@tmpcounta% auxiliary counter
+\newcount\progressbar@tmpcountb% auxiliary counter
+\newdimen\progressbar@pbht %progressbar height
+\newdimen\progressbar@pbwd %progressbar width
+\newdimen\progressbar@tmpdim % auxiliary dimension
+\progressbar@pbwd=0.729\linewidth
+\progressbar@pbht=1.87ex
+%\progressbar@pbht=1.725ex
+% the progress bar
+\def\progressbar@progressbar{%
+    \progressbar@tmpcounta= \insertframenumber % max = ?
+    \progressbar@tmpcountb=\inserttotalframenumber      
+    \progressbar@tmpdim=.5\progressbar@pbwd
+    \multiply\progressbar@tmpdim by \progressbar@tmpcounta
+    \divide\progressbar@tmpdim by \progressbar@tmpcountb
+    \progressbar@tmpdim=2\progressbar@tmpdim
+  \begin{tikzpicture}[rounded corners=0pt,very thin]
+    \shade[top color=lubg,bottom color=lubg,middle color=lubg]
+       (0pt, 0pt) rectangle ++ (\progressbar@pbwd, \progressbar@pbht);
+%      \shade[draw=lusteelgray,top color=lusteelgray!50,bottom color=lusteelgray!50,middle color=lusteelgray] %
+      \shade[draw=brown,top color=brown,bottom color=brown,middle color=brown] %
+        (0pt, 0pt) rectangle ++ (\progressbar@tmpdim, \progressbar@pbht);
+%    \draw[color=lubg]%normal text.fg!50]
+%      (0pt, 0pt) rectangle (\progressbar@pbwd, \progressbar@pbht)
+%        node[pos=0.5,color=normal text.fg] {\textnormal{%
+%        }%
+%    };
+  \end{tikzpicture}%
+}
+
+% page number
+%\setbeamertemplate{footline}{%
+%    \raisebox{5pt}{\makebox[\paperwidth]{\hfill\makebox[20pt]{\color{lubrown}
+%          \scriptsize\insertframenumber}}}\hspace*{5pt}}
+\defbeamertemplate*{footline}{my footline}
+{
+    \ifnum \insertpagenumber=1
+      \leavevmode%
+      \hbox{%
+      \begin{beamercolorbox}[wd=\paperwidth,ht=4.25ex,dp=1ex,center]{}%
+        % empty environment to raise height
+      \end{beamercolorbox}}%
+      \vskip0pt%
+    \else
+      \leavevmode%
+      \hbox{%
+      \begin{beamercolorbox}[wd=.3\paperwidth,ht=2.0ex,dp=1ex,left]{date in head/foot}%
+        %\usebeamerfont{date in head/foot}\raisebox{-1.5ex}{\includegraphics[width=0.3\paperwidth]{./LehighUniversityOnelineLogo}}\hfill
+        \usebeamerfont{date in head/foot}\raisebox{-0.85ex}{\includegraphics[width=0.3\paperwidth]{./lulogo}}\hfill
+      \end{beamercolorbox}%
+      \begin{beamercolorbox}[wd=.61\paperwidth,ht=2.8ex,dp=0ex,center]{white}\raisebox{-1.1ex}{\progressbar@progressbar}%{date in head/foot}%
+      \end{beamercolorbox}
+      %\begin{beamercolorbox}[wd=.09\paperwidth,ht=2.8ex,dp=1ex,right]{date in head/foot}%
+      \begin{beamercolorbox}[wd=.09\paperwidth,ht=2.75ex,dp=1ex,right]{date in head/foot}%
+        \usebeamerfont{date in head/foot} \insertframenumber{} / \inserttotalframenumber\hspace*{2ex}
+      \end{beamercolorbox}
+      }%
+      \vskip0pt%
+    \fi
+}
+
+\defbeamertemplate*{footline}{myfootline}
+{
+  \leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[wd=\paperwidth,ht=4.25ex,dp=1ex,center]{}%
+      % empty environment to raise height
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+\setbeamertemplate{footline}[my footline]
+%\setbeamersize{text margin left=10pt,text margin right=10pt}
+%\setbeamersize{sidebar width left=5pt}
+%\setbeamertemplate{sidebar canvas left}{\color{brown}\rule{5pt}{\paperheight}}
+%\setbeamersize{sidebar width right=5pt}
+%\setbeamertemplate{sidebar canvas right}{\color{brown}\rule{5pt}{\paperheight}}
+
+
+\DeclareOptionBeamer{shadow}[true]{\def\beamer@themerounded@shadow{#1}}
+\ExecuteOptionsBeamer{shadow=false}
+\ProcessOptionsBeamer
+
+\mode<presentation>
+
+\setbeamertemplate{blocks}[rounded][shadow=\beamer@themerounded@shadow]
+%\setbeamertemplate{items}[ball]
+\setbeamertemplate{sections/subsections in toc}[ball]
+\setbeamertemplate{title page}[default][colsep=-4bp,rounded=true,shadow=\beamer@themerounded@shadow]
+\setbeamertemplate{part page}[default][colsep=-4bp,rounded=true,shadow=\beamer@themerounded@shadow]
+
+\setbeamercolor{block title}{use=structure,fg=white,bg=structure.fg!75!black}
+\setbeamercolor{block title alerted}{use=alerted text,fg=white,bg=alerted text.fg!75!black}
+\setbeamercolor{block title example}{use=example text,fg=white,bg=example text.fg!75!black}
+
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!10!bg}
+\setbeamercolor{block body alerted}{parent=normal text,use=block title alerted,bg=block title alerted.bg!10!bg}
+\setbeamercolor{block body example}{parent=normal text,use=block title example,bg=block title example.bg!10!bg}
+
+\mode<all>
+
+\defbeamertemplate*{title page}{customized}[1][]
+{ 
+  \begin{center}
+    \usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle\par
+    \usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par
+    \bigskip
+    \usebeamerfont{author}\insertauthor\par
+    \usebeamerfont{institute}\insertinstitute\par
+    \usebeamerfont{date}\insertdate\par
+    \bigskip
+    \usebeamercolor[fg]{titlegraphic}\inserttitlegraphic
+  \end{center}
+%  \usebeamerfont{title}\inserttitle\par
+%  \usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par
+%  \bigskip
+%  \usebeamerfont{author}\insertauthor\par
+%  \usebeamerfont{institute}\insertinstitute\par
+%  \usebeamerfont{date}\insertdate\par
+%  \usebeamercolor[fg]{titlegraphic}\inserttitlegraphic
+}
+
+% title page template
+\setbeamertemplate{background canvas}{%
+    \ifnum\c@framenumber=1%
+        \color{lubrown}\rule{\paperwidth}{\paperheight}
+    \else%
+        \color{lubg}\rule{\paperwidth}{\paperheight}
+    \fi%
+}
+
+% section page template
+\defbeamertemplate*{section page}{mysection}[1][]
+{
+  \begin{centering} 
+    \usebeamercolor[fg]{section title} 
+    \usebeamerfont{section title} 
+    \insertsection
+    \par 
+  \end{centering}   
+}
+
 \title{Introduction to Linux}
-
-
-\author[Alex Pacheco]{\large{Alexander~B.~Pacheco}}
-       
-%\institute[High Performance Computing @ Louisiana State University - http://www.hpc.lsu.edu] {\inst{}\footnotesize{User Services Consultant\\LSU HPC \& LONI\\sys-help@loni.org}}
-\institute[HPC Training: Spring 2014] {\inst{}\footnotesize{User Services Consultant\\LSU HPC \& LONI\\sys-help@loni.org}}
-
-\date[\insertframenumber/\inserttotalframenumber\hfill\hspace{1.5cm}]{\scriptsize{HPC Training Spring 2014\\Louisiana State University\\Baton Rouge\\February 3, 2014}}
-     
-\subject{Talks}
-\keywords{LONI \& LSU HPC Computing Resources, Introduction to Linux}
-% This is only inserted into the PDF information catalog. Can be left
-% out. 
-
-
-
-
-% If you have a file called "university-logo-filename.xxx", where xxx
-% is a graphic format that can be processed by latex or pdflatex,
-% resp., then you can add a logo as follows:
-
-% Main Logo on bottom left
-\pgfdeclareimage[height=0.5cm]{institute-logo}{its-logo}
-\logo{\pgfuseimage{institute-logo}}
-% University Logo on top left
-\pgfdeclareimage[height=0.55cm]{university-logo}{LSUGeauxPurp}
-\tllogo{\pgfuseimage{university-logo}}
-% Logo at top right
-\pgfdeclareimage[height=0.55cm]{its-logo}{LONI}
-\trlogo{\pgfuseimage{its-logo}}
-% Logo at bottom right
-\pgfdeclareimage[height=0.5cm]{hpc-logo}{cct-logo}
-\brlogo{\pgfuseimage{hpc-logo}}
+%\subtitle{Basic Commands \& Environment}
+\author{Alexander B. Pacheco}
+\institute{\href{http://researchcomputing.lehigh.edu}{LTS Research Computing}}%\\[2pt] \href{http://www.lehigh.edu}{Lehigh University}}
+\date{February 19 \& 26, 2015}
 
 % Delete this, if you do not want the table of contents to pop up at
 % the beginning of each subsection:
-% \AtBeginSection[]
-% {
-%   \begin{frame}<beamer>
-%    \frametitle{\small{Outline}}
-%     \small
-%     \tableofcontents[currentsection,currentsubsection]
-%   \end{frame}
-% }
+\AtBeginSection[]
+{
+  \begingroup
+  \setbeamertemplate{background canvas}[vertical shading][bottom=lubrown,top=lubrown]
+  \setbeamertemplate{footline}[myfootline] 
+  \setbeamertemplate{section page}[mysection]
+  \frame[c]{
+    \sectionpage
+  }
+  \endgroup
+}
 
+\titlegraphic{\includegraphics[scale=0.5]{lu}}
 \begin{document}
 
-\frame{\titlepage}
+\begin{frame}[c]
+  \titlepage
+\end{frame}
 
 \footnotesize
-
-\begin{frame}[label=toc,squeeze]
-  \footnotesize
-  \frametitle{\small{Outline}}
+\begin{frame}{Outline}
   \tableofcontents
 \end{frame}
 
-%\part{Introduction}
+\section*{Installing Linux on VirtualBox}
+\begin{frame}[fragile]
+  \frametitle{Installing Linux on VirtualBox}
+  \begin{enumerate}
+    \item Download and install Oracle VirtualBox (and the extension pack) from \href{https://www.virtualbox.org/wiki/Downloads}{here}
+    \item Download the CentOS virtual image from \href{https://drive.google.com/open?id=0ByziB2zqYhHVcHRKTWZqdFZUX0E&authuser=1}{here}. (you need to logged into Lehigh Google to access the image name CentOS.ova. Its about 2.6GB.)
+    \item Install the image by double clicking on it. If it doesn't work, open virtualbox software that you just installed, 
+    \begin{enumerate}
+      \item From the menu, click File$>$Import Appliance
+      \item Choose the ova file that you just downloaded and click the next button (this instruction may differ on Windows and Mac systems)
+      \item Click the import button
+    \end{enumerate}	
+    \item Whole process should take a few minutes.
+    \item Once the process is complete, you should see CentOS listed in the left sidebar.
+    \item Select CentOS and click the start button or double click CentOS
+    \item After a minute or two you should a login prompt
+    \item Type user and hit enter
+    \item You should now see a prompt such as \Verb[formatcom=\color{lubrown},fontseries=b,commandchars=\\\{\}]|[user@localhost ~]\$|
+    \item Create a password by typing passwd and hit enter. You will be prompted to enter a password twice, you will not see any characters on the screen as you type.
+    \item Create a password for admin user by first logging in as root: type su - at the prompt and hit enter. Follow the previous step
+  \end{enumerate}
+\end{frame}
+
+\section*{Logging into a remote Linux server}
+\begin{frame}[fragile]
+  \frametitle{Logging into a remote Linux server}
+  \begin{itemize}
+    \item Mac OSX
+    \begin{enumerate}
+      \item Open the Terminal App
+      \item At the command prompt enter \Verblubrown{ssh user@remotehost}
+      \item[] \Verblubrown{user} is your username on the remote Linux server
+      \item[] \Verblubrown{remotehost} is the hostname or ip address of the remote Linux server
+      \item[e.g] To log into polaris \Verblubrown{ssh alp514@polaris.cc.lehigh.edu} 
+    \end{enumerate}
+    \item Windows
+    \begin{enumerate}
+      \item Download and install a ssh client such as \href{http://www.putty.org/}{putty} or \href{http://mobaxterm.mobatek.net/}{MobaXterm}
+      \item Open the client
+      \item Putty: Enter the hostname or ip address of the remote Linux server (make sure the SSH radio button is selected) $>$ Click open
+      \item MobaXterm: Click New Session $>$ Select SSH tab $>$ Enter hostname and username in the field provided $>$ Click on OK
+      \item When you are prompted for your password, you may not not see any characters on the screen.
+    \end{enumerate}
+  \end{itemize}
+\end{frame}
+
 \section{What is Linux?}
-\begin{frame}[allowframebreaks]
-  \frametitle{\small History}
+\frame[allowframebreaks]{
+  \frametitle{History}
   \begin{itemize}
     \item Unix was conceived and implemented in 1969 at AT\&T Bell labs by  Ken Thompson, Dennis Ritchie, Douglas McIlroy, and Joe Ossanna.
     \item First released in 1971 and was written in assembler.
@@ -237,42 +395,33 @@ deletekeywords={\dots},              % if you want to delete keywords from the g
     \item The GNU Project, started in 1983 by Richard Stallman, had the goal of creating a ``complete Unix-compatible software system'' composed entirely of free software.
     \item 386BSD released in 1992 and written by Berkeley alumni Lynne Jolitz and William Jolitz. FreeBSD, NetBSD, OpenBSD and NextStep (Mac OSX) descended from this
     \item Andrew S. Tanenbaum wrote and released MINIX, an inexpensive minimal Unix-like operating system, designed for education in computer science
-%  \end{itemize}
-%\end{frame}
-%
-%\begin{frame}
-%  \frametitle{\small History}
-%  \begin{itemize}
     \item Frustated with licensing issues with MINIX, Linus Torvalds, a student at University of Helsinki began working on his own operating system which eventually became the "Linux Kernel"
     \item Linus released his kernel for anyone to download and help further development.
-    \begin{columns}
-      \column{11cm}
-      \begin{eblock}{Linus's message to comp.os.minix on Aug 26, 1991}
-        \begin{itemize}
-          {\tiny
-          \item[]Hello everybody out there using minix -
-          \item[] I'm doing a (free) operating system (just a hobby, won't be big and professional like gnu) for 386(486) AT clones.  This has been brewing since april, and is starting to get ready.  I'd like any feedback on things people like/dislike in minix, as my OS resembles it somewhat (same physical layout of the file-system (due to practical reasons) among other things).
-          \item[] I've currently ported bash(1.08) and gcc(1.40), and things seem to work. This implies that I'll get something practical within a few months, and I'd like to know what features most people would want.  Any suggestions are welcome, but I won't promise I'll implement them :-)
-          \item[]Linus (email address)
-          \item[]PS.  Yes - it's free of any minix code, and it has a multi-threaded fs. It is NOT protable (uses 386 task switching etc), and it probably never will support anything other than AT-harddisks, as that's all I have :-(.
-          \item[]{\fontsize{5}{7}\selectfont{\url{https://groups.google.com/forum/?fromgroups=\#!msg/comp.os.minix/dlNtH7RRrGA/SwRavCzVE7gJ}}}
-          }
-        \end{itemize}
-      \end{eblock}
-    \end{columns}
+	\end{itemize}
+        \begin{exampleblock}{Linus's message to comp.os.minix on Aug 26, 1991}
+		{\scriptsize
+Hello everybody out there using minix -\\
+I'm doing a (free) operating system (just a hobby, won't be big and professional like gnu) for 386(486) AT clones.  This has been brewing since april, and is starting to get ready.  I'd like any feedback on things people like/dislike in minix, as my OS resembles it somewhat (same physical layout of the file-system (due to practical reasons) among other things).\\
+I've currently ported bash(1.08) and gcc(1.40), and things seem to work. This implies that I'll get something practical within a few months, and I'd like to know what features most people would want.  Any suggestions are welcome, but I won't promise I'll implement them :-)\\
+Linus (email address)\\
+PS.  Yes - it's free of any minix code, and it has a multi-threaded fs. It is NOT protable (uses 386 task switching etc), and it probably never will support anything other than AT-harddisks, as that's all I have :-(.\\
+}
+            {\fontsize{5}{7}\selectfont{\url{https://groups.google.com/forum/?fromgroups=\#!msg/comp.os.minix/dlNtH7RRrGA/SwRavCzVE7gJ}}}
+      \end{exampleblock}
+	  \begin{itemize}
     \item Linux is only the kernel, an Operating System also requires applications that users can use.
     \item combined with free software available from the GNU project gave birth to a new Operating System known as "GNU/Linux"
     \item GNU/Linux or simply Linux is released under the GNU Public License: Free to use, modify and distribute provided you distribute under the GNU Public License.\let\thefootnote\relax\footnote{\tiny http://en.wikipedia.org/wiki/Linux}
   \end{itemize}
-  \framebreak
-  \vspace{-1cm}
+  }
+\frame[c]{
   \begin{center}
-    \includegraphics[width=0.75\textwidth]{./Unix_history}
+    \includegraphics[width=0.8\textwidth]{./Unix_history}
   \end{center}
-\end{frame}
+	}
 
 \begin{frame}
-  \frametitle{\small What is Linux?}
+  \frametitle{What is Linux?}
   \begin{itemize}
     \item Linux is an operating system that evolved from a kernel created by Linus Torvalds when he was a student at the University of Helsinki. 
     \item It's meant to be used as an alternative to other operating systems, Windows, Mac OS, MS-DOS, Solaris and others. 
@@ -280,37 +429,38 @@ deletekeywords={\dots},              % if you want to delete keywords from the g
     \begin{center}
       \begin{tikzpicture}
         \node (tbl) {
-          \begin{tabularx}{0.5\textwidth}{ccc}
-            \arrayrulecolor{tigersgold}
+          \begin{tabularx}{0.38\textwidth}{ccc}
+            \arrayrulecolor{black}
             \textcolor{white}{\textbf{OS Family} }& \textcolor{white}{\textbf{Count}} &\textcolor{white}{\textbf {Share \%}}\\
-            Linux \rule{0pt}{3.5ex} & 482 & 96.4 \\
-            Unix & 11 & 2.2 \\
-            Mixed & 4 & 0.8 \\
-            Windows & 2 & 0.4 \\
-            BSD Based & 1 & 0.2 \\
+            Linux \rule{0pt}{3.5ex} & 485 & 97 \\
+            Unix & 13 & 2.6 \\
+            Mixed & 1 & 0.2 \\
+            Windows & 1 & 0.2 \\
             [1.0ex]
         \end{tabularx}};
         \begin{pgfonlayer}{background}
-          \draw[rounded corners,top color=blue!30!black,bottom color=blue!10!white,
-            draw=tigerspurple!30] ($(tbl.north west)+(0.14,0)$)
+          %\draw[rounded corners,top color=blue!30!black,bottom color=blue!10!white,
+          \draw[rounded corners,top color=lupurple,bottom color=lupurple,
+            draw=lubrown!30] ($(tbl.north west)+(0.14,0)$)
           rectangle ($(tbl.north east)-(0.13,0.9)$);
-          \draw[rounded corners,top color=green!5,bottom color=green!5,draw=green!5]
+          %\draw[rounded corners,top color=green!5,bottom color=green!5,draw=green!5]
+          \draw[rounded corners,top color=lulime,bottom color=lulime,draw=lulime]
           ($(tbl.north east)-(0.13,0.6)$)
           rectangle ($(tbl.south west)+(0.13,0.2)$);
         \end{pgfonlayer}
       \end{tikzpicture}
     \end{center}
-    \item If you are using a Supercomputer for your research, there is a 98\% probability that it will be based on a *nix OS.
+    \item If you are using a Supercomputer for your research, it will most likely be based on a *nix OS.
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{\small What is Linux?}
+  \frametitle{What is Linux?}
   \begin{itemize}
     \item Many software vendors release their own packaged Linux OS (kernel, applications) known as distribution
     \item Linux distribution = Linux kernel + GNU system utilities and libraries + Installation scripts + Management utilities etc.
     \begin{enumerate}
-      {\footnotesize
+      {%\scriptsize
         \item Debian, Ubuntu, Mint
         \item Red Hat, Fedora, CentOS
         \item Slackware, openSUSE, SLES, SLED
@@ -319,14 +469,14 @@ deletekeywords={\dots},              % if you want to delete keywords from the g
     \end{enumerate}
     \item Application packages on Linux can be installed from source or from customized packages
     \begin{enumerate}
-      {\footnotesize
+      {%\scriptsize
         \item deb: Debian based distros e.g. Debian, Ubuntu, Mint
         \item rpm: Red Hat based distros, Slackware based distros.
       }
     \end{enumerate}
     \item Linux distributions offer a variety of desktop environment.
     \begin{enumerate}
-      {\scriptsize
+      {%\scriptsize
         \item K Desktop Environment (KDE)
         \item GNOME 
         \item Xfce
@@ -338,39 +488,38 @@ deletekeywords={\dots},              % if you want to delete keywords from the g
   \end{itemize}
 \end{frame}
 
-\begin{frame}{\small openSUSE KDE Desktop}
+\begin{frame}{openSUSE KDE Desktop}
   \begin{center}
     \includegraphics[width=\textwidth]{./opensuse}
   \end{center}
 \end{frame}
-\begin{frame}{\small CentOS GNOME Desktop}
+\begin{frame}{CentOS GNOME Desktop}
   \begin{center}
     \includegraphics[width=\textwidth]{./CentOS6_3}
   \end{center}
 \end{frame}
-\begin{frame}{\small LXDE Desktop}
+\begin{frame}{LXDE Desktop}
   \begin{center}
-    \includegraphics[width=0.9\textwidth]{./LXDE_desktop_full}
+    \includegraphics[width=0.85\textwidth]{./LXDE_desktop_full}
   \end{center}
 \end{frame}
-\begin{frame}{\small Debian MATE Desktop}
+\begin{frame}{Debian MATE Desktop}
   \begin{center}
     \includegraphics[width=\textwidth]{./Mate_DE_on_Debian}
   \end{center}
 \end{frame}
-\begin{frame}{\small Linux Mint Cinnamon Desktop}
+\begin{frame}{Linux Mint Cinnamon Desktop}
   \begin{center}
     \includegraphics[width=\textwidth]{./Cinnamon_Mint}
   \end{center}
 \end{frame}
 
-
 \begin{frame}
-  \frametitle{\small What is Linux?}
+  \frametitle{What is Linux?}
   \begin{itemize}
     \item Linux distributions are tailored to different requirements such as
     \begin{enumerate}
-      {\footnotesize
+      {%\scriptsize
         \item Server
         \item Desktop
         \item Workstation
@@ -387,14 +536,13 @@ deletekeywords={\dots},              % if you want to delete keywords from the g
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{\small Popularity of Linux Distributions}
-  \begin{columns}
+  \frametitle{Popularity of Linux Distributions}
+  \begin{columns}[T]
     \column{0.43\textwidth}
-    \vspace{-0.2cm}
     \begin{itemize}
       \item \href{http://distrowatch.com/}{\color{blue}DistroWatch} provides news, popularity rankings, and other general information about:
       \begin{enumerate}
-        {\scriptsize
+        {%\scriptsize
           \item various Linux distributions,
           \item free software/open source Unix-like operating systems such as OpenSolaris, MINIX and BSD.
         }
@@ -402,48 +550,56 @@ deletekeywords={\dots},              % if you want to delete keywords from the g
       \item DistroWatch is NOT an indication of market-share or quality nor is it an indication of how many users but  it is clearly an indication of what users are looking at.
     \end{itemize}
     \column{0.57\textwidth}
-    \vspace{-1cm}
     \begin{center}
+	{%\scriptsize
       \begin{matrixtable}{1.2cm}{2.4cm}{1.2cm}{0.6cm}{
-          \head{Rank}   & \head{Distribution} & \head{Hits} & \\
-          1 & Mint      & 3614 & \up   \\
-          2 & Mageia    & 2418 & \down \\
-          3 & Ubuntu    & 1906 & \up   \\
-          4 & Fedora    & 1558 & \up   \\
-          5 & OpenSUSE  & 1349 & \down   \\
-          6 & Debian    & 1345 & \up   \\
-          7 & Arch      & 1211 & \down   \\
-          8 & PCLinuxOS & 1186 & \up   \\
-          9 & Snowlinux & 877  & \up   \\
-          10& Zorin     & 861  & \const \\
+          \head{Rank} & \head{Distribution} & \head{Hits} & \\
+          1 & Mint        & 2427 & \up   \\
+          2 & Ubuntu      & 1830 & \down \\
+          3 & Debian      & 1597 & \up   \\
+          4 & openSUSE    & 1420 & \up   \\
+          5 & Fedora      & 1322 & \up   \\
+          6 & Mageia      & 1138 & \up   \\
+          7 & CentOS      & 1116 & \up   \\
+          8 & Arch        & 1035 & \down \\
+          9 & elementary  & 969  & \up   \\
+          10& Android-x86 & 832  & \up   \\
         }
       \end{matrixtable}
+	}
     \end{center}
   \end{columns}
 \end{frame}
 
+
 \begin{frame}[allowframebreaks]
-  \frametitle{\small Linux Components}
+  \frametitle{Linux Components}
+  \begin{columns}[T]
+  \column{0.5\textwidth}
   \begin{itemize}
     \item Linux is made up of two (three) parts:
     \begin{enumerate}
-      {\footnotesize
+      {%\scriptsize
         \item Kernel 
         \item Shell 
         \item Applications/Programs 
         }
     \end{enumerate}
   \end{itemize}
+  \column{0.5\textwidth}
   \begin{tikzpicture}
+    \draw [fill=blue!20!white, ultra thick, blue!20!white] (3,0) circle (2.0);
     \draw [fill=blue!30!white, ultra thick, blue!30!white] (3,0) circle (1.5);
     \draw [fill=blue!40!white, ultra thick, blue!40!white] (3,0) circle (1.0);
     \draw [fill=blue!50!white, ultra thick, blue!50!white] (3,0) circle (0.5);
-    \node at (3,0) {Kernel};
-    \node [above] at (3,.5) {Shell};
-    \node [above] at (3,1) {User};
+    \node at (3,0) {Hardware};
+    \node [above] at (3,.5) {Kernel};
+    \node [above] at (3,1) {Shell};
+    \node [above] at (3,1.5) {Other Software};
   \end{tikzpicture}
-  
-  \begin{eblock}{What is a kernel}
+  \end{columns}
+%  \framebreak
+  \begin{block}{What is a kernel}
     \begin{itemize}
       \item The kernel is the main component of most computer operating systems
       \item It is a bridge between applications and the actual data processing done at the hardware level.
@@ -451,45 +607,42 @@ deletekeywords={\dots},              % if you want to delete keywords from the g
       \item provides the lowest-level abstraction layer for the resources (especially processors and I/O devices) that application software must control to perform its function.
       \item It typically makes these facilities available to application processes through inter-process communication mechanisms and system calls.
     \end{itemize}
-  \end{eblock}
-  \begin{eblock}{What is a SHELL}
+  \end{block}
+  \begin{exampleblock}{What is a SHELL}
     \begin{itemize}
       \item The command line interface is the primary interface to Linux/Unix operating systems.
       \item Shells are how command-line interfaces are implemented in Linux/Unix.
       \item Each shell has varying capabilities and features and the user should choose the shell that best suits their needs.
       \item The shell is simply an application running on top of the kernel and provides a powerful interface to the system.
     \end{itemize}
-  \end{eblock}
+  \end{exampleblock}
 \end{frame}
 
- 
 \begin{frame}
-  \frametitle{\small Types of Shell}
-  {\scriptsize
-  \vspace{-0.25cm}
+  \frametitle{Types of Shell}
     \begin{itemize}
       \item[\texttt{sh}]: Bourne Shell
       \begin{enumerate}
-        {\scriptsize
+        {%\scriptsize
           \item[$\vardiamond$] Developed by Stephen Bourne at AT\&T Bell Labs
         }
       \end{enumerate}
       \item[\texttt{csh}]: C Shell
       \begin{enumerate}
-        {\scriptsize
+        {%\scriptsize
           \item[$\vardiamond$] Developed by Bill Joy at University of California, Berkeley
         }
       \end{enumerate}
       \item[\texttt{ksh}]: Korn Shell
       \begin{enumerate}
-        {\scriptsize
+        {%\scriptsize
           \item[$\vardiamond$] Developed by David Korn at AT\&T Bell Labs
           \item[$\vardiamond$] backward-compatible with the Bourne shell and includes many features of the C shell
         }
       \end{enumerate}
       \item[\texttt{bash}]: Bourne Again Shell
       \begin{enumerate}
-        {\scriptsize
+        {%\scriptsize
           \item[$\vardiamond$] Developed by Brian Fox for the GNU Project as a free software replacement for the Bourne shell (sh).
           \item[$\vardiamond$] Default Shell on Linux and Mac OSX
           \item[$\vardiamond$] The name is also descriptive of what it did, bashing together the features of sh, csh and ksh
@@ -497,25 +650,23 @@ deletekeywords={\dots},              % if you want to delete keywords from the g
       \end{enumerate}
       \item[\texttt{tcsh}]: TENEX C Shell
       \begin{enumerate}
-        {\scriptsize
+        {%\scriptsize
           \item[$\vardiamond$] Developed by Ken Greer at Carnegie Mellon University 
           \item[$\vardiamond$] It is essentially the C shell with programmable command line completion, command-line editing, and a few other features.
         }
       \end{enumerate}
     \end{itemize}
-  }
 \end{frame}
 
 \begin{frame}
-  \frametitle{\small Shell Comparison}
+  \frametitle{Shell Comparison}
   \begin{columns}
-    \column{0.8\textwidth}
-    \vspace{-1cm}
+    \column{0.65\textwidth}
     \begin{center}
       \begin{tikzpicture}
         \node (tbl) {
           \begin{tabularx}{\textwidth}{cccccc}
-            \arrayrulecolor{tigersgold}
+            \arrayrulecolor{black}
             \textcolor{white}{\textbf{Software} }& \textcolor{white}{\textbf{sh}} &\textcolor{white}{\textbf {csh}} & \textcolor{white}{\textbf{ksh}} & \textcolor{white}{\textbf{bash}} & \textcolor{white}{\textbf{tcsh}} \\
             Programming Language\rule{0pt}{3.5ex} & \cmark & \cmark & \cmark & \cmark & \cmark \\
             Shell Variables & \cmark & \cmark & \cmark & \cmark & \cmark \\
@@ -527,13 +678,15 @@ deletekeywords={\dots},              % if you want to delete keywords from the g
             [1.0ex]
         \end{tabularx}};
         \begin{pgfonlayer}{background}
-          \draw[rounded corners,top color=blue!30!black,bottom color=blue!10!white,
-            draw=tigerspurple!30] ($(tbl.north west)+(0.14,0)$)
+          %\draw[rounded corners,top color=blue!30!black,bottom color=blue!10!white,
+          \draw[rounded corners,top color=lupurple,bottom color=lupurple,
+            draw=lubrown!30] ($(tbl.north west)+(0.14,0)$)
           rectangle ($(tbl.north east)-(0.13,0.9)$);
-          %\draw[rounded corners,top color=tigersgold,bottom color=tigerspurple!20,
-          %   middle color=tigerspurple!20,draw=tigerspurple!20] ($(tbl.south west)
+          %\draw[rounded corners,top color=black,bottom color=lubrown!20,
+          %   middle color=lubrown!20,draw=lubrown!20] ($(tbl.south west)
           %   +(0.12,0.5)$) rectangle ($(tbl.south east)-(0.12,0)$);
-          \draw[rounded corners,top color=green!5,bottom color=green!5,draw=green!5]
+          %\draw[rounded corners,top color=green!5,bottom color=green!5,draw=green!5]
+          \draw[rounded corners,top color=lulime,bottom color=lulime,draw=lulime]
           ($(tbl.north east)-(0.13,0.6)$)
           rectangle ($(tbl.south west)+(0.13,0.2)$);
         \end{pgfonlayer}
@@ -542,20 +695,93 @@ deletekeywords={\dots},              % if you want to delete keywords from the g
         \item[\cmark]: Yes
         \item[\xmark]: No
         \item[\smark]: Yes, not set by default
-        \item[Ref]: {\tiny\url{http://www.cis.rit.edu/class/simg211/unixintro/Shell.html}}
+        \item[] {\fontsize{6}{7}\selectfont\url{http://www.cis.rit.edu/class/simg211/unixintro/Shell.html}}
       \end{itemize}
     \end{center}
   \end{columns}
 \end{frame}
 
 \begin{frame}
-  \frametitle{\small Files and Processes}
+  \frametitle{\small Start Up Scripts}
+  \begin{itemize}
+    \item When you login to a *NIX computer, shell scripts are automatically loaded depending on your default \textbf{\color{lubrown}shell}
+    \item \textbf{\color{lubrown}sh,ksh}
+    \begin{enumerate}
+        \item \texttt{\color{blue}/etc/profile}
+        \item \texttt{\color{blue}\$HOME/.profile}
+    \end{enumerate}
+    \item \textbf{\color{lubrown}bash}
+    \begin{enumerate}
+        \item \texttt{\color{blue}/etc/profile}, login terminal only
+        \item \texttt{\color{blue}/etc/bashrc} or \texttt{\color{blue}/etc/bash/bashrc}
+        \item \texttt{\color{blue}\$HOME/.bash\_profile}, login terminal only
+        \item \texttt{\color{blue}\$HOME/.bashrc}
+    \end{enumerate}
+    \item \textbf{\color{lubrown}csh,tcsh}
+    \begin{enumerate}
+        \item \texttt{\color{blue}/etc/csh.cshrc}
+        \item \texttt{\color{blue}\$HOME/.tcshrc}
+        \item \texttt{\color{blue}\$HOME/.cshrc} if .tcshrc is not present
+    \end{enumerate}
+    \item The \texttt{\color{blue}.bashrc, .tcshrc, .cshrc, .bash\_profile} are script files where users can define their own aliases, environment variables, modify paths etc.
+    %\item e.g. the \textbf{\color{lubrown}alias} command covered earlier can be put in one of these script files depending on your \textbf{\color{lubrown}shell}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile, allowframebreaks]
+  \frametitle{\small Examples}
+  \begin{lstlisting}[language=bash,basicstyle=\tiny\ttfamily]
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+        . /etc/bashrc
+fi
+
+# User specific aliases and functions
+alias c="clear"
+alias rm="/bin/rm -i"
+alias psu="ps -u apacheco"
+alias em="emacs -nw"
+alias ll="ls -lF"
+alias la="ls -al"
+export PATH=/home/apacheco/bin:${PATH}
+export g09root=/home/apacheco/Software/Gaussian09
+export GAUSS_SCRDIR=/home/apacheco/Software/scratch
+source $g09root/g09/bsd/g09.profile
+
+export TEXINPUTS=.:/usr/share/texmf//:/home/apacheco/LaTeX//:${TEXINPUTS}
+export BIBINPUTS=.:/home/apacheco/TeX//:${BIBINPUTS}
+  \end{lstlisting}
+
+  \begin{lstlisting}[language=csh,basicstyle=\tiny\ttfamily]
+# .tcshrc
+
+# User specific aliases and functions
+alias c clear
+alias rm "/bin/rm -i"
+alias psu "ps -u apacheco"
+alias em "emacs -nw"
+alias ll "ls -lF"
+alias la "ls -al"
+setenv PATH "/home/apacheco/bin:${PATH}"
+setenv g09root "/home/apacheco/Software/Gaussian09"
+setenv GAUSS_SCRDIR "/home/apacheco/Software/scratch"
+source $g09root/g09/bsd/g09.login
+
+setenv TEXINPUTS ".:/usr/share/texmf//:/home/apacheco/LaTeX//:${TEXINPUTS}"
+setenv BIBINPUTS ".:/home/apacheco/TeX//:${BIBINPUTS}"
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Files and Processes}
   \begin{itemize}
     \item Everything in Linux/UNIX is either a file or a process
     \item A File is a collection of data, created by users using text editors, running compilers, etc.
     \item Examples of Files:
     \begin{enumerate}
-      {\footnotesize
+      {%\scriptsize
         \item document such as collection of ascii text as in report, essay, etc. 
         \item program written in some high level programming language
         \item instructions comprehensible to machine but not a casual user such as executable, binary file
@@ -567,10 +793,8 @@ deletekeywords={\dots},              % if you want to delete keywords from the g
 \end{frame}
 
 \begin{frame}
-  \frametitle{\small Directory Structure}
-  \begin{columns}
-    \column{1.1\textwidth}
-    \vspace{-0.5cm}
+  \frametitle{Directory Structure}
+%    \vspace{-0.5cm}
   \begin{itemize}
     \item All files are arranged in a hierarchial structure, like an inverted tree.
     \item The top of the hierarchy is traditionally called \textbf{root} (written as a slash / )
@@ -585,12 +809,12 @@ deletekeywords={\dots},              % if you want to delete keywords from the g
     edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)}},
   first/.style={level distance=12ex,sibling distance=10em,xshift=-6em},
   second/.style={level distance=8ex,sibling distance=6em,xshift=-1.5em},
-  third/.style={level distance=22ex,sibling distance=7.5em,xshift=-2em},
-  fourth/.style={level distance=6ex},
-  fifth/.style={level distance=12ex},
-  sixth/.style={level distance=18ex},
-  seventh/.style={level distance=24ex},
-  eighth/.style={level distance=30ex},
+  third/.style={level distance=26ex,sibling distance=7.5em,xshift=-2em},
+  fourth/.style={level distance=8ex},
+  fifth/.style={level distance=14ex},
+  sixth/.style={level distance=20ex},
+  seventh/.style={level distance=26ex},
+  eighth/.style={level distance=32ex},
   level 1/.style={sibling distance=5.1em},
   scale=0.58]
     % Parents
@@ -621,34 +845,22 @@ deletekeywords={\dots},              % if you want to delete keywords from the g
     child {node[linux] {usr}
       child [third] {node[linux] {bin}}
       child [third] {node[linux] {lib}}
-      child [third] {node[linux] {local}
-        child [first] {node[hpc] {compilers}
-          child [grandchild,fourth] {node[hpc] {Intel}}
-          child [grandchild,fifth] {node[hpc] {GNU}}
-          child [grandchild,sixth] {node[hpc] {$\cdots$}}
-        }
-        child [first] {node[hpc] {packages}
-          child [grandchild,fourth] {node[hpc] {amber}}
-          child [grandchild,fifth] {node[hpc] {python}}
-          child [grandchild,sixth] {node[hpc] {$\cdots$}}
-        }
-        child [first] {node[linux] {$\cdots$}}
-      }
+      child [third] {node[linux] {local}}
       child [third] {node[linux] {include}}
       child [third] {node[linux] {share}}
     }
     child {node[linux] {var}}
-    child {node[hpc] {work}
+    child {node[hpc] {zhome}
+      child [second] {node[hpc] {Apps}}
       child [second] {node[hpc] {user1}}
       child [second] {node[hpc] {user2}}
       child [second] {node[hpc] {$\cdots$}}
     };
 \end{tikzpicture}
-\end{columns}
 \end{frame}
 
 \begin{frame}
-  \frametitle{\small Important Directories}
+  \frametitle{Important Directories}
   \begin{description}
     \item[/bin:] contains files that are essential for system operation, available for use by all users.
     \item[/lib,/lib64:] contains libraries that are essential for system operation, available for use by all users.
@@ -673,23 +885,21 @@ deletekeywords={\dots},              % if you want to delete keywords from the g
     \item Special user called \textbf{root} is the administrator and has access to all files in the system.
     \item In *nix, users are organized into groups.
     \item Each user is in alteast one group.
-    \item[$\bigstar$] On LONI systems, you are in one of the following groups: \Verbblue{lsuusers}, \Verbblue{latechusers}, \Verbblue{unousers}, \Verbblue{ullusers}, \Verbblue{sususers}, \Verbblue{tulaneusers}, \Verbblue{loni} or \Verbblue{xavierusers}
-    \item Due to software licensing, you cannot be in more than one of the above groups.
-    \item Group membership makes it easier to share files with members of your group or in the case of LONI systems, with researchers at your university.
-    \item[]Type \Verbgreen{groups{\Enter}} to find your group membership.
+    \item Group membership makes it easier to share files with members of your group.
+    \item[]Type \Verblubrown{groups{\Enter}} to find your group membership.
     \item All files are \textit{case sensitive},
-    \item[$\bigstar$] myfile.txt, Myfile.txt and myfile.TXT are three different files and can exist in the same directory simultaneously.
+    \item[$\vardiamond$] myfile.txt, Myfile.txt and myfile.TXT are three different files and can exist in the same directory simultaneously.
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{\small Relative \& Absolute Path}
+  \frametitle{Relative \& Absolute Path}
   \begin{itemize}
     \item \textit{Path} means a position in the directory tree.
     \item You can use either the \textit{relative path} or \textit{absolute path}
     \item In \textit{relative path} expression
     \begin{itemize}
-      {\footnotesize
+      {%\scriptsize
         \item . (one dot or period) is the current working directory
         \item .. (two dots or periods) is one directory up
         \item You can combine . and .. to navigate the file system hierarchy.
@@ -699,7 +909,7 @@ deletekeywords={\dots},              % if you want to delete keywords from the g
     \end{itemize}
     \item In \textit{absolute path} expression 
     \begin{itemize}
-      {\footnotesize
+      {%\scriptsize
         \item the path is defined uniquely and does not depend on the current path
         \item \texttt{/tmp} is unique since /tmp is the \textit{abolute path}
       }
@@ -707,29 +917,30 @@ deletekeywords={\dots},              % if you want to delete keywords from the g
   \end{itemize}
 \end{frame}
 
+
 \section{Variables}
 \begin{frame}[fragile,allowframebreaks]
-  \frametitle{\small Variables}
+  \frametitle{Variables}
   \begin{itemize}
     \item *nix also permits the use of variables, similar to any programming language such as C, C++, Fortran etc
     \item A variable is a named object that contains data used by one or more applications. 
     \item There are two types of variables, Environment and User Defined and can contain  a number, character or a string of characters.
     \item Environment Variables provides a simple way to share configuration settings between multiple applications and processes in Linux.
     \item By Convention, enviromental variables are often named using all uppercase letters
-    \item[e.g.] \Verbgreen{PATH, LD\_LIBRARY\_PATH, LD\_INCLUDE\_PATH, TEXINPUTS,} etc
+    \item[e.g.] \Verblubrown{PATH, LD\_LIBRARY\_PATH, LD\_INCLUDE\_PATH, TEXINPUTS,} etc
     \item To reference a variable (environment or user defined) prepend \$ to the name of the variable
-    \item[e.g.] \Verbgreen{\$PATH, \$LD\_LIBRARY\_PATH}
+    \item[e.g.] \Verblubrown{\$PATH, \$LD\_LIBRARY\_PATH}
     \framebreak
-%  \end{itemize}
+  \end{itemize}
 %\end{frame}
 %
 %\begin{frame}[allowframebreaks]
 %  \frametitle{\small Environment Variable}
-%  \begin{itemize}
-    \item The command \Verbgreen{printenv} list the current environmental variables.
-    \item[$\bigstar$] {Type \Verbgreen{printenv} on your command prompt to list all environment variables in your current session.}
-    \item The command \Verbgreen{env} is used to either print a list of environment variables or run another utility in an altered environment without having to modify the currently existing environment.
-    \item[$\bigstar$] {Type \Verbgreen{env SHELL=/bin/tcsh xterm} to start an xterm session in tcsh}
+  \begin{itemize}
+    \item The command \Verblubrown{printenv} list the current environmental variables.
+    \item[$\mybigstar$] {Type \Verblubrown{printenv} on your command prompt to list all environment variables in your current session.}
+    \item The command \Verblubrown{env} is used to either print a list of environment variables or run another utility in an altered environment without having to modify the currently existing environment.
+    \item[$\mybigstar$] {Type \Verblubrown{env SHELL=/bin/tcsh xterm} to start an xterm session in tcsh}
     \item[$\vardiamond$] {To execute the above command successfully, you need to be in GUI mode on the virtual OS or logged into a remote systems with X-Forwarding enabled.}
   \end{itemize}
   \framebreak
@@ -752,25 +963,25 @@ deletekeywords={\dots},              % if you want to delete keywords from the g
   \begin{itemize}
     \item You can edit the environment variables.
     \item Command to do this depends on the shell
-    \item[$\bigstar$] To add your bin directory to the \Verbgreen{PATH} variable
-    \item[] \Verbpurple{sh/ksh/bash}: \Verbgreen{export PATH=\$\{HOME\}/bin:\$\{PATH\}}
-    \item[] \Verbpurple{csh/tcsh}: \Verbgreen{setenv PATH \$\{HOME\}/bin:\$\{PATH\}}
-    \item[$\bigstar$] Note the syntax for the above commands
-    \item[$\bigstar$] \Verbpurple{sh/ksh/bash:} {no spaces except between \Verbgreen{export} and \Verbgreen{PATH}}
-    \item[$\bigstar$] \Verbpurple{csh,tcsh:} {no = sign, just a space between \Verbgreen{PATH} and the absolute path}
-    \item[$\bigstar$] \Verbpurple{all shells:} {colon(:) to separate different paths and the variable that is appended to}
-    \item \textbf{Yes, the order matters.} If you have a customized version of a software say perl in your home directory, if you append the perl path to \Verbgreen{PATH} at the end, your program will use the system wide perl not your locally installed version.
+    \item[$\mybigstar$] To add your bin directory to the \Verblubrown{PATH} variable
+    \item[] \Verblubrown{sh/ksh/bash}: \Verblubrown{export PATH=\$\{HOME\}/bin:\$\{PATH\}}
+    \item[] \Verblubrown{csh/tcsh}: \Verblubrown{setenv PATH \$\{HOME\}/bin:\$\{PATH\}}
+    \item[$\mybigstar$] Note the syntax for the above commands
+    \item[$\mybigstar$] \Verblubrown{sh/ksh/bash:} {no spaces except between \Verblubrown{export} and \Verblubrown{PATH}}
+    \item[$\mybigstar$] \Verblubrown{csh,tcsh:} {no = sign, just a space between \Verblubrown{PATH} and the absolute path}
+    \item[$\mybigstar$] \Verblubrown{all shells:} {colon(:) to separate different paths and the variable that is appended to}
+    \item \textbf{Yes, the order matters.} If you have a customized version of a software say perl in your home directory, if you append the perl path to \Verblubrown{PATH} at the end, your program will use the system wide perl not your locally installed version.
       \framebreak
     \item Rules for Variable Names
     \begin{enumerate}
-      \fontsize{8}{10}\selectfont{
+      {%\scriptsize
         \item Variable names must start with a letter or underscore
         \item Number can be used anywhere else
         \item DO NOT USE special characters such as \texttt{@, \#, \%, \$}
         \item Case sensitive
         \item Examples
         \begin{itemize}
-          \fontsize{8}{10}\selectfont{
+          {%\scriptsize
           \item Allowed: VARIABLE, VAR1234able, var\_name, \_VAR
           \item Not Allowed: 1VARIABLE, \%NAME, \$myvar, VAR@NAME 
           }
@@ -781,33 +992,33 @@ deletekeywords={\dots},              % if you want to delete keywords from the g
     \begin{center}
       \begin{tikzpicture}
         \node (tbl) {
-          \begin{tabularx}{0.8\textwidth}{ccc}
-            \arrayrulecolor{tigersgold}
+          \begin{tabularx}{0.65\textwidth}{ccc}
+            \arrayrulecolor{black}
             \textcolor{white}{\textbf{Type} }& \textcolor{white}{\textbf{sh,ksh,bash}} &\textcolor{white}{\textbf {csh,tcsh}}\\
             Shell \rule{0pt}{3.5ex} & name=value & set name = value \\
             Environment & export name=value & setenv name value \\
             [1.0ex]
         \end{tabularx}};
         \begin{pgfonlayer}{background}
-          \draw[rounded corners,top color=blue!30!black,bottom color=blue!10!white,
-            draw=tigerspurple!30] ($(tbl.north west)+(0.14,0)$)
+          \draw[rounded corners,top color=lupurple,bottom color=lupurple,
+            draw=lubrown!30] ($(tbl.north west)+(0.14,0)$)
           rectangle ($(tbl.north east)-(0.13,0.9)$);
-          \draw[rounded corners,top color=green!5,bottom color=green!5,draw=green!5]
+          \draw[rounded corners,top color=lulime,bottom color=lulime,draw=lulime]
           ($(tbl.north east)-(0.13,0.6)$)
           rectangle ($(tbl.south west)+(0.13,0.2)$);
         \end{pgfonlayer}
       \end{tikzpicture}
     \end{center}
-    \item \Verbpurple{sh,ksh,bash} THERE IS NO SPACE ON EITHER SIDE OF =
-    \item \Verbpurple{csh,tcsh} space on either side of = is allowed for the \Verbgreen{set} command
-    \item \Verbpurple{csh,tcsh} There is no = in the \Verbgreen{setenv} command
+    \item \Verblubrown{sh,ksh,bash} THERE IS NO SPACE ON EITHER SIDE OF =
+    \item \Verblubrown{csh,tcsh} space on either side of = is allowed for the \Verblubrown{set} command
+    \item \Verblubrown{csh,tcsh} There is no = in the \Verblubrown{setenv} command
   \end{itemize}
   \framebreak
-  \begin{eblock}{Exercise}
+  \begin{exampleblock}{Exercise}
     \begin{itemize}
       \item Create two shell variables containing
       \begin{enumerate}
-        {\footnotesize
+        {%\footnotesize
           \item your name
           \item[e.g.] MYNAME=Alex
           \item a standard greeting
@@ -816,36 +1027,37 @@ deletekeywords={\dots},              % if you want to delete keywords from the g
       \end{enumerate}
       \item We'll make use of this variables in a few slides when we learn some basic commands.
     \end{itemize}
-  \end{eblock}
+  \end{exampleblock}
 \end{frame}
+
 
 \section{Basic Commands}
 \begin{frame}[fragile]
-  \frametitle{\small Basic Commands}
-  \begin{eblock}{What is a command and how do you use it?}
+  \frametitle{Basic Commands}
+  \begin{exampleblock}{What is a command and how do you use it?}
     \begin{itemize}
       \item \textbf{command} is a directive to a computer program acting as an interpreter of some kind, in order to perform a specific task.
       \item \textbf{command prompt} (or just \textbf{prompt}) is a sequence of (one or more) characters used in a command-line interface to indicate readiness to accept commands.
       \item Its intent is to literally prompt the user to take action. 
-      \item A prompt usually ends with one of the characters \$, \%, \#, :, > and often includes other information, such as the path of the current working directory.
-      \item[$\bigstar$] Virtual Image: \Verb[formatcom=\color{indigo},fontseries=b,commandchars=\\\{\}]|[user@localhost ~]\$|
-%      \item[$\bigstar$] QueenBee: \texttt{[apacheco@qb4 $\sim$]\$}
-      \item[$\bigstar$] Mac OSX in \Verbpurple{tcsh}: \Verb[formatcom=\color{indigo},fontseries=b,commandchars=\\\{\}]|[c8-bc-c8-ee-b8-9e:~] apacheco\%|
+      \item A prompt usually ends with one of the characters \$, \%, \#, :, $>$ and often includes other information, such as the path of the current working directory.
+      \item[$\mybigstar$] Virtual Image: \Verb[formatcom=\color{lubrown},fontseries=b,commandchars=\\\{\}]|[user@localhost ~]\$|
+%      \item[$\mybigstar$] QueenBee: \texttt{[apacheco@qb4 $\sim$]\$}
+      \item[$\mybigstar$] Mac OSX in \Verblubrown{tcsh}: \Verb[formatcom=\color{lubrown},fontseries=b,commandchars=\\\{\}]|[c8-bc-c8-ee-b8-9e:~] apacheco\%|
       \item Each \textbf{command} consists of three parts: name, options, arguments
-      \item[] \Verb[formatcom=\color{indigo},fontseries=b,commandchars=\\\{\}]|[user@localhost ~]\$ command options arguments|
+      \item[] \Verb[formatcom=\color{lubrown},fontseries=b,commandchars=\\\{\}]|[user@localhost ~]\$ command options arguments|
     \end{itemize}
-  \end{eblock}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]{How to get more information with Linux}
   \begin{itemize}
-    \item \Verbgreen{man} shows the manual for a command or program.
+    \item \Verblubrown{man} shows the manual for a command or program.
     \item The manual is a file that shows you how to use the command and list the different options for the command in question.
-    \item Usage: \Verbgreen{man [command]}
-    \item Example: \Verbgreen{man ls{\Enter}}
-    \item \Verbgreen{apropos} shows you all of the man pages that may shed some light on a certain command.
-    \item Usage: \Verbgreen{appropos [keyword]}
-    \item Example: \Verbgreen{appropos editor{\Enter}}
+    \item Usage: \Verblubrown{man [command]}
+    \item Example: \Verblubrown{man ls{\Enter}}
+    \item \Verblubrown{apropos} shows you all of the man pages that may shed some light on a certain command.
+    \item Usage: \Verblubrown{appropos [keyword]}
+    \item Example: \Verblubrown{appropos editor{\Enter}}
   \end{itemize}
 % leave space for info command
 \end{frame}
@@ -853,174 +1065,174 @@ deletekeywords={\dots},              % if you want to delete keywords from the g
 
 
 \begin{frame}[fragile,allowframebreaks]
-  \frametitle{\small Input \& Output Commands}
+  \frametitle{Input \& Output Commands}
   \begin{itemize}
-    \item The basis I/O statements are \Verbgreen{echo} for displaying output to screen and \Verbgreen{read} for reading input from screen/keyboard/prompt
-    \item The \Verbgreen{read} statement takes all characters typed until the \Verbgreen{{\Enter}} key is pressed and stores them into a variable.
-    \item Usage: \Verbgreen{read <variable name>}
-    \item Example: \Verbgreen{read name{\Enter}}
+    \item The basis I/O statements are \Verblubrown{echo} for displaying output to screen and \Verblubrown{read} for reading input from screen/keyboard/prompt
+    \item The \Verblubrown{read} statement takes all characters typed until the \Verblubrown{{\Enter}} key is pressed and stores them into a variable.
+    \item Usage: \Verblubrown{read <variable name>}
+    \item Example: \Verblubrown{read name{\Enter}}
     \item[] \Verbblue[it]{Alex Pacheco{\Enter}}
-    \item In the above example, the name that you enter in stored in the variable \Verbpurple{name}.
+    \item In the above example, the name that you enter in stored in the variable \Verblubrown{name}.
     \item[]
-    \item The \Verbgreen{echo arguments} command will print \Verbpurple{arguments} to screen or standard output. 
-    \item \Verbpurple{arguments} can be a (single or multiple) variable, string of characters or numbers.
+    \item The \Verblubrown{echo arguments} command will print \Verblubrown{arguments} to screen or standard output. 
+    \item \Verblubrown{arguments} can be a (single or multiple) variable, string of characters or numbers.
       \framebreak
     \item Examples:
       \begin{enumerate}
-        {\footnotesize
-          \item \Verbgreen{echo \$LD\_LIBRARY\_PATH \$LD\_INCLUDE\_PATH{\Enter}}
-          \item \Verbgreen{echo Welcome to HPC {\quad} Training{\Enter}}
+        {%\footnotesize
+          \item \Verblubrown{echo \$LD\_LIBRARY\_PATH \$LD\_INCLUDE\_PATH{\Enter}}
+          \item \Verblubrown{echo Welcome to HPC {\quad} Training{\Enter}}
         }
       \end{enumerate}
-    \item By default, \Verbgreen{echo} eliminates redundant whitespace (multiple spaces and tabs) and replaces it with a single whitespace between arguments. 
+    \item By default, \Verblubrown{echo} eliminates redundant whitespace (multiple spaces and tabs) and replaces it with a single whitespace between arguments. 
     \item To include redundant whitespace, enclose the arguments within double quotes
-    \item[e.g.] \Verbgreen{echo "Welcome to HPC{\quad\quad}Training"{\Enter}}
+    \item[e.g.] \Verblubrown{echo "Welcome to HPC{\quad\quad}Training"{\Enter}}
   \end{itemize}
 
-  \begin{eblock}{Exercise}
+  \begin{exampleblock}{Exercise}
     \begin{itemize}
       \item Print out the variable you created a few slides back
-      \item[] \Verbgreen{echo \$MYNAME{\Enter}}
-      \item[] \Verbgreen{echo \$Greet{\Enter}}
+      \item[] \Verblubrown{echo \$MYNAME{\Enter}}
+      \item[] \Verblubrown{echo \$Greet{\Enter}}
       \item Read a variable for greeting message
-      \item[] \Verbgreen{read message{\Enter}}
+      \item[] \Verblubrown{read message{\Enter}}
       \item[] \Verbblue[it]{Welcome to HPC{\Enter}}
       \item Combine and print your name, the greeting and the message
-      \item[] \Verbgreen{echo \$Greet \$MYNAME \$message{\Enter}}
+      \item[] \Verblubrown{echo \$Greet \$MYNAME \$message{\Enter}}
       \item What is the output of the following command?
-      \item[] \Verbgreen{echo \$Greet \$MYNAME, \$message Training{\Enter}}
+      \item[] \Verblubrown{echo \$Greet \$MYNAME, \$message Training{\Enter}}
     \end{itemize}
-  \end{eblock}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]{Commands: pwd \& cd}
   \begin{itemize}
-    \item \Verbgreen{pwd} command prints the current working directory.
-    \item Usage: \Verbgreen{pwd}
-    \item Example: \Verbgreen{pwd{\Enter}}
+    \item \Verblubrown{pwd} command prints the current working directory.
+    \item Usage: \Verblubrown{pwd}
+    \item Example: \Verblubrown{pwd{\Enter}}
     \item[]{}
-    \item \Verbgreen{cd} command allows one to change directory
+    \item \Verblubrown{cd} command allows one to change directory
     \item argument is the path (relative or absolute) of the directory you want to change to
-    \item Usage: \Verbgreen{cd [destination]}
-    \item Example: \Verbgreen{cd /tmp{\Enter}}
+    \item Usage: \Verblubrown{cd [destination]}
+    \item Example: \Verblubrown{cd /tmp{\Enter}}
     \item The default destination directory is your home directory.
-    \item i.e. If you type \Verbgreen{cd{\Enter}}, you will end up in your home directory.
-    \item If you want to go back to the previous directory, type \Verbgreen{cd - {\Enter}}
+    \item i.e. If you type \Verblubrown{cd{\Enter}}, you will end up in your home directory.
+    \item If you want to go back to the previous directory, type \Verblubrown{cd - {\Enter}}
   \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{\small Command: ls}
+\begin{frame}[fragile]{Command: ls}
   \begin{itemize}
-    \item \Verbgreen{ls} command lists the contents of a directory.
-    \item Usage: \Verbgreen{ls <options> <path>}
-    \item Example: \Verbgreen{ls{\Enter}}
+    \item \Verblubrown{ls} command lists the contents of a directory.
+    \item Usage: \Verblubrown{ls <options> <path>}
+    \item Example: \Verblubrown{ls{\Enter}}
     \item The current working directory is the default path.
     \item To list contents of another directory specify the path, relative or absolute
-    \item Common options to the \Verbgreen{ls} command 
-    \item[] \Verbgreen{-l}: show long listing format
-    \item[] \Verbgreen{-a}: show hidden files
-    \item[] \Verbgreen{-r}: reverse order while sorting
-    \item[] \Verbgreen{-t}: show modification times
-    \item[] \Verbgreen{-h}: use file sizes in SI units (bytes, kilobytes, megabytes etc ) default is bytes
+    \item Common options to the \Verblubrown{ls} command 
+    \item[] \Verblubrown{-l}: show long listing format
+    \item[] \Verblubrown{-a}: show hidden files
+    \item[] \Verblubrown{-r}: reverse order while sorting
+    \item[] \Verblubrown{-t}: show modification times
+    \item[] \Verblubrown{-h}: use file sizes in SI units (bytes, kilobytes, megabytes etc ) default is bytes
   \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{\small Command: alias}
+\begin{frame}[fragile]{Command: alias}
   \begin{itemize}
-    \item \Verbgreen{alias} is a command to create a shortcut to another command or name to execute a long string.
+    \item \Verblubrown{alias} is a command to create a shortcut to another command or name to execute a long string.
     \item Usage 
-    \item[] \Verbpurple{bash/sh/ksh}: \Verbgreen{alias <name>="<actual command>"}
-    \item[] \Verbpurple{csh/tcsh}: \Verbgreen{alias <name> "<actual command>"}
+    \item[] \Verblubrown{bash/sh/ksh}: \Verblubrown{alias <name>="<actual command>"}
+    \item[] \Verblubrown{csh/tcsh}: \Verblubrown{alias <name> "<actual command>"}
     \item Example: 
-    \item[] \Verbpurple{bash/sh/ksh}: \Verbgreen{alias lla="ls -al"}
-    \item[] \Verbpurple{csh/tcsh}: \Verbgreen{alias lls "ls -al"}
-    \item The \Verbgreen{alias} command is very useful tool to create shortcuts to other commands and is most often used by paranoid users to prevent accidental deletion of files. 
-    \item \Verbgreen{unalias} is a command to remove an alias.
-    \item Usage: \Verbgreen{unalias <name>}
-    \item Example: \Verbgreen{unalias lla} will remove the shortcut to \Verbgreen{ls -al}
+    \item[] \Verblubrown{bash/sh/ksh}: \Verblubrown{alias lla="ls -al"}
+    \item[] \Verblubrown{csh/tcsh}: \Verblubrown{alias lls "ls -al"}
+    \item The \Verblubrown{alias} command is very useful tool to create shortcuts to other commands and is most often used by paranoid users to prevent accidental deletion of files. 
+    \item \Verblubrown{unalias} is a command to remove an alias.
+    \item Usage: \Verblubrown{unalias <name>}
+    \item Example: \Verblubrown{unalias lla} will remove the shortcut to \Verblubrown{ls -al}
   \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{\small Command: mkdir}
+\begin{frame}[fragile]{Command: mkdir}
   \begin{itemize}
-    \item \Verbgreen{mkdir} is a command to create a directory
-    \item Usage: \Verbgreen{mkdir <options> <directoryname>}
-    \item Example: \Verbgreen{mkdir -p \$HOME/test/testagain{\Enter}}
+    \item \Verblubrown{mkdir} is a command to create a directory
+    \item Usage: \Verblubrown{mkdir <options> <directoryname>}
+    \item Example: \Verblubrown{mkdir -p \$HOME/test/testagain{\Enter}}
     \item By default, the directory is created in the current directory or in a path relative to the current directory
-    \item The \Verbgreen{-p} option will create intermediate directories if they do not exist.
-    \item[e.g.] If the directory \Verbgreen{test} does not exist in \Verbgreen{\$HOME}, then 
-    \item[] \Verbgreen{mkdir \$HOME/test/testagain} will fail. 
-    \item[] The \Verbgreen{-p} option will create the \Verbgreen{test} directory within \Verbgreen{\$HOME} and then create \Verbgreen{testagain} within the newly created \Verbgreen{test} directory
+    \item The \Verblubrown{-p} option will create intermediate directories if they do not exist.
+    \item[e.g.] If the directory \Verblubrown{test} does not exist in \Verblubrown{\$HOME}, then 
+    \item[] \Verblubrown{mkdir \$HOME/test/testagain} will fail. 
+    \item[] The \Verblubrown{-p} option will create the \Verblubrown{test} directory within \Verblubrown{\$HOME} and then create \Verblubrown{testagain} within the newly created \Verblubrown{test} directory
   \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{\small Command: cp}
+\begin{frame}[fragile]{Command: cp}
   \begin{itemize}
-    \item \Verbgreen{cp} is a command to copy a file or directory
-    \item Usage: \Verbgreen{cp <options> <source(s)> <destination>}
-    \item Example: \Verbgreen{cp \$HOME/.bashrc ../../tmp{\Enter}}
-    \item Common options to \Verbgreen{cp} command:
-    \item[] \Verbgreen{-r}: copy recursively, required when copying directories.
-    \item[] \Verbgreen{-i}: prompt if file exists on destination and can be copied over.
-    \item[] \Verbgreen{-p}: preserve file access times, ownership etc.
+    \item \Verblubrown{cp} is a command to copy a file or directory
+    \item Usage: \Verblubrown{cp <options> <source(s)> <destination>}
+    \item Example: \Verblubrown{cp \$HOME/.bashrc ../../tmp{\Enter}}
+    \item Common options to \Verblubrown{cp} command:
+    \item[] \Verblubrown{-r}: copy recursively, required when copying directories.
+    \item[] \Verblubrown{-i}: prompt if file exists on destination and can be copied over.
+    \item[] \Verblubrown{-p}: preserve file access times, ownership etc.
     \item If there are more than one source files, then the destination (i.e. last entry or file) must be a directory.
     \item If the source(s) is(are) a file(s) and the destination is a directory, then the file(s) will be copied into the directory
-    \item[e.g.]\Verbgreen{cp file1 file2 dir1{\Enter}}
-    \item[] \Verbgreen{dir1} will contain the files \Verbgreen{file1} and \Verbgreen{file2}
-    \item[] If \Verbgreen{dir1} is a file, then the above command will fail
+    \item[e.g.]\Verblubrown{cp file1 file2 dir1{\Enter}}
+    \item[] \Verblubrown{dir1} will contain the files \Verblubrown{file1} and \Verblubrown{file2}
+    \item[] If \Verblubrown{dir1} is a file, then the above command will fail
   \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{\small Command: rm}
+\begin{frame}[fragile]{Command: rm}
   \begin{itemize}
-    \item \Verbgreen{rm} command removes or deletes a file or directory
-    \item Usage: \Verbgreen{rm <options> <file or directory>}
-    \item Example: \Verbgreen{rm \$HOME/tmpfile{\Enter}}
-    \item Common options to \Verbgreen{rm} command:
-    \item[] \Verbgreen{-r}: remove recursively, required when copying directories.
-    \item[] \Verbgreen{-i}: prompt if file really needs to be deleted
-    \item[] \Verbgreen{-f}: force remove overrides the \Verbgreen{-i} option
+    \item \Verblubrown{rm} command removes or deletes a file or directory
+    \item Usage: \Verblubrown{rm <options> <file or directory>}
+    \item Example: \Verblubrown{rm \$HOME/tmpfile{\Enter}}
+    \item Common options to \Verblubrown{rm} command:
+    \item[] \Verblubrown{-r}: remove recursively, required when copying directories.
+    \item[] \Verblubrown{-i}: prompt if file really needs to be deleted
+    \item[] \Verblubrown{-f}: force remove overrides the \Verblubrown{-i} option
     \item {\color{red}{\large\textsc{be careful while using the }\textbf{rm}\textsc{ command, deleted files cannot be recovered}}}
-    \item To be on the safe side, create an \Verbgreen{alias} to the \Verbgreen{rm} command and only use the \Verbgreen{-f} option only if you are sure you want to delete the file or directory
-    \item[] \Verbpurple{sh/ksh/bash}: \Verbgreen{alias rm="rm -i"}
-    \item[] \Verbpurple{csh/tcsh}   : \Verbgreen{alias rm 'rm -i'}
-    \item delete empty directories using the \Verbgreen{rmdir} command.
+    \item To be on the safe side, create an \Verblubrown{alias} to the \Verblubrown{rm} command and only use the \Verblubrown{-f} option only if you are sure you want to delete the file or directory
+    \item[] \Verblubrown{sh/ksh/bash}: \Verblubrown{alias rm="rm -i"}
+    \item[] \Verblubrown{csh/tcsh}   : \Verblubrown{alias rm 'rm -i'}
+    \item delete empty directories using the \Verblubrown{rmdir} command.
   \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{\small Command: mv}
+\begin{frame}[fragile]{Command: mv}
   \begin{itemize}
-    \item \Verbgreen{mv} command moves or renames a file or directory
-    \item Usage: \Verbgreen{mv <options> <source> <destination>}
-    \item Example: \Verbgreen{mv test test1}
+    \item \Verblubrown{mv} command moves or renames a file or directory
+    \item Usage: \Verblubrown{mv <options> <source> <destination>}
+    \item Example: \Verblubrown{mv test test1}
     \item If there are more than one source file, then the last file is the destination and must be a directory.
-    \item Use the \Verbgreen{-i} option to prompt if a file or directory will be overwritten.
+    \item Use the \Verblubrown{-i} option to prompt if a file or directory will be overwritten.
     \item If the source(s) is(are) a file(s) and the destination is a directory, then the file(s) will be copied into the directory.
-    \item[e.g.]\Verbgreen{mv file1 file2 dir1{\Enter}}
-    \item[] \Verbgreen{dir1} will contain the files \Verbgreen{file1} and \Verbgreen{file2}
-    \item[] If \Verbgreen{dir1} is a file, then the above command will fail
+    \item[e.g.]\Verblubrown{mv file1 file2 dir1{\Enter}}
+    \item[] \Verblubrown{dir1} will contain the files \Verblubrown{file1} and \Verblubrown{file2}
+    \item[] If \Verblubrown{dir1} is a file, then the above command will fail
   \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{\small Pager Commands}
+\begin{frame}[fragile]{Pager Commands}
   \begin{itemize}
     \item To display a file to screen, *nix provides three commands at your disposal
-    \item \Verbgreen{cat}: Show contents of a file.
-    \item \Verbgreen{more}: Display contents one page at a time.
-    \item \Verbgreen{less}: Display contents one page at a time but allow forward/backward scrolling
+    \item \Verblubrown{cat}: Show contents of a file.
+    \item \Verblubrown{more}: Display contents one page at a time.
+    \item \Verblubrown{less}: Display contents one page at a time but allow forward/backward scrolling
     \item[] \texttt{less > more} or \texttt{less is more, more or less}
-    \item Usage: \Verbgreen{cat/more/less <options> <filename>}
-    \item Example: \Verbgreen{cat .bashrc}
-    \item To scroll forward in \Verbgreen{more} or \Verbgreen{less}, use the space bar, \texttt{CNTRL-f/d} or "Page Down" key.
-    \item To scroll backwards in \Verbgreen{less} use \texttt{CNTRL-b/u} or "Page Up".
-    \item A rarely used command, \Verbgreen{tac} does the opposite of \Verbgreen{cat} i.e. show contents of a file in reverse.
+    \item Usage: \Verblubrown{cat/more/less <options> <filename>}
+    \item Example: \Verblubrown{cat .bashrc}
+    \item To scroll forward in \Verblubrown{more} or \Verblubrown{less}, use the space bar, \texttt{CNTRL-f/d} or "Page Down" key.
+    \item To scroll backwards in \Verblubrown{less} use \texttt{CNTRL-b/u} or "Page Up".
+    \item A rarely used command, \Verblubrown{tac} does the opposite of \Verblubrown{cat} i.e. show contents of a file in reverse.
   \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile,allowframebreaks]{\small Other Commands}
-  \begin{itemize}
-    \item[passwd:] change password (\alert{does not work on LSU HPC and LONI systems})
-    \item[chsh:] change default shell (\alert{does not work on LSU HPC and LONI systems})
+\begin{frame}[fragile,allowframebreaks]{Other Commands}
+  \begin{description}
+    \item[passwd:] change password %(\alert{does not work on LSU HPC and LONI systems})
+    \item[chsh:] change default shell %(\alert{does not work on LSU HPC and LONI systems})
     \item[df:] report disk space usage by filesystem
     \item[du:] estimate file space usage - space used under a particular directory or files on a file system.
     \item[sudo:] run command as root (\alert{only if you have access})
@@ -1033,22 +1245,22 @@ deletekeywords={\dots},              % if you want to delete keywords from the g
     \item[touch:] change file timestamps or create file if not present
     \item[date:] display or set date and time
     \item[find]: Find a file
-    \item[] \Verbgreen{find /dir/to/search -name file-to-search}
+    \item[] \Verblubrown{find /dir/to/search -name file-to-search}
 %    \framebreak
 %    \item[vi:] Edit a file using VI/VIM
 %    \item[emacs:] Edit a file using Emacs
     \item[wc:] Count words, lines and characters in a file
-    \item[] \Verbgreen{wc -l .bashrc}
+    \item[] \Verblubrown{wc -l .bashrc}
     \item[grep:] Find patterns in a file
-    \item[] \Verbgreen{grep alias .bashrc}
+    \item[] \Verblubrown{grep alias .bashrc}
     \item[awk:] File processing and report generating
-    \item[] \Verbgreen{awk '\{print \$1\}' file1}
+    \item[] \Verblubrown{awk '\{print \$1\}' file1}
     \item[sed:] Stream Editor
-    \item[] \Verbgreen{sed 's/home/HOME/g' .bashrc}
+    \item[] \Verblubrown{sed 's/home/HOME/g' .bashrc}
     \item[set:] manipulate environment variables
-    \item[] \Verbgreen{set -o emacs}
+    \item[] \Verblubrown{set -o emacs}
     \item[ln:] Link a file to another file
-    \item[] \Verbgreen{ln -s file1 file2}
+    \item[] \Verblubrown{ln -s file1 file2}
 %    \item[\&:] run a job in background
 %    \item[CNTRL-Z:] suspend a running job
 %    \item[fg:] run a suspended job in foreground
@@ -1062,23 +1274,23 @@ deletekeywords={\dots},              % if you want to delete keywords from the g
 %    \item[whoami:] print effective userid
 %    \item[finger:] user information lookup program
     \item[whatis:] display manual page descriptions
-    \item[!name:] rerun previously executed command with the same arguments as before, \Verbgreen{name <args>}.
-    \item[] Note that you do not always have to type the full command \Verbgreen{name}, just the minimum unique characters (no spaces) of \Verbgreen{name} need to be entered.
-    \item[] If you had entered two commands \Verbgreen{name <args>} and \Verbgreen{nbme <args>}, then to rerun \Verbgreen{name}, use the command \Verbgreen{!na{\Enter}}. 
-    \item[history:] display a list of last executed commands. Optional argument \Verbgreen{m} will list the last m commands. 
+    \item[!name:] rerun previously executed command with the same arguments as before, \Verblubrown{name <args>}.
+    \item[] Note that you do not always have to type the full command \Verblubrown{name}, just the minimum unique characters (no spaces) of \Verblubrown{name} need to be entered.
+    \item[] If you had entered two commands \Verblubrown{name <args>} and \Verblubrown{nbme <args>}, then to rerun \Verblubrown{name}, use the command \Verblubrown{!na{\Enter}}. 
+    \item[history:] display a list of last executed commands. Optional argument \Verblubrown{m} will list the last m commands. 
     \item[] All previously executed commands will be listed with a number \Verbblue{n}.
-    \item[] To rerun a command from history which has number \Verbblue{n}, run the command \Verbgreen{!n{\Enter}} 
-  \end{itemize}
-  To learn more about these commands, type \Verbgreen{man {\em command}} on the command prompt
+    \item[] To rerun a command from history which has number \Verbblue{n}, run the command \Verblubrown{!n{\Enter}} 
+  \end{description}
+  To learn more about these commands, type \Verblubrown{man {\em command}} on the command prompt
 \end{frame}
 
-\begin{frame}[fragile]{\small Filename Completion}
+\begin{frame}[fragile]{Filename Completion}
   \begin{itemize}
-    \item Filename or Tab completion is a default feature in \Verbpurple{bash} and \Verbpurple{tcsh}.
+    \item Filename or Tab completion is a default feature in \Verblubrown{bash} and \Verblubrown{tcsh}.
     \item It allows to a user to automatically complete the file, directory or command name you are typing upto the next unique characters using the TAB key.
-    \item Example: Your home directory contains directories \Verbindigo{Desktop}, \Verbindigo{Documents} and \Verbindigo{Downloads}.
-    \item[] If you enter the command \Verbgreen{ls D{\Tab}}, you will be prompted with above the three directory names.
-      \begin{lstlisting}[basicstyle=\color{indigo}\bfseries\scriptsize\ttfamily,escapechar=\%]
+    \item Example: Your home directory contains directories \Verblubrown{Desktop}, \Verblubrown{Documents} and \Verblubrown{Downloads}.
+    \item[] If you enter the command \Verblubrown{ls D{\Tab}}, you will be prompted with above the three directory names.
+      \begin{lstlisting}[basicstyle=\color{lubrown}\bfseries\scriptsize\ttfamily,escapechar=\%]
 [user@localhost ~]%\$% ls D%\Tab%
 Desktop/ Documents/ Downloads/
 [user@localhost ~]%\$% ls Do%\Tab%
@@ -1088,88 +1300,111 @@ Documents/ Downloads/
   \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{\small How to Login to Remote Systems?}
+\begin{frame}{Wildcards}
   \begin{itemize}
-    \item Most Linux/UNIX systems allow secure shell connections from other systems.
-    \item[e.g.] You need to login using \Verbgreen{ssh} to the LSU HPC and LONI clusters.
-    \item Usage: \Verbgreen{ssh <username>@<remote host>}
-    \item Example: \Verbgreen{ssh apacheco@eric.loni.org}
-    \item If your local machine is a UNIX-like system i.e. Linux, Mac OSX, BSD, AIX, Solaris etc and your username on the local machine is the same as that of the remote machine, then
-    \item[] you can omit the \Verbgreen{<username>@} part of the argument.
-    \item[] i.e. \Verbgreen{ssh <remote host>}
-    \item If the remote machine is listening to ssh connections on a non default port (i.e. different from port 22) add \Verbgreen{-p <port number>} option
-    \item[i.e.] \Verbgreen{ssh -p <port number> <user>@<remote host>}
-    \item If you need to forward the display of an application from the remote system to your local system, add the \Verbgreen{-X} option to \Verbgreen{ssh}
-    \item[] Example: \Verbgreen{ssh -X apacheco@eric.loni.org}
+    \item *nix shells have the ability to refer to more than one file by name using special characters called Wildcards.
+    \item Wildcards can be used with *nix utilities such as ls, cp, mv, rm, tar and g(un)zip.
+    \item[?] match a single character
+    \item[*] match zero or more characters
+    \item[{[\quad]}] match list of characters in the list specified
+    \item[{[!\quad]}] match characters not in the list specified
+    \item Examples:
+    \begin{enumerate}
+      {\scriptsize
+      \item \texttt{ls */*}
+      \item[] list contents of all subdirectories
+      \item \texttt{cp [a-z]* lower/}
+      \item[] copy all files with names that begin with lowercase letters to a directory called lower
+      \item \texttt{cp [!a-z]* upper\_digit/}
+      \item[] copy all files with names that do not begin with lowercase letters to a directory called lower
+      }
+    \end{enumerate}
   \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile,allowframebreaks]{\small File Transfer between two systems} 
+\begin{frame}[fragile]{How to Login to Remote Systems?}
   \begin{itemize}
-    \item \Verbgreen{scp} is a command to copy files/directories between two *nix hosts over the SSH protocol.
-    \item Usage: \Verbgreen{scp <options> <user>@<host>:/path/to/source/file {\textbackslash}}\\
-    \Verbgreen{{\qquad}<user>@<host>:/path/to/destination/file/or/directory}
-    \item[e.g.] You want to copy files between Eric Loni Cluster and your Linux Desktop/Laptop
-    \item[] \Verbgreen{scp apacheco@eric.loni.org:/work/apacheco/somefile .}
-    \item[] \Verbgreen{scp -r Public apacheco@eric.loni.org:/work/apacheco/}
-    \item You can omit the \Verbgreen{<user>@} part of the argument if the username is the same on both systems.
-    \item You can omit the \Verbgreen{<user>@<host>:} for your local machine.
-    \item Common options are \Verbgreen{-r} and \Verbgreen{-p}, same meaning as \Verbgreen{cp}.
-    \item add \Verbgreen{-P <port number>} option for non default ports.
+    \item Most Linux/UNIX systems allow secure shell connections from other systems.
+    \item[e.g.] You need to login using \Verblubrown{ssh} to the LTS HPC clusters.
+    \item Usage: \Verblubrown{ssh <username>@<remote host>}
+    \item Example: \Verblubrown{ssh alp514@polaris.cc.lehigh.edu}
+    \item If your local machine is a UNIX-like system i.e. Linux, Mac OSX, BSD, AIX, Solaris etc and your username on the local machine is the same as that of the remote machine, then
+    \item[] you can omit the \Verblubrown{<username>@} part of the argument.
+    \item[] i.e. \Verblubrown{ssh <remote host>}
+    \item If the remote machine is listening to ssh connections on a non default port (i.e. different from port 22) add \Verblubrown{-p <port number>} option
+    \item[i.e.] \Verblubrown{ssh -p <port number> <user>@<remote host>}
+    \item If you need to forward the display of an application from the remote system to your local system, add the \Verblubrown{-X} option to \Verblubrown{ssh}
+    \item[] Example: \Verblubrown{ssh -X alp514@ssh.cc.lehigh.edu}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]{File Transfer between two systems} 
+  \begin{itemize}
+    \item \Verblubrown{scp} is a command to copy files/directories between two *nix hosts over the SSH protocol.
+    \item Usage: \Verblubrown{scp <options> <user>@<host>:/path/to/source/file {\textbackslash}}\\
+    \Verblubrown{{\qquad}<user>@<host>:/path/to/destination/file/or/directory}
+    \item[e.g.] You want to copy files between Polaris Cluster and your Linux Desktop/Laptop
+    \item[] \Verblubrown{scp alp514@polaris.cc.lehigh.edu:/home/alp514/octave-tutorial.tar.gz .}
+    \item[] \Verblubrown{scp -r Public apacheco@polaris.cc.lehigh.edu:$\sim$/}
+    \item You can omit the \Verblubrown{<user>@} part of the argument if the username is the same on both systems.
+    \item You can omit the \Verblubrown{<user>@<host>:} for your local machine.
+    \item Common options are \Verblubrown{-r} and \Verblubrown{-p}, same meaning as \Verblubrown{cp}.
+    \item add \Verblubrown{-P <port number>} option for non default ports.
       \framebreak
-    \item \Verbgreen{rsync} is another utility that can be used to copy files locally and remotely.
-    \item Usage: \Verbgreen{rsync <option> <source> <destination>}
+    \item \Verblubrown{rsync} is another utility that can be used to copy files locally and remotely.
+    \item Usage: \Verblubrown{rsync <option> <source> <destination>}
     \item It is famous for its delta-transfer algorithm
     \item[i.e.] sending only the differences between  the  source  files and  the  existing  files in the destination.  
     \item Rsync is widely used for backups and mirroring and as an improved copy command for everyday use.
     \item Common options:
       {\scriptsize
-      \item[] \Verbgreen{-a}: archive mode
-      \item[] \Verbgreen{-r}: recurse into directories
-      \item[] \Verbgreen{-v}: increase verbosity
-      \item[] \Verbgreen{-z}: compress file data during the transfer
-      \item[] \Verbgreen{-u}: skip files that are newer on the receiver
-      \item[] \Verbgreen{-t}: preserve modification times
-      \item[] \Verbgreen{-n}: dry-run, perform a trial run with no changes made
+      \item[] \Verblubrown{-a}: archive mode
+      \item[] \Verblubrown{-r}: recurse into directories
+      \item[] \Verblubrown{-v}: increase verbosity
+      \item[] \Verblubrown{-z}: compress file data during the transfer
+      \item[] \Verblubrown{-u}: skip files that are newer on the receiver
+      \item[] \Verblubrown{-t}: preserve modification times
+      \item[] \Verblubrown{-n}: dry-run, perform a trial run with no changes made
       }
-      \item Example: \Verb[formatcom=\color{dkgreen},fontseries=b,commandchars=\\\{\}]|rsync -avtzu eric.loni.org:~/* .|
+      \item Example: \Verblubrownp{rsync -avtzu corona.cc.lehigh.edu:$\sim$/* .}
+      \item If you are a user on National Supercomputing resource such as XSEDE, NERSC, OSG, etc, there are other transfer tools such as globus toolkit (gridftp) and bbcp which provide higher bandwidth and parallel file transfers.
   \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile,allowframebreaks]{\small Compressing and Archiving Files}
+\begin{frame}[fragile,allowframebreaks]{Compressing and Archiving Files}
   \begin{itemize}
     \item Quite often you need to compress and uncompress files to reduce storage usage or bandwidth while transferring files.
     \item *nix systems have built-in utilities to compress/uncompress files
       \begin{columns}
         \column{0.4\textwidth}
-        \begin{eblock}{Compress}
-          \Verbgreen{gzip, zip, bzip2}\\
-          \Verbgreen{gzip README{\Enter}}
-        \end{eblock}
+        \begin{exampleblock}{Compress}
+          \Verblubrown{gzip, zip, bzip2}\\
+          \Verblubrown{gzip README{\Enter}}
+        \end{exampleblock}
         \column{0.4\textwidth}
-        \begin{eblock}{Uncompress}
-          \Verbgreen{gunzip, unzip, bunzip2}\\
-          \Verbgreen{gunzip README.gz{\Enter}}
-        \end{eblock}
+        \begin{exampleblock}{Uncompress}
+          \Verblubrown{gunzip, unzip, bunzip2}\\
+          \Verblubrown{gunzip README.gz{\Enter}}
+        \end{exampleblock}
       \end{columns}
-    \item Gzipped files have an extension \Verbpurple{.gz,.z} or \Verbpurple{.Z}
-    \item zipped files have an extension \Verbpurple{.Zip} or \Verbpurple{.zip}
-    \item Bzipped files have an extension \Verbpurple{.bz2, .bz}
-    \item To compress/uncompress files recursively, use the \Verbgreen{-r} option.
-    \item To overwrite files while compressing/uncompressing, use the \Verbgreen{-f} option.
+    \item Gzipped files have an extension \Verblubrown{.gz,.z} or \Verblubrown{.Z}
+    \item zipped files have an extension \Verblubrown{.Zip} or \Verblubrown{.zip}
+    \item Bzipped files have an extension \Verblubrown{.bz2, .bz}
+    \item To compress/uncompress files recursively, use the \Verblubrown{-r} option.
+    \item To overwrite files while compressing/uncompressing, use the \Verblubrown{-f} option.
       \framebreak
-    \item *nix provides the \Verbgreen{tar} package to create and manipulate streaming archive of files.
-    \item Usage: \Verbgreen{tar <options> <file> <patterns>}
-    \item[] \Verbgreen{file} is the name of the tar archive file, usually with extension \Verbgreen{.tar}
-    \item[] \Verbgreen{patterns} are pathnames for files/directories being archived
+    \item *nix provides the \Verblubrown{tar} package to create and manipulate streaming archive of files.
+    \item Usage: \Verblubrown{tar <options> <file> <patterns>}
+    \item[] \Verblubrown{file} is the name of the tar archive file, usually with extension \Verblubrown{.tar}
+    \item[] \Verblubrown{patterns} are pathnames for files/directories being archived
     \item Common options
-    \item[] \Verbgreen{-c}: create an archive file
-    \item[] \Verbgreen{-x}: extract to disk from archive
-    \item[] \Verbgreen{-z}: filter the archive through gzip (adds/requires extension .gz)
-    \item[] \Verbgreen{-j}: filter the archive through bzip2 (adds/requires extension .bz2)
-    \item[] \Verbgreen{-t}: list contents of archive
-    \item[] \Verbgreen{-v}: verbosely list files processed
-    \item[e.g.] \Verbgreen{tar -cvzf myhome.tar.gz \$\{HOME\}/*}
+    \item[] \Verblubrown{-c}: create an archive file
+    \item[] \Verblubrown{-x}: extract to disk from archive
+    \item[] \Verblubrown{-z}: filter the archive through gzip (adds/requires extension .gz)
+    \item[] \Verblubrown{-j}: filter the archive through bzip2 (adds/requires extension .bz2)
+    \item[] \Verblubrown{-t}: list contents of archive
+    \item[] \Verblubrown{-v}: verbosely list files processed
+    \item[e.g.] \Verblubrown{tar -cvzf myhome.tar.gz \$\{HOME\}/*}
     \item This becomes useful for creating a backup of your files and directories that you can store at some storage facility e.g. external disk
   \end{itemize}
 \end{frame}
@@ -1180,7 +1415,7 @@ Documents/ Downloads/
   \begin{itemize}
     \item There are three file descriptors for I/O streams
     \begin{enumerate}
-      {\footnotesize
+      {%\scriptsize
         \item[STDIN]: Standard Input
         \item[STDOUT]: Standard Output
         \item[STDERR]: Standard Error
@@ -1189,21 +1424,21 @@ Documents/ Downloads/
     \item 1 represents STDOUT and 2 represents STDERR
     \item I/O redirection allows users to connect applications
     \begin{itemize}
-      {\footnotesize
-      \item[<]: connects a file to STDIN of an application
-      \item[>]: connects STDOUT of an application to a file
-      \item[> >]: connects STDOUT of an application by appending to a file
-      \item[|]: connects the STDOUT of an application to STDIN of another application.
+      {%\scriptsize
+      \item[$<$]: connects a file to STDIN of an application
+      \item[$>$]: connects STDOUT of an application to a file
+      \item[$> >$]: connects STDOUT of an application by appending to a file
+      \item[$|$]: connects the STDOUT of an application to STDIN of another application.
       }
     \end{itemize}
     \item Examples:
     \begin{enumerate}
-      {\footnotesize
-      \item write STDOUT to file: \Verbgreen{ls -l > ls-l.out }
-      \item write STDERR to file: \Verbgreen{ls -l 2> ls-l.err }
-      \item write STDOUT to STDERR: \Verbgreen{ls -l 1>\&2 }
-      \item write STDERR to STDOUT: \Verbgreen{ls -l 2>\&1 }
-      \item send STDOUT as STDIN: \Verbgreenp{ls -l | wc -l}
+      {%\scriptsize
+      \item write STDOUT to file: \Verblubrown{ls -l > ls-l.out }
+      \item write STDERR to file: \Verblubrown{ls -l 2> ls-l.err }
+      \item write STDOUT to STDERR: \Verblubrown{ls -l 1>\&2 }
+      \item write STDERR to STDOUT: \Verblubrown{ls -l 2>\&1 }
+      \item send STDOUT as STDIN: \Verblubrownp{ls -l | wc -l}
       }
     \end{enumerate}
   \end{itemize}
@@ -1217,7 +1452,7 @@ Documents/ Downloads/
     \item Since *NIX OS's are designed for multi user environment, it is necessary to restrict access of files to other users on the system.
     \item In *NIX OS's, you have three types of file permissions
     \begin{enumerate}
-      {\footnotesize
+      {%\scriptsize
         \item read (r)
         \item write (w)
         \item execute (x)
@@ -1225,13 +1460,13 @@ Documents/ Downloads/
     \end{enumerate}
     \item for three types of users
     \begin{enumerate}
-      {\footnotesize
+      {%\scriptsize
         \item user (u)
         \item group (g)
         \item world (o) i.e. everyone else who has access to the system
       }
     \end{enumerate}
-    \begin{Verbatim}[formatcom=\color{indigo},fontsize=\scriptsize]
+    \begin{Verbatim}[formatcom=\color{lubrown},fontsize=\scriptsize]
 [user@localhost ~]$ ls -l
 total 44
 drwxr-xr-x. 2 user user 4096 Jan 28  2013 Desktop
@@ -1249,9 +1484,9 @@ drwxr-xr-x. 2 user user 4096 Jan 28  2013 Videos
 [user@localhost ~]$ 
     \end{Verbatim}
     \item The first character signifies the type of the file
-    \item[] \Verb[formatcom=\color{indigo}]|d| for directory
-    \item[] \Verb[formatcom=\color{indigo}]|l| for symbolic link
-    \item[] \Verb[formatcom=\color{indigo}]|-| for normal file
+    \item[] \Verblubrown{d} for directory
+    \item[] \Verblubrown{l} for symbolic link
+    \item[] \Verblubrown{-} for normal file
     \item The next three characters of first triad signifies what the owner can do
     \item The second triad signifies what group member can do
     \item The third triad signifies what everyone else can do
@@ -1262,32 +1497,36 @@ drwxr-xr-x. 2 user user 4096 Jan 28  2013 Videos
     \item Write carries a weight of 2
     \item Execute carries a weight of 1
     \item The weights are added to give a value of 7 (rwx), 6(rw), 5(rx) or 3(wx) permissions. 
-    \item \Verbgreen{chmod} is a *NIX command to change permissions on a file
-    \item[] Usage: \Verbgreen{chmod <option> <permissions> <file or directory name>}
+    \item \Verblubrown{chmod} is a *NIX command to change permissions on a file
+    \item[] Usage: \Verblubrown{chmod <option> <permissions> <file or directory name>}
     \item To give user rwx, group rx and world x permission, the command is
-    \item[] \Verbgreen{chmod 751 filename}
+    \item[] \Verblubrown{chmod 751 filename}
     \framebreak
     \item Instead of using numerical permissions you can also use symbolic mode
+  \end{itemize}
+  \begin{description}
     \item[u/g/o or a] user/group/world or all i.e. ugo
     \item[+/-] Add/remove permission
     \item[r/w/x] read/write/execute
+  \end{description}
+  \begin{itemize}
     \item Give everyone execute permission: 
-    \item[] \Verbgreen{chmod a+x hello.sh }
-    \item[] \Verbgreen{chmod ugo+x hello.sh}
+    \item[] \Verblubrown{chmod a+x hello.sh }
+    \item[] \Verblubrown{chmod ugo+x hello.sh}
     \item Remove group and world read \& write permission: 
-    \item[] \Verbgreen{chmod go-rw hello.sh}
-    \item To change permissions recursively in a directory, use the option \Verbgreen{-R} (can also be used in the following two commands)
-    \item[] \Verbgreen{chmod -R 755 \$\{HOME\}/*}
+    \item[] \Verblubrown{chmod go-rw hello.sh}
+    \item To change permissions recursively in a directory, use the option \Verblubrown{-R} (can also be used in the following two commands)
+    \item[] \Verblubrown{chmod -R 755 \$\{HOME\}/*}
     \item[] What is the permission on \$\{HOME\}?
     \framebreak
-    \item The \Verbgreen{chgrp} command is used to change the group ownership between two groups that you are a member of.
-    \item[] Usage: \Verbgreen{chgrp <option> <new group> <file or directory name>}
-    \item[e.g.] Suppose your default group on LSU HPC is \Verbblue{users} and your advisor requested sysadmins to create a group \Verbblue{abc} for collaborative research among say 10 researchers. 
-    \item You can use the \Verbgreen{chgrp} command to change the ownership of your files from the \Verbblue{users} group to \Verbblue{abc} group.
-    \item[] Example: \Verbgreen{chgrp -R abc collaborative-work-dir}
-    \item The \Verbgreen{chown} command is used to  change the owner of a file.
-    \item \Verbgreen{chown} can only be executed by the superuser, to prevent users simply changing ownership of files that aren't theirs to access. 
-    \item[] Usage: \Verbgreen{chown <new owner>[:<group name>] <file or directory name>}
+    \item The \Verblubrown{chgrp} command is used to change the group ownership between two groups that you are a member of.
+    \item[] Usage: \Verblubrown{chgrp <option> <new group> <file or directory name>}
+    %\item[e.g.] Suppose your default group on LSU HPC is \Verbblue{users} and your advisor requested sysadmins to create a group \Verbblue{abc} for collaborative research among say 10 researchers. 
+    \item You can use the \Verblubrown{chgrp} command to change the ownership of your files from the \Verbblue{users} group to \Verbblue{abc} group.
+    \item[] Example: \Verblubrown{chgrp -R abc collaborative-work-dir}
+    \item The \Verblubrown{chown} command is used to  change the owner of a file.
+    \item \Verblubrown{chown} can only be executed by the superuser, to prevent users simply changing ownership of files that aren't theirs to access. 
+    \item[] Usage: \Verblubrown{chown <new owner>[:<group name>] <file or directory name>}
   \end{itemize}
 \end{frame}
 
@@ -1295,15 +1534,15 @@ drwxr-xr-x. 2 user user 4096 Jan 28  2013 Videos
 \begin{frame}[fragile,allowframebreaks]{\small Processes and Jobs}
   \begin{itemize}
     \item A process is an executing program identified by a unique PID
-    \item[$\bigstar$] To see information about your running processes and their PID and status,
-    \item[] \Verbgreen{ps{\Enter}}
+    \item[$\mybigstar$] To see information about your running processes and their PID and status,
+    \item[] \Verblubrown{ps{\Enter}}
     \item A process may be in foreground, background or be suspended.
     \item Processes running in foreground, the command prompt is not returned until the current process has finished executing.
     \item If a job takes a long time to run, put the job in background in order to obtain the command prompt back to do some other useful work
     \item There are two ways to send a job into the background:
     \begin{enumerate}
-      {\footnotesize
-        \item Add an ampersand \Verbgreen{\&} to the end of your command to send it into background directly.
+      {%\scriptsize
+        \item Add an ampersand \Verblubrown{\&} to the end of your command to send it into background directly.
         \item[] \Verbblue{firefox \&{\Enter}}
         \item First suspend the job using \Verbblue{{\Ctrl}Z} and then type \Verbblue{bg} at the command prompt.
         \item If you type \Verbblue{fg} then the job will run in foreground and you will lose the command prompt.
@@ -1311,24 +1550,24 @@ drwxr-xr-x. 2 user user 4096 Jan 28  2013 Videos
     \end{enumerate}
     \framebreak
     \item When a process is running, background or suspended, it will be entered onto a list along with a job number (not PID)
-    \item[] \Verbgreen{jobs{\Enter}}
+    \item[] \Verblubrown{jobs{\Enter}}
     \item To restart a suspended job in foreground or background, type
-    \item[] \Verbgreen{fg \%jobnumber} where \Verbblue{jobnumber} is a number greater than 1, or,
-    \item[] \Verbgreen{bg \%jobnumber} 
+    \item[] \Verblubrown{fg \%jobnumber} where \Verbblue{jobnumber} is a number greater than 1, or,
+    \item[] \Verblubrown{bg \%jobnumber} 
     \item To kill or terminate a process:
     \begin{enumerate}
-      {\footnotesize
+      {%\scriptsize
         \item Job running in foreground: enter \Verbblue{{\Ctrl}C}
         \item Job whose PID you know
-        \item[] \Verbgreen{kill PID{\Enter}}
-        \item Job whose \Verbblue{jobnumber} you know (from \Verbgreen{jobs} command)
-        \item[] \Verbgreen{kill \%jobnumber{\Enter}}
+        \item[] \Verblubrown{kill PID{\Enter}}
+        \item Job whose \Verbblue{jobnumber} you know (from \Verblubrown{jobs} command)
+        \item[] \Verblubrown{kill \%jobnumber{\Enter}}
       }
     \end{enumerate}
-    \item The \Verbgreen{kill} command can take options specific to UNIX signals
-    \item The most common option is \Verbgreen{-9} for the \Verbgreen{SIGKILL} signal
-    \item \Verbgreen{pstree}: display a tree of processes
-    \item \Verbgreen{pkill}: kill process by its name, user name, group name, terminal, UID, EUID, and GID.
+    \item The \Verblubrown{kill} command can take options specific to UNIX signals
+    \item The most common option is \Verblubrown{-9} for the \Verblubrown{SIGKILL} signal
+    \item \Verblubrown{pstree}: display a tree of processes
+    \item \Verblubrown{pkill}: kill process by its name, user name, group name, terminal, UID, EUID, and GID.
   \end{itemize}
 \end{frame}
 
@@ -1338,19 +1577,21 @@ drwxr-xr-x. 2 user user 4096 Jan 28  2013 Videos
   \begin{itemize}
     \item The two most commonly used editors on Linux/Unix systems are:
     \begin{enumerate}
-      \item \Verbgreen{vi} or \Verbgreen{vim} (vi improved)
-      \item \Verbgreen{emacs}
+      {\scriptsize
+      \item \Verblubrown{vi} or \Verblubrown{vim} (vi improved)
+      \item \Verblubrown{emacs}
+      }
     \end{enumerate}
-    \item \Verbgreen{vi/vim} is installed by default on Linux/Unix systems and has only a command line interface (CLI).
-    \item \Verbgreen{emacs} has both a CLI and a graphical user interface (GUI).
-    \item[$\vardiamond$] If \Verbgreen{emacs} GUI is installed then use \Verbgreen{emacs -nw} to open file in console.
+    \item \Verblubrown{vi/vim} is installed by default on Linux/Unix systems and has only a command line interface (CLI).
+    \item \Verblubrown{emacs} has both a CLI and a graphical user interface (GUI).
+    \item[$\vardiamond$] If \Verblubrown{emacs} GUI is installed then use \Verblubrown{emacs -nw} to open file in console.
     \item Other editors that you may come across on *nix systems
-    \item[] \Verbgreen{kate}: {default editor for KDE.}
-    \item[] \Verbgreen{gedit}: {default text editor for GNOME desktop environment.}
-    \item[] \Verbgreen{gvim}: {GUI version of }\Verbgreen{vim}
-    \item[] \Verbgreen{pico}: {console based plain text editor }
-    \item[] \Verbgreen{nano}: {GNU.org clone of }\Verbgreen{pico}
-    \item[] \Verbgreen{kwrite}: {editor by KDE.}
+    \item[] \Verblubrown{kate}: {default editor for KDE.}
+    \item[] \Verblubrown{gedit}: {default text editor for GNOME desktop environment.}
+    \item[] \Verblubrown{gvim}: {GUI version of }\Verblubrown{vim}
+    \item[] \Verblubrown{pico}: {console based plain text editor }
+    \item[] \Verblubrown{nano}: {GNU.org clone of }\Verblubrown{pico}
+    \item[] \Verblubrown{kwrite}: {editor by KDE.}
   \end{itemize}
 \end{frame}
 
@@ -1358,21 +1599,21 @@ drwxr-xr-x. 2 user user 4096 Jan 28  2013 Videos
   \frametitle{\small Editor Cheatsheets}
 % Page 1
   \begin{itemize}
-    \item \textbf{\color{dkgreen}vi/vim} and \textbf{\color{dkgreen}emacs} are the two most popular *nix file editors.
+    \item \textbf{\color{lubrown}vi/vim} and \textbf{\color{lubrown}emacs} are the two most popular *nix file editors.
     \item Which one to use is up to you.
-    \item \textbf{\color{dkgreen}vi/vim} has two modes:
+    \item \textbf{\color{lubrown}vi/vim} has two modes:
     \begin{enumerate}
       {\scriptsize
         \item Editing mode
         \item Command mode
       }
     \end{enumerate}
-    \item \textbf{\color{dkgreen}emacs} has only one mode as in any editor that you use.
+    \item \textbf{\color{lubrown}emacs} has only one mode as in any editor that you use.
   \end{itemize}
   {\scriptsize
   \begin{columns}[t]
     \column{0.6\textwidth}
-    \begin{eblock}{Insert/Appending Text}
+    \begin{exampleblock}{Insert/Appending Text}
     \begin{itemize}
       \item insert at cursor 
       \item insert at beginning of line
@@ -1383,9 +1624,9 @@ drwxr-xr-x. 2 user user 4096 Jan 28  2013 Videos
       \item append at end of line
       \item exit insert mode
     \end{itemize}
-    \end{eblock}
+    \end{exampleblock}
     \column{0.2\textwidth}
-    \begin{eblock}{vi}
+    \begin{exampleblock}{vi}
     \begin{itemize}
       \item \texttt{i}
       \item \texttt{I}
@@ -1396,7 +1637,7 @@ drwxr-xr-x. 2 user user 4096 Jan 28  2013 Videos
       \item \texttt{ea}
       \item \texttt{ESC}
     \end{itemize}
-    \end{eblock}
+    \end{exampleblock}
   \end{columns}
   }
   \framebreak
@@ -1404,8 +1645,8 @@ drwxr-xr-x. 2 user user 4096 Jan 28  2013 Videos
   \vspace{-0.6cm}
   {\scriptsize
   \begin{columns}
-    \column{0.4\textwidth}
-    \begin{eblock}{Cursor Movement}
+    \column{0.35\textwidth}
+    \begin{exampleblock}{Cursor Movement}
     \begin{itemize}
       \item move left 
       \item move down
@@ -1419,9 +1660,9 @@ drwxr-xr-x. 2 user user 4096 Jan 28  2013 Videos
       \item move one page up
       \item move one page down
     \end{itemize}
-    \end{eblock}
+    \end{exampleblock}
     \column{0.2\textwidth}
-    \begin{eblock}{vi}
+    \begin{exampleblock}{vi}
     \begin{itemize}
       \item \texttt{h}
       \item \texttt{j}
@@ -1435,9 +1676,9 @@ drwxr-xr-x. 2 user user 4096 Jan 28  2013 Videos
       \item \texttt{C-u}
       \item \texttt{C-d}
     \end{itemize}
-    \end{eblock}
-    \column{0.4\textwidth}
-    \begin{eblock}{emacs}
+    \end{exampleblock}
+    \column{0.35\textwidth}
+    \begin{exampleblock}{emacs}
     \begin{itemize}
       \item \texttt{C-b}
       \item \texttt{C-n}
@@ -1451,7 +1692,7 @@ drwxr-xr-x. 2 user user 4096 Jan 28  2013 Videos
       \item \texttt{M-v}
       \item \texttt{C-v}
     \end{itemize}
-    \end{eblock}
+    \end{exampleblock}
   \end{columns}
   }
   \vspace{-0.1cm}
@@ -1469,9 +1710,9 @@ drwxr-xr-x. 2 user user 4096 Jan 28  2013 Videos
 % Page 3
   {\scriptsize
    \begin{columns}
-    \column{0.5\textwidth}
+    \column{0.45\textwidth}
      \vspace{-0.5cm}
-    \begin{eblock}{File Manipulation}
+    \begin{exampleblock}{File Manipulation}
     \begin{itemize}
       \item save file
       \item save file and exit
@@ -1487,10 +1728,10 @@ drwxr-xr-x. 2 user user 4096 Jan 28  2013 Videos
       \item search backward for \textit{patt}
       \item search again forward (backward)
     \end{itemize}
-    \end{eblock}
-    \column{0.25\textwidth}
+    \end{exampleblock}
+    \column{0.20\textwidth}
      \vspace{-0.5cm}
-    \begin{eblock}{vi}
+    \begin{exampleblock}{vi}
     \begin{itemize}
       \item \texttt{:w}
       \item \texttt{:wq, ZZ}
@@ -1506,10 +1747,10 @@ drwxr-xr-x. 2 user user 4096 Jan 28  2013 Videos
       \item \texttt{?\textit{patt}}
       \item \texttt{n}
     \end{itemize}
-    \end{eblock}
-    \column{0.3\textwidth}
+    \end{exampleblock}
+    \column{0.25\textwidth}
      \vspace{-0.5cm}
-    \begin{eblock}{emacs}
+    \begin{exampleblock}{emacs}
     \begin{itemize}
       \item \texttt{C-x C-s}
       \item \texttt{}
@@ -1525,7 +1766,7 @@ drwxr-xr-x. 2 user user 4096 Jan 28  2013 Videos
       \item \texttt{C-r \textit{patt}}
       \item \texttt{C-s(r)}
     \end{itemize}
-    \end{eblock}
+    \end{exampleblock}
   \end{columns}
   }
   \framebreak
@@ -1534,7 +1775,7 @@ drwxr-xr-x. 2 user user 4096 Jan 28  2013 Videos
   \begin{columns}
     \column{0.4\textwidth}
      \vspace{-0.5cm}
-    \begin{eblock}{File Manipulation (contd)}
+    \begin{exampleblock}{File Manipulation (contd)}
     \begin{itemize}
       \item replace a character
       \item join next line to current
@@ -1549,10 +1790,10 @@ drwxr-xr-x. 2 user user 4096 Jan 28  2013 Videos
       \item split window vertically
       \item switch windows
     \end{itemize}
-    \end{eblock}
-    \column{0.35\textwidth}
+    \end{exampleblock}
+    \column{0.30\textwidth}
      \vspace{-0.5cm}
-    \begin{eblock}{vi}
+    \begin{exampleblock}{vi}
     \begin{itemize}
       \item \texttt{r}
       \item \texttt{J}
@@ -1567,10 +1808,10 @@ drwxr-xr-x. 2 user user 4096 Jan 28  2013 Videos
       \item \texttt{:vsplit or C-wv}
       \item \texttt{C-ww}
     \end{itemize}
-    \end{eblock}
-    \column{0.3\textwidth}
+    \end{exampleblock}
+    \column{0.25\textwidth}
      \vspace{-0.5cm}
-    \begin{eblock}{emacs}
+    \begin{exampleblock}{emacs}
     \begin{itemize}
       \item 
       \item 
@@ -1585,7 +1826,7 @@ drwxr-xr-x. 2 user user 4096 Jan 28  2013 Videos
       \item \texttt{C-x 3}
       \item \texttt{C-x o}
     \end{itemize}
-    \end{eblock}
+    \end{exampleblock}
   \end{columns}
   }
   \framebreak
@@ -1595,56 +1836,51 @@ drwxr-xr-x. 2 user user 4096 Jan 28  2013 Videos
     \item[\texttt{vi}] \url{https://www.google.com/search?q=vi+cheatsheet}
     \item[\texttt{emacs}] \url{https://www.google.com/search?q=emacs+cheatsheet}
   \end{itemize}
-  \begin{bblock}{More on the \textbf{set -o} command}
+  \begin{block}{More on the \textbf{set -o} command}
     \begin{itemize}
-      \item The \textbf{\color{dkgreen}set -o} command can be used to change the command line editor mode among other things (Do \textbf{\color{dkgreen}man set\Enter} to find out more)
+      \item The \textbf{\color{lubrown}set -o} command can be used to change the command line editor mode among other things (Do \textbf{\color{lubrown}man set\Enter} to find out more)
       \begin{enumerate}
-        \item \textbf{\color{dkgreen}set -o emacs}: emacs style in-line editor for command entry, this is the default
-        \item \textbf{\color{dkgreen}set -o vi}: vi style in-line editor for command entry.
+        {\scriptsize
+        \item \textbf{\color{lubrown}set -o emacs}: emacs style in-line editor for command entry, this is the default
+        \item \textbf{\color{lubrown}set -o vi}: vi style in-line editor for command entry.
+        }
       \end{enumerate}
     \end{itemize}
-  \end{bblock}
+  \end{block}
 \end{frame}
 
 
-\section{Basic Shell Scripting}
+\section*{Basic Shell Scripting}
 \begin{frame}
-  \frametitle{\small Start Up Scripts}
+  \frametitle{Start Up Scripts}
   \begin{itemize}
-    {\scriptsize
-    \item When you login to a *NIX computer, shell scripts are automatically loaded depending on your default \textbf{\color{tigerspurple}shell}
-    \item \textbf{\color{tigerspurple}sh,ksh}
+    \item When you login to a *NIX computer, shell scripts are automatically loaded depending on your default \textbf{\color{lubrown}shell}
+    \item \textbf{\color{lubrown}sh,ksh}
     \begin{enumerate}
-      {\scriptsize
         \item \texttt{\color{blue}/etc/profile}
         \item \texttt{\color{blue}\$HOME/.profile}
-      }
     \end{enumerate}
-    \item \textbf{\color{tigerspurple}bash}
+    \item \textbf{\color{lubrown}bash}
     \begin{enumerate}
-      {\scriptsize
         \item \texttt{\color{blue}/etc/profile}, login terminal only
         \item \texttt{\color{blue}/etc/bashrc} or \texttt{\color{blue}/etc/bash/bashrc}
         \item \texttt{\color{blue}\$HOME/.bash\_profile}, login terminal only
         \item \texttt{\color{blue}\$HOME/.bashrc}
-      }
     \end{enumerate}
-    \item \textbf{\color{tigerspurple}csh,tcsh}
+    \item \textbf{\color{lubrown}csh,tcsh}
     \begin{enumerate}
-      {\scriptsize
         \item \texttt{\color{blue}/etc/csh.cshrc}
         \item \texttt{\color{blue}\$HOME/.tcshrc}
         \item \texttt{\color{blue}\$HOME/.cshrc} if .tcshrc is not present
-      }
     \end{enumerate}
     \item The \texttt{\color{blue}.bashrc, .tcshrc, .cshrc, .bash\_profile} are script files where users can define their own aliases, environment variables, modify paths etc.
-    \item e.g. the \textbf{\color{dkgreen}alias} command covered earlier can be put in one of these script files depending on your \textbf{\color{tigerspurple}shell}
-    }
+    \item e.g. the \textbf{\color{lubrown}alias} command covered earlier can be put in one of these script files depending on your \textbf{\color{lubrown}shell}
   \end{itemize}
 \end{frame}
+
 \begin{frame}[fragile, allowframebreaks]
-  \frametitle{\small Examples}
-  \begin{lstlisting}[language=bash]
+  \frametitle{Examples}
+  \begin{lstlisting}[language=bash,basicstyle=\tiny\ttfamily]
 # .bashrc
 
 # Source global definitions
@@ -1668,7 +1904,7 @@ export TEXINPUTS=.:/usr/share/texmf//:/home/apacheco/LaTeX//:${TEXINPUTS}
 export BIBINPUTS=.:/home/apacheco/TeX//:${BIBINPUTS}
   \end{lstlisting}
 
-  \begin{lstlisting}[language=csh]
+  \begin{lstlisting}[language=csh,basicstyle=\tiny\ttfamily]
 # .tcshrc
 
 # User specific aliases and functions
@@ -1688,44 +1924,37 @@ setenv BIBINPUTS ".:/home/apacheco/TeX//:${BIBINPUTS}"
   \end{lstlisting}
 \end{frame}
 
-\section{What is a scripting Language?}
+\section*{What is a scripting Language?}
 \begin{frame}
-  \frametitle{\small }
-  \fontsize{8}{9}\selectfont{
-  \begin{eblock}{What is a Scripting Language?}
+  \begin{exampleblock}{What is a Scripting Language?}
     \begin{itemize}
       \item A \textbf{scripting language} or \textbf{script language} is a \emph{programming language} that supports the writing of \textbf{scripts}.
       \item \textbf{Scripting Languages} provide a higher level of abstraction than standard programming languages.
       \item Compared to programming languages, scripting languages do not distinguish between data types: integers, real values, strings, etc.
       \item Scripting Languages tend to be good for automating the execution of other programs.
       \begin{enumerate}
-        {\fontsize{8}{9}\selectfont
           \item[$\vardiamond$] analyzing data
           \item[$\vardiamond$] running daily backups
-        }
       \end{enumerate}
       \item They are also good for writing a program that is going to be used only once and then discarded.
     \end{itemize}
-  \end{eblock}
-  \begin{eblock}{What is a script?}
+  \end{exampleblock}
+  \begin{exampleblock}{What is a script?}
     \begin{itemize}
       \item A \textbf{script} is a program written for a software environment that automate the execution of tasks which could alternatively be executed one-by-one by a human operator.
       \item The majority of script programs are ``quick and dirty'', where the main goal is to get the program written quickly.
     \end{itemize}
-  \end{eblock}
-  }
+  \end{exampleblock}
 \end{frame}
 
-\section{Writing Scripts}
+\subsection*{Writing Scripts}
 \begin{frame}[fragile]
-  \frametitle{\small Writing your first script}
+  \frametitle{Writing your first script}
   \begin{enumerate}
     \item Write a script
       \begin{itemize}
-        {\scriptsize
         \item A shell script is a file that contains ASCII text. 
         \item Create a file, \texttt{hello.sh} with the following lines 
-        }
       \end{itemize}
       \begin{lstlisting}[language=bash,basicstyle=\scriptsize\ttfamily]
 #!/bin/bash
@@ -1733,11 +1962,11 @@ setenv BIBINPUTS ".:/home/apacheco/TeX//:${BIBINPUTS}"
 echo "Hello World!"
       \end{lstlisting}
     \item Set permissions
-      \begin{Verbatim}[fontsize=\scriptsize,formatcom=\color{indigo}]
+      \begin{Verbatim}[fontsize=\scriptsize,formatcom=\color{lupurple}]
 apacheco@apacheco:~/Tutorials/BASH/scripts> chmod 755 hello.sh 
       \end{Verbatim}
     \item Execute the script
-      \begin{Verbatim}[fontsize=\scriptsize,formatcom=\color{indigo}]
+      \begin{Verbatim}[fontsize=\scriptsize,formatcom=\color{lupurple}]
 apacheco@apacheco:~/Tutorials/BASH/scripts> ./hello.sh 
 Hello World!
       \end{Verbatim}
@@ -1745,8 +1974,7 @@ Hello World!
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{\small Description of the script}
-%  \fontsize{7}{9}\selectfont{
+  \frametitle{Description of the script}
   \begin{itemize}
     \item My First Script
       \begin{lstlisting}[language=bash]
@@ -1757,22 +1985,18 @@ echo "Hello World!"
     \item The first line is called the "SheBang'' line. It tells the OS which interpreter to use. In the current example, bash
     \item Other options are:
     \begin{enumerate}
-      {\scriptsize
         \item[sh]   : \lstinline[language=bash]|#!/bin/sh|
         \item[ksh]  : \lstinline[language=bash]|#!/bin/ksh|
         \item[csh]  : \lstinline[language=csh]|#!/bin/csh|
         \item[tcsh] : \lstinline[language=csh]|#!/bin/tcsh|
-      }
     \end{enumerate}
     \item The second line is a comment. All comments begin with "\#".
     \item The third line tells the OS to print "Hello World!" to the screen.
   \end{itemize}
-%  }
 \end{frame}
 
 \begin{frame}
-  \frametitle{\small Special Characters}
-%  \fontsize{7}{9}\selectfont{
+  \frametitle{Special Characters}
   \begin{description}
     \item[\#:] starts a comment.
     \item[\$:] indicates the name of a variable.
@@ -1783,87 +2007,33 @@ echo "Hello World!"
     \item[.] "dot" command [period]. Equivalent to source. This is a bash builtin.
     \item[\$?] exit status variable.
     \item[\$\$] process ID variable.
-    \item[{[ ]}] test expression
-    \item[{[[ ]]}] test expression, more flexible than [ ]
-    \item[{\$[ ], (( ))}] integer expansion.
-    \item[||, \&\&, !] Logical OR, AND and NOT
+    \item[{[\quad]}] test expression
+    \item[{[[\quad]]}] test expression, more flexible than [ ]
+    \item[{\$[\quad], ((\quad))}] integer expansion.
+    \item[{$||$, \&\&, !}] Logical OR, AND and NOT
   \end{description}
-%  }
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{\small Quotation}
+  \frametitle{Quotation}
   \begin{itemize}
     \item Double Quotation \texttt{" "}
     \begin{itemize}
-      {\scriptsize
         \item Enclosed string is expanded ("\$", "/" and "`")
-        \item Example: \Verbgreen{echo "\$myvar"} prints the value of \Verbblue{myvar}
-      }
+        \item Example: \Verblubrown{echo "\$myvar"} prints the value of \Verbblue{myvar}
     \end{itemize}
     \item Single Quotation \texttt{' '}
     \begin{itemize}
-      {\scriptsize
         \item Enclosed string is read literally
-        \item Example: \Verbgreen{echo '\$myvar'} prints \Verbblue{\$myvar}
-      }
+        \item Example: \Verblubrown{echo '\$myvar'} prints \Verbblue{\$myvar}
     \end{itemize}
     \item Back Quotation \texttt{` `}
     \begin{itemize}
-      {\scriptsize
         \item Enclosed string is executed as a command
-        \item Example: \Verbgreen{echo `pwd`} prints the output of the \Verbgreen{pwd} command i.e. print the current working directory
-      }
+        \item Example: \Verblubrown{echo `pwd`} prints the output of the \Verblubrown{pwd} command i.e. print the current working directory
     \end{itemize}
   \end{itemize}
 \end{frame}
-
-\section{HPC Help}
-\begin{frame}
-  \frametitle{\small Additional Help}
-  \begin{itemize}
-    \item User Guides
-    \begin{enumerate}
-      {\scriptsize
-        \item[$\vardiamond$]LSU HPC: \url{http://www.hpc.lsu.edu/docs/guides.php\#hpc}
-        \item[$\vardiamond$]LONI: \url{http://www.hpc.lsu.edu/docs/guides.php\#loni}
-      }
-    \end{enumerate}
-    \item Documentation: \url{http://www.hpc.lsu.edu/docs}
-    \item Online Courses: \url{https://docs.loni.org/moodle}
-    \item Contact us
-    \begin{enumerate}
-      {\scriptsize
-        \item[$\vardiamond$]Email ticket system: sys-help@loni.org
-        \item[$\vardiamond$]Telephone Help Desk: 225-578-0900
-        \item[$\vardiamond$]Instant Messenger (AIM, Yahoo Messenger, Google Talk)
-        \begin{enumerate}
-          {\scriptsize
-            \item[$\bigstar$]Add "lsuhpchelp"
-          }
-        \end{enumerate}
-      }
-    \end{enumerate}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{}
-  \color{DarkBlue}{
-  \begin{center}
-    {\fontsize{40}{60}\selectfont The End}\\
-    \vspace{1cm}
-    {\fontsize{20}{30}\selectfont Any Questions?}\\
-    \vspace{0.5cm}
-    {\fontsize{15}{30}\selectfont
-      \color{red!80!black}{Feb 5: HPC User Environment}\\
-    }
-    \vspace{0.5cm}
-%    {\fontsize{15}{20}\selectfont Survey: \color{red!90!white}{\url{http://www.hpc.lsu.edu/survey}}}
-  \end{center}
-  }
-\end{frame}
-
 
 
 \begin{frame}[allowframebreaks]
@@ -1916,63 +2086,13 @@ echo "Hello World!"
     \end{enumerate}
   \end{itemize}
   \framebreak
-  \begin{eblock}{}
+  \begin{exampleblock}{}
 Wednesday January 14th
 
 Joined the library. Got Care of the Skin, Origin of the Species, and a book by a woman my mother was always going on about. It was called Pride and Prejudice, by a woman called Jane Austen. I could tell the librarian was impressed. Perhaps she was an intellectual like me. She didn't look at my spot, so perhaps it was getting smaller.
 
-None of the teachers at school have noticed that I am an intellectual. They will be sorry when I am famous. There was a new girl in our class. She sits next to me in Geography.  About time!  She was all right. Her name was Pandora, but she likes being called ``Box''.  Don't ask me why. I might fall in love with her. It's time I fell in love, after all I am 13 3/4 years old.
-  \end{eblock}
-\end{frame}
-
-\begin{frame}{\small Exercises}
-  \begin{itemize}
-    \item Create shell scripts using either vi or emacs to do the following
-    \begin{enumerate}
-      {\footnotesize
-        \item Write a simple hello world script
-        \item Modify the above script to use a variable
-        \item Modify the above script to prompt you for your name and then display your name with a greeting.
-      }
-    \end{enumerate}
-    \item The goal of this exercises is three fold
-    \begin{enumerate}
-      {\footnotesize
-        \item Get you comfortable with using vi or emacs
-        \item Get you started with writing shell scripts
-        \item Let you play around with the \textbf{chmod} command
-      }
-    \end{enumerate}
-    \item Everything that goes into the scripts should have already been done by you on the command prompt. 
-    \item[]
-    \item \alert{In the next training, you will learn what goes into a job submission script. Familiarize yourself with the vi/emacs editor or you will get left behind in the next training.}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{\small Exercise Solution}
-  \begin{lstlisting}[language=bash,title={Exercise 1},captionpos=t,basicstyle=\fontsize{6}{7}\selectfont\ttfamily]
-#!/bin/bash
-# My First Script
-echo "Hello World!"
-  \end{lstlisting}
-  \begin{lstlisting}[language=bash,title={Exercise 2},captionpos=t,basicstyle=\fontsize{6}{7}\selectfont\ttfamily]
-#!/bin/bash
-
-# Hello World script using a variable
-STR="Hello World!"
-echo $STR
-  \end{lstlisting}
-  \begin{lstlisting}[language=bash,title={Exercise 3},captionpos=t,basicstyle=\fontsize{6}{7}\selectfont\ttfamily]
-#!/bin/bash
-
-# My Second Script
-
-echo Please Enter your name:
-read name
-echo Please Enter a standard Greeting
-read greet
-echo "$greet $name"
-  \end{lstlisting}
+None of the teachers at school have noticed that I am an intellectual. They will be sorry when I am famous. There was a new girl in our class. She sits next to me in Geography. She was all right. Her name was Pandora, but she likes being called ``Box''.  Don't ask me why. I might fall in love with her. It's time I fell in love, after all I am 13 3/4 years old. About time!
+  \end{exampleblock}
 \end{frame}
 
 \end{document}
