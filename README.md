@@ -1,6 +1,9 @@
 ## Linux
-This tutorial provides an introduction to Linux, basic commands and environment
-( [TeX](Linux.tex) | [PDF](Linux.pdf) ).
+This two part tutorial provides an introduction to Linux, basic commands and environment, 
+file permissions, process management, editors (vi and emacs) and basic shell scripting.
+
+  1. Part 1 ( [TeX](Linux-1.tex) | [PDF](Linux-1.pdf) ).
+  2. Part 2 ( [TeX](Linux-2.tex) | [PDF](Linux-2.pdf) ).
 
   * HPC Training Series at LSU on
     + Feb. 6, 2013
