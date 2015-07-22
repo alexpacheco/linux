@@ -1,0 +1,871 @@
+\documentclass[10pt,t]{beamer}
+
+\input{mypreamble}
+\beamertemplateballitem
+
+%% Tikz Distro Watch Table
+% Defining some symbols:
+\newcommand*\head[1]{\textbf{#1}}
+% The table environment:
+\newenvironment{matrixtable}[4]{%
+  \begin{tikzpicture}[matrix of nodes/.style={
+    execute at begin cell=\node\bgroup\strut,
+    execute at end cell=\egroup;}]
+  \matrix (m) [matrix of nodes,top color=blue!20,
+    bottom color=blue!80,draw=white,
+    nodes={draw,top color=blue!10,bottom color=blue!35,
+    draw,inner sep=2pt,minimum height=3.1ex},
+    column sep=1ex,row sep=0.6ex,inner sep=2ex,
+    rounded corners,column 1/.style={minimum width=#1},
+    column 2/.style={minimum width=#2},
+    column 3/.style={minimum width=#3},
+    column 4/.style={minimum width=#4}]}%
+{;\end{tikzpicture}}
+
+\title{Introduction to Linux}
+\subtitle{File Permission, Process Management \& Editors}
+\author{Alexander B. Pacheco}
+\institute{\href{http://researchcomputing.lehigh.edu}{LTS Research Computing}}%\\[2pt] \href{http://www.lehigh.edu}{Lehigh University}}
+\date{September 22, 2015}
+
+% Delete this, if you do not want the table of contents to pop up at
+% the beginning of each subsection:
+\AtBeginSection[]
+{
+  \begingroup
+  \setbeamertemplate{background canvas}[vertical shading][bottom=lubrown,top=lubrown]
+  \setbeamertemplate{footline}[myfootline] 
+  \setbeamertemplate{section page}[mysection]
+  \frame[c]{
+    \sectionpage
+  }
+  \endgroup
+}
+
+\titlegraphic{\includegraphics[scale=0.5]{lu}}
+\begin{document}
+
+\begin{frame}[c]
+  \titlepage
+\end{frame}
+
+\footnotesize
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+
+\section{Basic *nix Utilities}
+\begin{frame}[fragile]{Filename Completion}
+  \begin{itemize}
+    \item Filename or Tab completion is a default feature in \Verblubrown{bash} and \Verblubrown{tcsh}.
+    \item It allows to a user to automatically complete the file, directory or command name you are typing upto the next unique characters using the TAB key.
+    \item Example: Your home directory contains directories \Verblubrown{Desktop}, \Verblubrown{Documents} and \Verblubrown{Downloads}.
+    \item[] If you enter the command \Verblubrown{ls D{\Tab}}, you will be prompted with above the three directory names.
+      \begin{lstlisting}[basicstyle=\color{lubrown}\bfseries\scriptsize\ttfamily,escapechar=\%]
+[user@localhost ~]%\$% ls D%\Tab%
+Desktop/ Documents/ Downloads/
+[user@localhost ~]%\$% ls Do%\Tab%
+Documents/ Downloads/
+[user@localhost ~]%\$% ls Do
+      \end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Wildcards}
+  \begin{itemize}
+    \item *nix shells have the ability to refer to more than one file by name using special characters called Wildcards.
+    \item Wildcards can be used with *nix utilities such as ls, cp, mv, rm, tar and g(un)zip.
+    \item[?] match a single character
+    \item[*] match zero or more characters
+    \item[{[\quad]}] match list of characters in the list specified
+    \item[{[!\quad]}] match characters not in the list specified
+    \item Examples:
+    \begin{enumerate}
+      {\scriptsize
+      \item \texttt{ls */*}
+      \item[] list contents of all subdirectories
+      \item \texttt{cp [a-z]* lower/}
+      \item[] copy all files with names that begin with lowercase letters to a directory called lower
+      \item \texttt{cp [!a-z]* upper\_digit/}
+      \item[] copy all files with names that do not begin with lowercase letters to a directory called lower
+      }
+    \end{enumerate}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{How to Login to Remote Systems?}
+  \begin{itemize}
+    \item Most Linux/UNIX systems allow secure shell connections from other systems.
+    \item[e.g.] You need to login using \Verblubrown{ssh} to the LTS HPC clusters.
+    \item Usage: \Verblubrown{ssh <username>@<remote host>}
+    \item Example: \Verblubrown{ssh alp514@polaris.cc.lehigh.edu}
+    \item If your local machine is a UNIX-like system i.e. Linux, Mac OSX, BSD, AIX, Solaris etc and your username on the local machine is the same as that of the remote machine, then
+    \item[] you can omit the \Verblubrown{<username>@} part of the argument.
+    \item[] i.e. \Verblubrown{ssh <remote host>}
+    \item If the remote machine is listening to ssh connections on a non default port (i.e. different from port 22) add \Verblubrown{-p <port number>} option
+    \item[i.e.] \Verblubrown{ssh -p <port number> <user>@<remote host>}
+    \item If you need to forward the display of an application from the remote system to your local system, add the \Verblubrown{-X} option to \Verblubrown{ssh}
+    \item[] Example: \Verblubrown{ssh -X alp514@ssh.cc.lehigh.edu}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]{File Transfer between two systems} 
+  \begin{itemize}
+    \item \Verblubrown{scp} is a command to copy files/directories between two *nix hosts over the SSH protocol.
+    \item Usage: \Verblubrown{scp <options> <user>@<host>:/path/to/source/file {\textbackslash}}\\
+    \Verblubrown{{\qquad}<user>@<host>:/path/to/destination/file/or/directory}
+    \item[e.g.] You want to copy files between Polaris Cluster and your Linux Desktop/Laptop
+    \item[] \Verblubrown{scp alp514@polaris.cc.lehigh.edu:/home/alp514/octave-tutorial.tar.gz .}
+    \item[] \Verblubrown{scp -r Public apacheco@polaris.cc.lehigh.edu:$\sim$/}
+    \item You can omit the \Verblubrown{<user>@} part of the argument if the username is the same on both systems.
+    \item You can omit the \Verblubrown{<user>@<host>:} for your local machine.
+    \item Common options are \Verblubrown{-r} and \Verblubrown{-p}, same meaning as \Verblubrown{cp}.
+    \item add \Verblubrown{-P <port number>} option for non default ports.
+      \framebreak
+    \item \Verblubrown{rsync} is another utility that can be used to copy files locally and remotely.
+    \item Usage: \Verblubrown{rsync <option> <source> <destination>}
+    \item It is famous for its delta-transfer algorithm
+    \item[i.e.] sending only the differences between  the  source  files and  the  existing  files in the destination.  
+    \item Rsync is widely used for backups and mirroring and as an improved copy command for everyday use.
+    \item Common options:
+      {\scriptsize
+      \item[] \Verblubrown{-a}: archive mode
+      \item[] \Verblubrown{-r}: recurse into directories
+      \item[] \Verblubrown{-v}: increase verbosity
+      \item[] \Verblubrown{-z}: compress file data during the transfer
+      \item[] \Verblubrown{-u}: skip files that are newer on the receiver
+      \item[] \Verblubrown{-t}: preserve modification times
+      \item[] \Verblubrown{-n}: dry-run, perform a trial run with no changes made
+      }
+      \item Example: \Verblubrownp{rsync -avtzu corona.cc.lehigh.edu:$\sim$/* .}
+      \item If you are a user on National Supercomputing resource such as XSEDE, NERSC, OSG, etc, there are other transfer tools such as globus toolkit (gridftp) and bbcp which provide higher bandwidth and parallel file transfers.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]{Compressing and Archiving Files}
+  \begin{itemize}
+    \item Quite often you need to compress and uncompress files to reduce storage usage or bandwidth while transferring files.
+    \item *nix systems have built-in utilities to compress/uncompress files
+      \begin{columns}
+        \column{0.4\textwidth}
+        \begin{exampleblock}{Compress}
+          \Verblubrown{gzip, zip, bzip2}\\
+          \Verblubrown{gzip README{\Enter}}
+        \end{exampleblock}
+        \column{0.4\textwidth}
+        \begin{exampleblock}{Uncompress}
+          \Verblubrown{gunzip, unzip, bunzip2}\\
+          \Verblubrown{gunzip README.gz{\Enter}}
+        \end{exampleblock}
+      \end{columns}
+    \item Gzipped files have an extension \Verblubrown{.gz,.z} or \Verblubrown{.Z}
+    \item zipped files have an extension \Verblubrown{.Zip} or \Verblubrown{.zip}
+    \item Bzipped files have an extension \Verblubrown{.bz2, .bz}
+    \item To compress/uncompress files recursively, use the \Verblubrown{-r} option.
+    \item To overwrite files while compressing/uncompressing, use the \Verblubrown{-f} option.
+      \framebreak
+    \item *nix provides the \Verblubrown{tar} package to create and manipulate streaming archive of files.
+    \item Usage: \Verblubrown{tar <options> <file> <patterns>}
+    \item[] \Verblubrown{file} is the name of the tar archive file, usually with extension \Verblubrown{.tar}
+    \item[] \Verblubrown{patterns} are pathnames for files/directories being archived
+    \item Common options
+    \item[] \Verblubrown{-c}: create an archive file
+    \item[] \Verblubrown{-x}: extract to disk from archive
+    \item[] \Verblubrown{-z}: filter the archive through gzip (adds/requires extension .gz)
+    \item[] \Verblubrown{-j}: filter the archive through bzip2 (adds/requires extension .bz2)
+    \item[] \Verblubrown{-t}: list contents of archive
+    \item[] \Verblubrown{-v}: verbosely list files processed
+    \item[e.g.] \Verblubrown{tar -cvzf myhome.tar.gz \$\{HOME\}/*}
+    \item This becomes useful for creating a backup of your files and directories that you can store at some storage facility e.g. external disk
+  \end{itemize}
+\end{frame}
+
+\section{Redirection}
+\begin{frame}
+  \frametitle{\small I/O Redirection}
+  \begin{itemize}
+    \item There are three file descriptors for I/O streams
+    \begin{enumerate}
+      {%\scriptsize
+        \item[STDIN]: Standard Input
+        \item[STDOUT]: Standard Output
+        \item[STDERR]: Standard Error
+      }
+    \end{enumerate}
+    \item 1 represents STDOUT and 2 represents STDERR
+    \item I/O redirection allows users to connect applications
+    \begin{itemize}
+      {%\scriptsize
+      \item[$<$]: connects a file to STDIN of an application
+      \item[$>$]: connects STDOUT of an application to a file
+      \item[$> >$]: connects STDOUT of an application by appending to a file
+      \item[$|$]: connects the STDOUT of an application to STDIN of another application.
+      }
+    \end{itemize}
+    \item Examples:
+    \begin{enumerate}
+      {%\scriptsize
+      \item write STDOUT to file: \Verblubrown{ls -l > ls-l.out }
+      \item write STDERR to file: \Verblubrown{ls -l 2> ls-l.err }
+      \item write STDOUT to STDERR: \Verblubrown{ls -l 1>\&2 }
+      \item write STDERR to STDOUT: \Verblubrown{ls -l 2>\&1 }
+      \item send STDOUT as STDIN: \Verblubrownp{ls -l | wc -l}
+      }
+    \end{enumerate}
+  \end{itemize}
+\end{frame}
+
+\section{File Permissions}
+
+\begin{frame}[fragile, allowframebreaks]
+  \frametitle{\small File Permissions}
+  \begin{itemize}
+    \item Since *NIX OS's are designed for multi user environment, it is necessary to restrict access of files to other users on the system.
+    \item In *NIX OS's, you have three types of file permissions
+    \begin{enumerate}
+      {%\scriptsize
+        \item read (r)
+        \item write (w)
+        \item execute (x)
+      }
+    \end{enumerate}
+    \item for three types of users
+    \begin{enumerate}
+      {%\scriptsize
+        \item user (u)
+        \item group (g)
+        \item world (o) i.e. everyone else who has access to the system
+      }
+    \end{enumerate}
+    \begin{Verbatim}[formatcom=\color{lubrown},fontsize=\scriptsize]
+[user@localhost ~]$ ls -l
+total 44
+drwxr-xr-x. 2 user user 4096 Jan 28  2013 Desktop
+drwxr-xr-x. 2 user user 4096 Jan 28  2013 Documents
+drwxr-xr-x. 2 user user 4096 Jan 28  2013 Downloads
+-rwxr-xr-x. 1 user user   32 Sep 11 11:57 hello
+drwxr-xr-x. 2 user user 4096 Jan 28  2013 Music
+drwxr-xr-x. 2 user user 4096 Jan 28  2013 Pictures
+drwxr-xr-x. 2 user user 4096 Jan 28  2013 Public
+-rw-rw-r--. 1 user user 3047 Sep 11 11:48 README
+drwxr-xr-x. 1 root root 4216 Jan 22 16:17 Shared
+drwxr-xr-x. 2 user user 4096 Jan 28  2013 Templates
+lrwxrwxrwx. 1 user user    5 Jan 23 08:17 test -> hello
+drwxr-xr-x. 2 user user 4096 Jan 28  2013 Videos
+[user@localhost ~]$ 
+    \end{Verbatim}
+    \item The first character signifies the type of the file
+    \item[] \Verblubrown{d} for directory
+    \item[] \Verblubrown{l} for symbolic link
+    \item[] \Verblubrown{-} for normal file
+    \item The next three characters of first triad signifies what the owner can do
+    \item The second triad signifies what group member can do
+    \item The third triad signifies what everyone else can do
+      \begin{gather*}
+        d\underbrace{rwx}_{u}\overbrace{r-x}^g\underbrace{r-x}_o
+      \end{gather*}
+    \item Read carries a weight of 4
+    \item Write carries a weight of 2
+    \item Execute carries a weight of 1
+    \item The weights are added to give a value of 7 (rwx), 6(rw), 5(rx) or 3(wx) permissions. 
+    \item \Verblubrown{chmod} is a *NIX command to change permissions on a file
+    \item[] Usage: \Verblubrown{chmod <option> <permissions> <file or directory name>}
+    \item To give user rwx, group rx and world x permission, the command is
+    \item[] \Verblubrown{chmod 751 filename}
+    \framebreak
+    \item Instead of using numerical permissions you can also use symbolic mode
+  \end{itemize}
+  \begin{description}
+    \item[u/g/o or a] user/group/world or all i.e. ugo
+    \item[+/-] Add/remove permission
+    \item[r/w/x] read/write/execute
+  \end{description}
+  \begin{itemize}
+    \item Give everyone execute permission: 
+    \item[] \Verblubrown{chmod a+x hello.sh }
+    \item[] \Verblubrown{chmod ugo+x hello.sh}
+    \item Remove group and world read \& write permission: 
+    \item[] \Verblubrown{chmod go-rw hello.sh}
+    \item To change permissions recursively in a directory, use the option \Verblubrown{-R} (can also be used in the following two commands)
+    \item[] \Verblubrown{chmod -R 755 \$\{HOME\}/*}
+    \item[] What is the permission on \$\{HOME\}?
+    \framebreak
+    \item The \Verblubrown{chgrp} command is used to change the group ownership between two groups that you are a member of.
+    \item[] Usage: \Verblubrown{chgrp <option> <new group> <file or directory name>}
+    %\item[e.g.] Suppose your default group on LSU HPC is \Verbblue{users} and your advisor requested sysadmins to create a group \Verbblue{abc} for collaborative research among say 10 researchers. 
+    \item You can use the \Verblubrown{chgrp} command to change the ownership of your files from the \Verbblue{users} group to \Verbblue{abc} group.
+    \item[] Example: \Verblubrown{chgrp -R abc collaborative-work-dir}
+    \item The \Verblubrown{chown} command is used to  change the owner of a file.
+    \item \Verblubrown{chown} can only be executed by the superuser, to prevent users simply changing ownership of files that aren't theirs to access. 
+    \item[] Usage: \Verblubrown{chown <new owner>[:<group name>] <file or directory name>}
+  \end{itemize}
+\end{frame}
+
+\section{Process Management}
+\begin{frame}[fragile,allowframebreaks]{\small Processes and Jobs}
+  \begin{itemize}
+    \item A process is an executing program identified by a unique PID
+    \item[$\mybigstar$] To see information about your running processes and their PID and status,
+    \item[] \Verblubrown{ps{\Enter}}
+    \item A process may be in foreground, background or be suspended.
+    \item Processes running in foreground, the command prompt is not returned until the current process has finished executing.
+    \item If a job takes a long time to run, put the job in background in order to obtain the command prompt back to do some other useful work
+    \item There are two ways to send a job into the background:
+    \begin{enumerate}
+      {%\scriptsize
+        \item Add an ampersand \Verblubrown{\&} to the end of your command to send it into background directly.
+        \item[] \Verbblue{firefox \&{\Enter}}
+        \item First suspend the job using \Verbblue{{\Ctrl}Z} and then type \Verbblue{bg} at the command prompt.
+        \item If you type \Verbblue{fg} then the job will run in foreground and you will lose the command prompt.
+      }
+    \end{enumerate}
+    \framebreak
+    \item When a process is running, background or suspended, it will be entered onto a list along with a job number (not PID)
+    \item[] \Verblubrown{jobs{\Enter}}
+    \item To restart a suspended job in foreground or background, type
+    \item[] \Verblubrown{fg \%jobnumber} where \Verbblue{jobnumber} is a number greater than 1, or,
+    \item[] \Verblubrown{bg \%jobnumber} 
+    \item To kill or terminate a process:
+    \begin{enumerate}
+      {%\scriptsize
+        \item Job running in foreground: enter \Verbblue{{\Ctrl}C}
+        \item Job whose PID you know
+        \item[] \Verblubrown{kill PID{\Enter}}
+        \item Job whose \Verbblue{jobnumber} you know (from \Verblubrown{jobs} command)
+        \item[] \Verblubrown{kill \%jobnumber{\Enter}}
+      }
+    \end{enumerate}
+    \item The \Verblubrown{kill} command can take options specific to UNIX signals
+    \item The most common option is \Verblubrown{-9} for the \Verblubrown{SIGKILL} signal
+    \item \Verblubrown{pstree}: display a tree of processes
+    \item \Verblubrown{pkill}: kill process by its name, user name, group name, terminal, UID, EUID, and GID.
+  \end{itemize}
+\end{frame}
+
+\section{Editors}
+\begin{frame}
+  \frametitle{\small File Editing}
+  \begin{itemize}
+    \item The two most commonly used editors on Linux/Unix systems are:
+    \begin{enumerate}
+      {\scriptsize
+      \item \Verblubrown{vi} or \Verblubrown{vim} (vi improved)
+      \item \Verblubrown{emacs}
+      }
+    \end{enumerate}
+    \item \Verblubrown{vi/vim} is installed by default on Linux/Unix systems and has only a command line interface (CLI).
+    \item \Verblubrown{emacs} has both a CLI and a graphical user interface (GUI).
+    \item[$\vardiamond$] If \Verblubrown{emacs} GUI is installed then use \Verblubrown{emacs -nw} to open file in console.
+    \item Other editors that you may come across on *nix systems
+    \item[] \Verblubrown{kate}: {default editor for KDE.}
+    \item[] \Verblubrown{gedit}: {default text editor for GNOME desktop environment.}
+    \item[] \Verblubrown{gvim}: {GUI version of }\Verblubrown{vim}
+    \item[] \Verblubrown{pico}: {console based plain text editor }
+    \item[] \Verblubrown{nano}: {GNU.org clone of }\Verblubrown{pico}
+    \item[] \Verblubrown{kwrite}: {editor by KDE.}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+  \frametitle{\small Editor Cheatsheets}
+% Page 1
+  \begin{itemize}
+    \item \textbf{\color{lubrown}vi/vim} and \textbf{\color{lubrown}emacs} are the two most popular *nix file editors.
+    \item Which one to use is up to you.
+    \item \textbf{\color{lubrown}vi/vim} has two modes:
+    \begin{enumerate}
+      {\scriptsize
+        \item Editing mode
+        \item Command mode
+      }
+    \end{enumerate}
+    \item \textbf{\color{lubrown}emacs} has only one mode as in any editor that you use.
+  \end{itemize}
+  {\scriptsize
+  \begin{columns}[t]
+    \column{0.6\textwidth}
+    \begin{exampleblock}{Insert/Appending Text}
+    \begin{itemize}
+      \item insert at cursor 
+      \item insert at beginning of line
+      \item append after cursor
+      \item append at end of line
+      \item newline after cursor in insert mode
+      \item newline before cursor in insert mode
+      \item append at end of line
+      \item exit insert mode
+    \end{itemize}
+    \end{exampleblock}
+    \column{0.2\textwidth}
+    \begin{exampleblock}{vi}
+    \begin{itemize}
+      \item \texttt{i}
+      \item \texttt{I}
+      \item \texttt{a}
+      \item \texttt{A}
+      \item \texttt{o}
+      \item \texttt{O}
+      \item \texttt{ea}
+      \item \texttt{ESC}
+    \end{itemize}
+    \end{exampleblock}
+  \end{columns}
+  }
+  \framebreak
+% Page 2
+  \vspace{-0.6cm}
+  {\scriptsize
+  \begin{columns}
+    \column{0.35\textwidth}
+    \begin{exampleblock}{Cursor Movement}
+    \begin{itemize}
+      \item move left 
+      \item move down
+      \item move up
+      \item move right
+      \item jump to beginning of line
+      \item jump to end of line
+      \item goto line \texttt{n}
+      \item goto top of file
+      \item goto end of file
+      \item move one page up
+      \item move one page down
+    \end{itemize}
+    \end{exampleblock}
+    \column{0.2\textwidth}
+    \begin{exampleblock}{vi}
+    \begin{itemize}
+      \item \texttt{h}
+      \item \texttt{j}
+      \item \texttt{k}
+      \item \texttt{l}
+      \item \texttt{\^}
+      \item \texttt{\$}
+      \item \texttt{nG}
+      \item \texttt{1G}
+      \item \texttt{G}
+      \item \texttt{C-u}
+      \item \texttt{C-d}
+    \end{itemize}
+    \end{exampleblock}
+    \column{0.35\textwidth}
+    \begin{exampleblock}{emacs}
+    \begin{itemize}
+      \item \texttt{C-b}
+      \item \texttt{C-n}
+      \item \texttt{C-p}
+      \item \texttt{C-f}
+      \item \texttt{C-a}
+      \item \texttt{C-e}
+      \item \texttt{M-x goto-line \enter\, n}
+      \item \texttt{M-<}
+      \item \texttt{M->}
+      \item \texttt{M-v}
+      \item \texttt{C-v}
+    \end{itemize}
+    \end{exampleblock}
+  \end{columns}
+  }
+  \vspace{-0.1cm}
+  \begin{columns}
+    \column{0.6\textwidth}
+    \begin{itemize}
+      {\scriptsize
+      \item[C]: Control Key
+      \item[M]: Meta or ESCAPE (ESC) Key
+      \item[{\enter}]: Enter Key
+      }
+    \end{itemize}
+  \end{columns}
+  \framebreak
+% Page 3
+  {\scriptsize
+   \begin{columns}
+    \column{0.45\textwidth}
+     \vspace{-0.5cm}
+    \begin{exampleblock}{File Manipulation}
+    \begin{itemize}
+      \item save file
+      \item save file and exit
+      \item quit
+      \item quit without saving
+      \item delete a line
+      \item delete \texttt{\textit{n}} lines
+      \item paste deleted line after cursor
+      \item paste before cursor
+      \item undo edit
+      \item delete from cursor to end of line
+      \item search forward for \textit{patt}
+      \item search backward for \textit{patt}
+      \item search again forward (backward)
+    \end{itemize}
+    \end{exampleblock}
+    \column{0.20\textwidth}
+     \vspace{-0.5cm}
+    \begin{exampleblock}{vi}
+    \begin{itemize}
+      \item \texttt{:w}
+      \item \texttt{:wq, ZZ}
+      \item \texttt{:q}
+      \item \texttt{:q!}
+      \item \texttt{dd}
+      \item \texttt{\textit{n}dd}
+      \item \texttt{p}
+      \item \texttt{P}
+      \item \texttt{u}
+      \item \texttt{D}
+      \item \texttt{$\backslash$\textit{patt}}
+      \item \texttt{?\textit{patt}}
+      \item \texttt{n}
+    \end{itemize}
+    \end{exampleblock}
+    \column{0.25\textwidth}
+     \vspace{-0.5cm}
+    \begin{exampleblock}{emacs}
+    \begin{itemize}
+      \item \texttt{C-x C-s}
+      \item \texttt{}
+      \item \texttt{C-x C-c}
+      \item \texttt{}
+      \item \texttt{C-a C-k}
+      \item \texttt{C-a M-\textit{n} C-k}
+      \item \texttt{C-y}
+      \item
+      \item \texttt{C-\_}
+      \item \texttt{C-k}
+      \item \texttt{C-s \textit{patt}}
+      \item \texttt{C-r \textit{patt}}
+      \item \texttt{C-s(r)}
+    \end{itemize}
+    \end{exampleblock}
+  \end{columns}
+  }
+  \framebreak
+% Page 4
+  {\scriptsize
+  \begin{columns}
+    \column{0.4\textwidth}
+     \vspace{-0.5cm}
+    \begin{exampleblock}{File Manipulation (contd)}
+    \begin{itemize}
+      \item replace a character
+      \item join next line to current
+      \item change a line
+      \item change a word
+      \item change to end of line
+      \item delete a character
+      \item delete a word
+      \item edit/open file \textit{file}
+      \item insert file \textit{file}
+      \item split window horizontally
+      \item split window vertically
+      \item switch windows
+    \end{itemize}
+    \end{exampleblock}
+    \column{0.30\textwidth}
+     \vspace{-0.5cm}
+    \begin{exampleblock}{vi}
+    \begin{itemize}
+      \item \texttt{r}
+      \item \texttt{J}
+      \item \texttt{cc}
+      \item \texttt{cw}
+      \item \texttt{c\$}
+      \item \texttt{x}
+      \item \texttt{dw}
+      \item \texttt{:e \texttt{file}}
+      \item \texttt{:r \texttt{file}}
+      \item \texttt{:split or C-ws}
+      \item \texttt{:vsplit or C-wv}
+      \item \texttt{C-ww}
+    \end{itemize}
+    \end{exampleblock}
+    \column{0.25\textwidth}
+     \vspace{-0.5cm}
+    \begin{exampleblock}{emacs}
+    \begin{itemize}
+      \item 
+      \item 
+      \item 
+      \item
+      \item
+      \item \texttt{C-d}
+      \item \texttt{M-d}
+      \item \texttt{C-x C-f \textit{file}}
+      \item \texttt{C-x i \textit{file}}
+      \item \texttt{C-x 2}
+      \item \texttt{C-x 3}
+      \item \texttt{C-x o}
+    \end{itemize}
+    \end{exampleblock}
+  \end{columns}
+  }
+  \framebreak
+% Page 5
+  \begin{itemize}
+    \item Do a google search for more detailed cheatsheets
+    \item[\texttt{vi}] \url{https://www.google.com/search?q=vi+cheatsheet}
+    \item[\texttt{emacs}] \url{https://www.google.com/search?q=emacs+cheatsheet}
+  \end{itemize}
+  \begin{block}{More on the \textbf{set -o} command}
+    \begin{itemize}
+      \item The \textbf{\color{lubrown}set -o} command can be used to change the command line editor mode among other things (Do \textbf{\color{lubrown}man set\Enter} to find out more)
+      \begin{enumerate}
+        {\scriptsize
+        \item \textbf{\color{lubrown}set -o emacs}: emacs style in-line editor for command entry, this is the default
+        \item \textbf{\color{lubrown}set -o vi}: vi style in-line editor for command entry.
+        }
+      \end{enumerate}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+\section*{Basic Shell Scripting}
+\begin{frame}
+  \frametitle{Start Up Scripts}
+  \begin{itemize}
+    \item When you login to a *NIX computer, shell scripts are automatically loaded depending on your default \textbf{\color{lubrown}shell}
+    \item \textbf{\color{lubrown}sh,ksh}
+    \begin{enumerate}
+        \item \texttt{\color{blue}/etc/profile}
+        \item \texttt{\color{blue}\$HOME/.profile}
+    \end{enumerate}
+    \item \textbf{\color{lubrown}bash}
+    \begin{enumerate}
+        \item \texttt{\color{blue}/etc/profile}, login terminal only
+        \item \texttt{\color{blue}/etc/bashrc} or \texttt{\color{blue}/etc/bash/bashrc}
+        \item \texttt{\color{blue}\$HOME/.bash\_profile}, login terminal only
+        \item \texttt{\color{blue}\$HOME/.bashrc}
+    \end{enumerate}
+    \item \textbf{\color{lubrown}csh,tcsh}
+    \begin{enumerate}
+        \item \texttt{\color{blue}/etc/csh.cshrc}
+        \item \texttt{\color{blue}\$HOME/.tcshrc}
+        \item \texttt{\color{blue}\$HOME/.cshrc} if .tcshrc is not present
+    \end{enumerate}
+    \item The \texttt{\color{blue}.bashrc, .tcshrc, .cshrc, .bash\_profile} are script files where users can define their own aliases, environment variables, modify paths etc.
+    \item e.g. the \textbf{\color{lubrown}alias} command covered earlier can be put in one of these script files depending on your \textbf{\color{lubrown}shell}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile, allowframebreaks]
+  \frametitle{Examples}
+  \begin{lstlisting}[language=bash,basicstyle=\tiny\ttfamily]
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+        . /etc/bashrc
+fi
+
+# User specific aliases and functions
+alias c="clear"
+alias rm="/bin/rm -i"
+alias psu="ps -u apacheco"
+alias em="emacs -nw"
+alias ll="ls -lF"
+alias la="ls -al"
+export PATH=/home/apacheco/bin:${PATH}
+export g09root=/home/apacheco/Software/Gaussian09
+export GAUSS_SCRDIR=/home/apacheco/Software/scratch
+source $g09root/g09/bsd/g09.profile
+
+export TEXINPUTS=.:/usr/share/texmf//:/home/apacheco/LaTeX//:${TEXINPUTS}
+export BIBINPUTS=.:/home/apacheco/TeX//:${BIBINPUTS}
+  \end{lstlisting}
+
+  \begin{lstlisting}[language=csh,basicstyle=\tiny\ttfamily]
+# .tcshrc
+
+# User specific aliases and functions
+alias c clear
+alias rm "/bin/rm -i"
+alias psu "ps -u apacheco"
+alias em "emacs -nw"
+alias ll "ls -lF"
+alias la "ls -al"
+setenv PATH "/home/apacheco/bin:${PATH}"
+setenv g09root "/home/apacheco/Software/Gaussian09"
+setenv GAUSS_SCRDIR "/home/apacheco/Software/scratch"
+source $g09root/g09/bsd/g09.login
+
+setenv TEXINPUTS ".:/usr/share/texmf//:/home/apacheco/LaTeX//:${TEXINPUTS}"
+setenv BIBINPUTS ".:/home/apacheco/TeX//:${BIBINPUTS}"
+  \end{lstlisting}
+\end{frame}
+
+\section*{What is a scripting Language?}
+\begin{frame}
+  \begin{exampleblock}{What is a Scripting Language?}
+    \begin{itemize}
+      \item A \textbf{scripting language} or \textbf{script language} is a \emph{programming language} that supports the writing of \textbf{scripts}.
+      \item \textbf{Scripting Languages} provide a higher level of abstraction than standard programming languages.
+      \item Compared to programming languages, scripting languages do not distinguish between data types: integers, real values, strings, etc.
+      \item Scripting Languages tend to be good for automating the execution of other programs.
+      \begin{enumerate}
+          \item[$\vardiamond$] analyzing data
+          \item[$\vardiamond$] running daily backups
+      \end{enumerate}
+      \item They are also good for writing a program that is going to be used only once and then discarded.
+    \end{itemize}
+  \end{exampleblock}
+  \begin{exampleblock}{What is a script?}
+    \begin{itemize}
+      \item A \textbf{script} is a program written for a software environment that automate the execution of tasks which could alternatively be executed one-by-one by a human operator.
+      \item The majority of script programs are ``quick and dirty'', where the main goal is to get the program written quickly.
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\subsection*{Writing Scripts}
+\begin{frame}[fragile]
+  \frametitle{Writing your first script}
+  \begin{enumerate}
+    \item Write a script
+      \begin{itemize}
+        \item A shell script is a file that contains ASCII text. 
+        \item Create a file, \texttt{hello.sh} with the following lines 
+      \end{itemize}
+      \begin{lstlisting}[language=bash,basicstyle=\scriptsize\ttfamily]
+#!/bin/bash
+# My First Script
+echo "Hello World!"
+      \end{lstlisting}
+    \item Set permissions
+      \begin{Verbatim}[fontsize=\scriptsize,formatcom=\color{lupurple}]
+apacheco@apacheco:~/Tutorials/BASH/scripts> chmod 755 hello.sh 
+      \end{Verbatim}
+    \item Execute the script
+      \begin{Verbatim}[fontsize=\scriptsize,formatcom=\color{lupurple}]
+apacheco@apacheco:~/Tutorials/BASH/scripts> ./hello.sh 
+Hello World!
+      \end{Verbatim}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Description of the script}
+  \begin{itemize}
+    \item My First Script
+      \begin{lstlisting}[language=bash]
+#!/bin/bash
+# My First Script
+echo "Hello World!"
+  \end{lstlisting}
+    \item The first line is called the "SheBang'' line. It tells the OS which interpreter to use. In the current example, bash
+    \item Other options are:
+    \begin{enumerate}
+        \item[sh]   : \lstinline[language=bash]|#!/bin/sh|
+        \item[ksh]  : \lstinline[language=bash]|#!/bin/ksh|
+        \item[csh]  : \lstinline[language=csh]|#!/bin/csh|
+        \item[tcsh] : \lstinline[language=csh]|#!/bin/tcsh|
+    \end{enumerate}
+    \item The second line is a comment. All comments begin with "\#".
+    \item The third line tells the OS to print "Hello World!" to the screen.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Special Characters}
+  \begin{description}
+    \item[\#:] starts a comment.
+    \item[\$:] indicates the name of a variable.
+    \item[$\backslash$:] escape character to display next character literally.
+    \item[\{ \}:] used to enclose name of variable.
+    \item[;] Command separator [semicolon]. Permits putting two or more commands on the same line.
+    \item[;;] Terminator in a case option [double semicolon].
+    \item[.] "dot" command [period]. Equivalent to source. This is a bash builtin.
+    \item[\$?] exit status variable.
+    \item[\$\$] process ID variable.
+    \item[{[\quad]}] test expression
+    \item[{[[\quad]]}] test expression, more flexible than [ ]
+    \item[{\$[\quad], ((\quad))}] integer expansion.
+    \item[{$||$, \&\&, !}] Logical OR, AND and NOT
+  \end{description}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Quotation}
+  \begin{itemize}
+    \item Double Quotation \texttt{" "}
+    \begin{itemize}
+        \item Enclosed string is expanded ("\$", "/" and "`")
+        \item Example: \Verblubrown{echo "\$myvar"} prints the value of \Verbblue{myvar}
+    \end{itemize}
+    \item Single Quotation \texttt{' '}
+    \begin{itemize}
+        \item Enclosed string is read literally
+        \item Example: \Verblubrown{echo '\$myvar'} prints \Verbblue{\$myvar}
+    \end{itemize}
+    \item Back Quotation \texttt{` `}
+    \begin{itemize}
+        \item Enclosed string is executed as a command
+        \item Example: \Verblubrown{echo `pwd`} prints the output of the \Verblubrown{pwd} command i.e. print the current working directory
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[allowframebreaks]
+  \frametitle{\small Exercises}
+  \begin{itemize}
+    \item Login to a Linux machine and open a terminal
+    \item Enter the following commands or carry out operations asked for.
+    \item Understand what you are doing and ask for help if unsure. Some commands are incorrect or will fail, enter the correct
+    \begin{enumerate}
+      {\scriptsize
+      \item \texttt{echo hello world\Enter}
+      \item \texttt{pwd\Enter}
+      \item \texttt{whoami\Enter}
+      \item \texttt{cd /tmp \Enter}
+      \item \texttt{cd -\Enter}
+      \item \texttt{mkdir test/testagain\Enter}
+      \item \texttt{cd test/testagain\Enter}
+      \item \texttt{touch file\Enter}
+      \item Go back to your home directory.
+      \item Which shell are you using?
+      \item Review the commands you have just entered.
+      \item create an alias for removing files which prompt for confirmation and delete the file that you created.
+      \item From your home directory get a list of files and directory in long format in reverse order with file sizes listed in human readable format.
+      \item Find out the location of vi, emacs, firefox, google-chrome, thunderbird, latex, pdflatex, gnuplot, python, perl and matlab.
+      \item Change the permission of the testagain directory to be world writable.
+      \item open a few applications of choice in foreground one by one and then suspend them,
+      \item get a list of suspended jobsr,
+      \item foreground job 1 and close it,
+      \item background job 2,
+      \item kill job 3,
+      \item put job 2 in foreground and close it,
+      \item check if you still have any jobs running.
+      }
+    \end{enumerate}
+      \framebreak
+    \begin{enumerate}
+      {\scriptsize
+      \item Exercise courtesy \url{http://www.doc.ic.ac.uk/~wjk/UnixIntro/Exercise6.html}
+      \item Copy the file mole.txt
+      \item[] \texttt{wget \url{http://www.doc.ic.ac.uk/~wjk/UnixIntro/mole.txt}}
+      \item Go to the end of the document and type in the following paragraph:
+      \item[] \texttt{Joined the library. Got Care of the Skin, Origin of the Species, and a book by a woman my mother is always going on about. It is called Pride and Prejudice, by a woman called Jane Austen. I could tell the librarian was impressed. Perhaps she is an intellectual like me. She didn't look at my spot, so perhaps it is getting smaller.}
+      \item Correct  the three  spelling errors in the first three lines of the first paragraph (one  error per  line) and  remove the extra "Geography" in the 3rd line of the first paragraph.
+      \item Add the words "About time!" to the end of the second paragraph.
+      \item Delete  the sentence  "Time flies like an arrow but  fruit flies like a banana" and re-form the paragraph.
+      \item Replace all occurrences of "is" with "was".
+      \item Swap the two paragraphs.
+      \item Save the file and quit.
+      }
+    \end{enumerate}
+  \end{itemize}
+  \framebreak
+  \begin{exampleblock}{}
+Wednesday January 14th
+
+Joined the library. Got Care of the Skin, Origin of the Species, and a book by a woman my mother was always going on about. It was called Pride and Prejudice, by a woman called Jane Austen. I could tell the librarian was impressed. Perhaps she was an intellectual like me. She didn't look at my spot, so perhaps it was getting smaller.
+
+None of the teachers at school have noticed that I am an intellectual. They will be sorry when I am famous. There was a new girl in our class. She sits next to me in Geography. She was all right. Her name was Pandora, but she likes being called ``Box''.  Don't ask me why. I might fall in love with her. It's time I fell in love, after all I am 13 3/4 years old. About time!
+  \end{exampleblock}
+\end{frame}
+
+\end{document}
+
