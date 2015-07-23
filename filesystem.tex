@@ -1,0 +1,88 @@
+%% Tikz File System Heirarchy
+ \tikzset{
+    invisible/.style={opacity=0},
+    visible on/.style={alt={#1{}{invisible}}},
+    alt/.code args={<#1>#2#3}{%
+      \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}} % \pgfkeysalso doesn't change the path
+    },
+  }
+
+\begin{frame}{File System Hierarchy}
+\tikzset{every node/.append style={scale=0.4}}
+
+\begin{tikzpicture}[scale=0.4]
+  \path[mindmap,concept color=lubrown,text=lucream,
+  level 1 concept/.append style={every child/.style={concept color=luorange,text=black},sibling angle=-15},
+  level 2 concept/.append style={every child/.style={concept color=luorange2,text=black}, sibling angle=-40},
+  level 3 concept/.append style={every child/.style={concept color=lulime,text=black}}]
+    node[concept] {root directory (/)}
+    [clockwise from=180]
+    child[style={concept}, level distance=8.5cm, visible on=<2->] { node[concept] {bin}}
+    child[concept, visible on=<3->] { node[concept] {boot}}
+    child[style={concept}, level distance=8.5cm, visible on=<4->] { node[concept] {dev}}
+    child[concept, visible on=<5->] { node[concept] {etc}}
+    child[style={concept}, level distance=8.5cm, visible on=<6->] { node[concept] {home}
+		[counterclockwise from=-90]
+      	child { node[concept] {alp514} 
+        	[clockwise from=0]
+            child { node[concept] {.bashrc}}
+            child { node[concept] {bin}}
+            child { node[concept] {Documents}}
+            child { node[concept] {packages}}
+            child { node[concept] {$\cdots$}}
+        }
+      	child[visible on=<16->] { node[concept] {sma310} }
+      	child[visible on=<16->] { node[concept] {$\cdots$} }
+	}
+    child[concept, visible on=<7->] { node[concept] {lib64 \& lib}}
+    child[style={concept}, level distance=8.5cm, visible on=<8->] { node[concept] {mnt}}
+    child[concept, visible on=<9->] { node[concept] {proc}}
+    child[style={concept}, level distance=8.5cm, visible on=<10->] { node[concept] {sbin}}
+    child[concept, visible on=<11->] { node[concept] {tmp}}
+    child[style={concept}, level distance=11.5cm, visible on=<12->] { node[concept] {usr}
+		[counterclockwise from=15]
+      	child { node[concept] {bin} }
+      	child { node[concept] {lib64 \& lib} }
+      	child { node[concept] {local} }
+      	child { node[concept] {include} }
+      	child { node[concept] {sbin} }
+      	child { node[concept] {share} }
+        }
+    child[concept, visible on=<13->] { node[concept] {var}}
+    child[style={concept}, level distance=8.5cm, visible on=<14->] { node[concept] {zhome}
+		[counterclockwise from=0]
+      	child { node[concept] {Apps} 
+        	[clockwise from=50]
+            child { node[concept] {matlab}}
+            child { node[concept] {gcc}}
+            child { node[concept] {intel}}
+            child { node[concept] {pgi}}
+        }
+      	child { node[concept] {alp514} }
+      	child { node[concept] {sma310} }
+      	child { node[concept] {$\cdots$} }
+	}
+;
+\end{tikzpicture}
+
+\begin{itemize}
+\only<1>{\item All files are arranged in a hierarchial structure, like an inverted tree.}
+\only<1>{\item The top of the hierarchy is traditionally called \textbf{root} (written as a slash / )}
+\only<2>{\item contains files that are essential for system operation, available for use by all users.}
+\only<3>{\item contains bootable kernel and bootloader}
+\only<4>{\item contains various devices such as hard disk, CD-ROM drive etc}
+\only<5>{\item contains various system configurations}
+\only<6>{\item contains home directories of all users. This is the directory where you are at when you login to a Linux/UNIX system.}
+\only<7>{\item contains libraries that are essential for system operation, available for use by all users.}
+\only<8>{\item }
+\only<9>{\item }
+\only<10>{\item same as bin but only accessible by \textbf{root}}
+\only<11>{\item temporary file storage}
+\only<12>{\item contains user documentations, binaries, libraries etc}
+\only<13>{\item used to store files which change frequently (system level not user level)}
+\only<14>{\item where we install applications common to all HPC systems}
+\only<15>{\item Installing your own OS: /bin,/lib\{64\},/etc,/dev and /sbin must be on the same partition.}
+\only<16>{\item UNIX like OS's are designed for multi user environments i.e. multiple users can exist on the system.}
+\end{itemize}
+\end{frame}
+

@@ -2,6 +2,11 @@
 
 \input{mypreamble}
 \beamertemplateballitem
+\usetikzlibrary{mindmap,trees}
+\usetikzlibrary{decorations.text,calc,arrows.meta}
+
+\definecolor{luorange}{RGB}{255,196,35}
+\definecolor{luorange2}{RGB}{255,226,147}
 
 %% Tikz Distro Watch Table
 % Defining some symbols:
@@ -142,30 +147,7 @@ PS.  Yes - it's free of any minix code, and it has a multi-threaded fs. It is NO
     \item Linux is an operating system that evolved from a kernel created by Linus Torvalds when he was a student at the University of Helsinki. 
     \item It's meant to be used as an alternative to other operating systems, Windows, Mac OS, MS-DOS, Solaris and others. 
     \item Linux is the most popular OS used in a Supercomputer\let\thefootnote\relax\footnote{\tiny \url{http://www.top500.org/statistics/list/}}
-    \begin{center}
-      \begin{tikzpicture}
-        \node (tbl) {
-          \begin{tabularx}{0.38\textwidth}{ccc}
-            \arrayrulecolor{black}
-            \textcolor{white}{\textbf{OS Family} }& \textcolor{white}{\textbf{Count}} &\textcolor{white}{\textbf {Share \%}}\\
-            Linux \rule{0pt}{3.5ex} & 485 & 97 \\
-            Unix & 13 & 2.6 \\
-            Mixed & 1 & 0.2 \\
-            Windows & 1 & 0.2 \\
-            [1.0ex]
-        \end{tabularx}};
-        \begin{pgfonlayer}{background}
-          %\draw[rounded corners,top color=blue!30!black,bottom color=blue!10!white,
-          \draw[rounded corners,top color=lupurple,bottom color=lupurple,
-            draw=lubrown!30] ($(tbl.north west)+(0.14,0)$)
-          rectangle ($(tbl.north east)-(0.13,0.9)$);
-          %\draw[rounded corners,top color=green!5,bottom color=green!5,draw=green!5]
-          \draw[rounded corners,top color=lulime,bottom color=lulime,draw=lulime]
-          ($(tbl.north east)-(0.13,0.6)$)
-          rectangle ($(tbl.south west)+(0.13,0.2)$);
-        \end{pgfonlayer}
-      \end{tikzpicture}
-    \end{center}
+      \input{top500}
     \item If you are using a Supercomputer for your research, it will most likely be based on a *nix OS.
   \end{itemize}
 \end{frame}
@@ -266,28 +248,33 @@ PS.  Yes - it's free of any minix code, and it has a multi-threaded fs. It is NO
       \item DistroWatch is NOT an indication of market-share or quality nor is it an indication of how many users but  it is clearly an indication of what users are looking at.
     \end{itemize}
     \column{0.57\textwidth}
-    \begin{center}
-	{%\scriptsize
-      \begin{matrixtable}{1.2cm}{2.4cm}{1.2cm}{0.6cm}{
-          \head{Rank} & \head{Distribution} & \head{Hits} & \\
-          1 & Mint        & 2427 & \up   \\
-          2 & Ubuntu      & 1830 & \down \\
-          3 & Debian      & 1597 & \up   \\
-          4 & openSUSE    & 1420 & \up   \\
-          5 & Fedora      & 1322 & \up   \\
-          6 & Mageia      & 1138 & \up   \\
-          7 & CentOS      & 1116 & \up   \\
-          8 & Arch        & 1035 & \down \\
-          9 & elementary  & 969  & \up   \\
-          10& Android-x86 & 832  & \up   \\
-        }
-      \end{matrixtable}
-	}
-    \end{center}
+    \input{distrowatch}
   \end{columns}
 \end{frame}
 
-
+\begin{frame}
+  \frametitle{Linux Components}
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+    \begin{itemize}
+    \item Linux is made up of two (three) parts:
+      \begin{enumerate}
+      \item Kernel 
+      \item Shell 
+      \item Applications/Programs 
+      \end{enumerate}
+    \end{itemize}
+    \column{0.5\textwidth}
+    \begin{tikzpicture}[scale=0.75]
+      %    \begin{scope}[xshift=6cm]
+      \coordinate (O) at (0,0);
+      \foreach \k in {1,...,4}\pgfmathparse{10*\k} \draw[fill=blue!\pgfmathresult!white,blue!\pgfmathresult!white] (O) circle (4.2-0.8*\k);
+      \foreach \k/\text in {0/{Other Software},1/Shell,2/Kernel,3/Hardware} \draw[decoration={text along path,reverse path,text align={align=center},text={\text}},decorate] (2.9-0.8*\k,0) arc (0:180:2.9-0.8*\k);
+      %    \end{scope}
+    \end{tikzpicture}
+  \end{columns}
+\end{frame}
+  
 \begin{frame}[allowframebreaks]
   \frametitle{Linux Components}
   \begin{columns}[T]
@@ -506,6 +493,57 @@ setenv BIBINPUTS ".:/home/apacheco/TeX//:${BIBINPUTS}"
     \end{enumerate}
     \item A process is an executing program identified by a unique process identifier or PID.
   \end{itemize}
+\end{frame}
+
+\input{filesystem}
+
+\begin{frame}
+\tikzset{every node/.append style={scale=0.25}}
+\begin{tikzpicture}[scale=0.25]
+  \path[mindmap,concept color=lubrown,text=white,
+  level 1 concept/.append style={every child/.style={concept color=lubrown},sibling angle=-30},
+  level 2 concept/.append style={every child/.style={concept color=lubrown},sibling angle=-40}]
+    node[concept] {root directory (/)}
+    [counterclockwise from=90]
+    child[concept color=lubrown] { node[concept] {bin}}
+    child[concept color=lubrown] { node[concept] {boot}}
+    child[concept color=lubrown] { node[concept] {dev}}
+    child[concept color=lubrown] { node[concept] {etc}}
+    child[style={concept}, level distance=6.5cm] { node[concept] {home}
+		[counterclockwise from=-20]
+      	child { node[concept] {alp514} 
+        	[clockwise from=90]
+            child { node[concept] {.bashrc}}
+            child { node[concept] {bin}}
+            child { node[concept] {Documents}}
+            child { node[concept] {packages}}
+            child { node[concept] {$\cdots$}}
+        }
+      	child { node[concept] {sma310} }
+      	child { node[concept] {$\cdots$} }
+	}
+    child[concept color=lubrown] { node[concept] {lib64 \& lib}}
+    child[concept color=lubrown] { node[concept] {mnt}}
+    child[concept color=lubrown] { node[concept] {sbin}}
+    child[concept color=lubrown] { node[concept] {tmp}}
+    child[style={concept}, level distance=6.5cm] { node[concept] {usr}
+		[clockwise from=90]
+      	child { node[concept] {bin} }
+      	child { node[concept] {lib64 \& lib} }
+      	child { node[concept] {local} }
+      	child { node[concept] {include} }
+      	child { node[concept] {sbin} }
+        }
+    child[concept color=lubrown] { node[concept] {var}}
+    child[style={concept}, level distance=6.5cm] { node[concept] {zhome}
+		[clockwise from=40]
+      	child { node[concept] {Apps} }
+      	child { node[concept] {alp514} }
+      	child { node[concept] {sma310} }
+      	child { node[concept] {$\cdots$} }
+	}
+;
+\end{tikzpicture}
 \end{frame}
 
 \begin{frame}

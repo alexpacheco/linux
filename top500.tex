@@ -1,0 +1,24 @@
+\begin{center}
+  \begin{tikzpicture}
+    \node (tbl) {
+      \begin{tabularx}{0.42\textwidth}{ccc}
+        \arrayrulecolor{black}
+        \textcolor{white}{\textbf{OS Family} }& \textcolor{white}{\textbf{Count}} &\textcolor{white}{\textbf {Share \%}}\\
+        Linux \rule{0pt}{3.5ex} & 485 & 97 \\
+        Unix & 13 & 2.6 \\
+        Mixed & 1 & 0.2 \\
+        Windows & 1 & 0.2 \\
+        [1.0ex]
+    \end{tabularx}};
+    \begin{pgfonlayer}{background}
+      %\draw[rounded corners,top color=blue!30!black,bottom color=blue!10!white,
+      \draw[rounded corners,top color=lupurple,bottom color=lupurple,
+        draw=lubrown!30] ($(tbl.north west)+(0.14,0)$)
+      rectangle ($(tbl.north east)-(0.13,0.9)$);
+      %\draw[rounded corners,top color=green!5,bottom color=green!5,draw=green!5]
+      \draw[rounded corners,top color=lulime,bottom color=lulime,draw=lulime]
+      ($(tbl.north east)-(0.13,0.6)$)
+      rectangle ($(tbl.south west)+(0.13,0.2)$);
+    \end{pgfonlayer}
+  \end{tikzpicture}
+\end{center}
