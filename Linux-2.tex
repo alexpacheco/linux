@@ -55,6 +55,400 @@
 \end{frame}
 
 
+
+\begin{frame}
+  \frametitle{Relative \& Absolute Path}
+  \begin{itemize}
+    \item \textit{Path} means a position in the directory tree.
+    \item You can use either the \textit{relative path} or \textit{absolute path}
+    \item In \textit{relative path} expression
+    \begin{itemize}
+      {%\scriptsize
+        \item . (one dot or period) is the current working directory
+        \item .. (two dots or periods) is one directory up
+        \item You can combine . and .. to navigate the file system hierarchy.
+        \item the path is not defined uniquely and does depend on the current path.
+        \item \texttt{../../tmp} is unique only if your current working directory is your home directory.
+      }
+    \end{itemize}
+    \item In \textit{absolute path} expression 
+    \begin{itemize}
+      {%\scriptsize
+        \item the path is defined uniquely and does not depend on the current path
+        \item \texttt{/tmp} is unique since /tmp is the \textit{abolute path}
+      }
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+\section{Variables}
+\begin{frame}[fragile,allowframebreaks]
+  \frametitle{Variables}
+  \begin{itemize}
+    \item *nix also permits the use of variables, similar to any programming language such as C, C++, Fortran etc
+    \item A variable is a named object that contains data used by one or more applications. 
+    \item There are two types of variables, Environment and User Defined and can contain  a number, character or a string of characters.
+    \item Environment Variables provides a simple way to share configuration settings between multiple applications and processes in Linux.
+    \item By Convention, enviromental variables are often named using all uppercase letters
+    \item[e.g.] \Verblubrown{PATH, LD\_LIBRARY\_PATH, LD\_INCLUDE\_PATH, TEXINPUTS,} etc
+    \item To reference a variable (environment or user defined) prepend \$ to the name of the variable
+    \item[e.g.] \Verblubrown{\$PATH, \$LD\_LIBRARY\_PATH}
+    \framebreak
+  \end{itemize}
+%\end{frame}
+%
+%\begin{frame}[allowframebreaks]
+%  \frametitle{\small Environment Variable}
+  \begin{itemize}
+    \item The command \Verblubrown{printenv} list the current environmental variables.
+    \item[$\mybigstar$] {Type \Verblubrown{printenv} on your command prompt to list all environment variables in your current session.}
+    \item The command \Verblubrown{env} is used to either print a list of environment variables or run another utility in an altered environment without having to modify the currently existing environment.
+    \item[$\mybigstar$] {Type \Verblubrown{env SHELL=/bin/tcsh xterm} to start an xterm session in tcsh}
+    \item[$\vardiamond$] {To execute the above command successfully, you need to be in GUI mode on the virtual OS or logged into a remote systems with X-Forwarding enabled.}
+  \end{itemize}
+  \framebreak
+  \begin{description}
+    \item[PATH:] A list of directory paths.
+    \item[HOME:] indicate where a user's home directory is located in the file system.
+    \item[PWD:] contains path to current working directory.
+    \item[OLDPWD:] contains path to previous working directory.
+    \item[TERM:] specifies the type of computer terminal or terminal emulator being used
+    \item[SHELL:] contains name of the running, interactive shell.
+    \item[PS1:] default command prompt
+    \item[PS2:] secondary command prompt
+    \item[LD\_LIBRARY\_PATH:] colon-separated set of directories where libraries should be searched for first
+    \item[HOSTNAME:] The systems host name
+    \item[USER:] Current logged in user's name
+    \item[DISPLAY:] Network name of the X11 display to connect to, if available.
+%    \item[LD\_INCLUDE\_PATH:] 
+  \end{description}
+  \framebreak
+  \begin{itemize}
+    \item You can edit the environment variables.
+    \item Command to do this depends on the shell
+    \item[$\mybigstar$] To add your bin directory to the \Verblubrown{PATH} variable
+    \item[] \Verblubrown{sh/ksh/bash}: \Verblubrown{export PATH=\$\{HOME\}/bin:\$\{PATH\}}
+    \item[] \Verblubrown{csh/tcsh}: \Verblubrown{setenv PATH \$\{HOME\}/bin:\$\{PATH\}}
+    \item[$\mybigstar$] Note the syntax for the above commands
+    \item[$\mybigstar$] \Verblubrown{sh/ksh/bash:} {no spaces except between \Verblubrown{export} and \Verblubrown{PATH}}
+    \item[$\mybigstar$] \Verblubrown{csh,tcsh:} {no = sign, just a space between \Verblubrown{PATH} and the absolute path}
+    \item[$\mybigstar$] \Verblubrown{all shells:} {colon(:) to separate different paths and the variable that is appended to}
+    \item \textbf{Yes, the order matters.} If you have a customized version of a software say perl in your home directory, if you append the perl path to \Verblubrown{PATH} at the end, your program will use the system wide perl not your locally installed version.
+      \framebreak
+    \item Rules for Variable Names
+    \begin{enumerate}
+      {%\scriptsize
+        \item Variable names must start with a letter or underscore
+        \item Number can be used anywhere else
+        \item DO NOT USE special characters such as \texttt{@, \#, \%, \$}
+        \item Case sensitive
+        \item Examples
+        \begin{itemize}
+          {%\scriptsize
+          \item Allowed: VARIABLE, VAR1234able, var\_name, \_VAR
+          \item Not Allowed: 1VARIABLE, \%NAME, \$myvar, VAR@NAME 
+          }
+        \end{itemize}
+      }
+    \end{enumerate}
+    \item Assigning value to a variable
+    \begin{center}
+      \begin{tikzpicture}
+        \node (tbl) {
+          \begin{tabularx}{0.65\textwidth}{ccc}
+            \arrayrulecolor{black}
+            \textcolor{white}{\textbf{Type} }& \textcolor{white}{\textbf{sh,ksh,bash}} &\textcolor{white}{\textbf {csh,tcsh}}\\
+            Shell \rule{0pt}{3.5ex} & name=value & set name = value \\
+            Environment & export name=value & setenv name value \\
+            [1.0ex]
+        \end{tabularx}};
+        \begin{pgfonlayer}{background}
+          \draw[rounded corners,top color=lupurple,bottom color=lupurple,
+            draw=lubrown!30] ($(tbl.north west)+(0.14,0)$)
+          rectangle ($(tbl.north east)-(0.13,0.9)$);
+          \draw[rounded corners,top color=lulime,bottom color=lulime,draw=lulime]
+          ($(tbl.north east)-(0.13,0.6)$)
+          rectangle ($(tbl.south west)+(0.13,0.2)$);
+        \end{pgfonlayer}
+      \end{tikzpicture}
+    \end{center}
+    \item \Verblubrown{sh,ksh,bash} THERE IS NO SPACE ON EITHER SIDE OF =
+    \item \Verblubrown{csh,tcsh} space on either side of = is allowed for the \Verblubrown{set} command
+    \item \Verblubrown{csh,tcsh} There is no = in the \Verblubrown{setenv} command
+  \end{itemize}
+  \framebreak
+  \begin{exampleblock}{Exercise}
+    \begin{itemize}
+      \item Create two shell variables containing
+      \begin{enumerate}
+        {%\footnotesize
+          \item your name
+          \item[e.g.] MYNAME=Alex
+          \item a standard greeting
+          \item[e.g.] Greet=Hello
+        }
+      \end{enumerate}
+      \item We'll make use of this variables in a few slides when we learn some basic commands.
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+
+\section{Basic Commands}
+\begin{frame}[fragile]
+  \frametitle{Basic Commands}
+  \begin{exampleblock}{What is a command and how do you use it?}
+    \begin{itemize}
+      \item \textbf{command} is a directive to a computer program acting as an interpreter of some kind, in order to perform a specific task.
+      \item \textbf{command prompt} (or just \textbf{prompt}) is a sequence of (one or more) characters used in a command-line interface to indicate readiness to accept commands.
+      \item Its intent is to literally prompt the user to take action. 
+      \item A prompt usually ends with one of the characters \$, \%, \#, :, $>$ and often includes other information, such as the path of the current working directory.
+      \item[$\mybigstar$] Virtual Image: \Verb[formatcom=\color{lubrown},fontseries=b,commandchars=\\\{\}]|[user@localhost ~]\$|
+%      \item[$\mybigstar$] QueenBee: \texttt{[apacheco@qb4 $\sim$]\$}
+      \item[$\mybigstar$] Mac OSX in \Verblubrown{tcsh}: \Verb[formatcom=\color{lubrown},fontseries=b,commandchars=\\\{\}]|[c8-bc-c8-ee-b8-9e:~] apacheco\%|
+      \item Each \textbf{command} consists of three parts: name, options, arguments
+      \item[] \Verb[formatcom=\color{lubrown},fontseries=b,commandchars=\\\{\}]|[user@localhost ~]\$ command options arguments|
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]{How to get more information with Linux}
+  \begin{itemize}
+    \item \Verblubrown{man} shows the manual for a command or program.
+    \item The manual is a file that shows you how to use the command and list the different options for the command in question.
+    \item Usage: \Verblubrown{man [command]}
+    \item Example: \Verblubrown{man ls{\Enter}}
+    \item \Verblubrown{apropos} shows you all of the man pages that may shed some light on a certain command.
+    \item Usage: \Verblubrown{appropos [keyword]}
+    \item Example: \Verblubrown{appropos editor{\Enter}}
+  \end{itemize}
+% leave space for info command
+\end{frame}
+
+
+
+\begin{frame}[fragile,allowframebreaks]
+  \frametitle{Input \& Output Commands}
+  \begin{itemize}
+    \item The basis I/O statements are \Verblubrown{echo} for displaying output to screen and \Verblubrown{read} for reading input from screen/keyboard/prompt
+    \item The \Verblubrown{read} statement takes all characters typed until the \Verblubrown{{\Enter}} key is pressed and stores them into a variable.
+    \item Usage: \Verblubrown{read <variable name>}
+    \item Example: \Verblubrown{read name{\Enter}}
+    \item[] \Verbblue[it]{Alex Pacheco{\Enter}}
+    \item In the above example, the name that you enter in stored in the variable \Verblubrown{name}.
+    \item[]
+    \item The \Verblubrown{echo arguments} command will print \Verblubrown{arguments} to screen or standard output. 
+    \item \Verblubrown{arguments} can be a (single or multiple) variable, string of characters or numbers.
+      \framebreak
+    \item Examples:
+      \begin{enumerate}
+        {%\footnotesize
+          \item \Verblubrown{echo \$LD\_LIBRARY\_PATH \$LD\_INCLUDE\_PATH{\Enter}}
+          \item \Verblubrown{echo Welcome to HPC {\quad} Training{\Enter}}
+        }
+      \end{enumerate}
+    \item By default, \Verblubrown{echo} eliminates redundant whitespace (multiple spaces and tabs) and replaces it with a single whitespace between arguments. 
+    \item To include redundant whitespace, enclose the arguments within double quotes
+    \item[e.g.] \Verblubrown{echo "Welcome to HPC{\quad\quad}Training"{\Enter}}
+  \end{itemize}
+
+  \begin{exampleblock}{Exercise}
+    \begin{itemize}
+      \item Print out the variable you created a few slides back
+      \item[] \Verblubrown{echo \$MYNAME{\Enter}}
+      \item[] \Verblubrown{echo \$Greet{\Enter}}
+      \item Read a variable for greeting message
+      \item[] \Verblubrown{read message{\Enter}}
+      \item[] \Verbblue[it]{Welcome to HPC{\Enter}}
+      \item Combine and print your name, the greeting and the message
+      \item[] \Verblubrown{echo \$Greet \$MYNAME \$message{\Enter}}
+      \item What is the output of the following command?
+      \item[] \Verblubrown{echo \$Greet \$MYNAME, \$message Training{\Enter}}
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]{Commands: pwd \& cd}
+  \begin{itemize}
+    \item \Verblubrown{pwd} command prints the current working directory.
+    \item Usage: \Verblubrown{pwd}
+    \item Example: \Verblubrown{pwd{\Enter}}
+    \item[]{}
+    \item \Verblubrown{cd} command allows one to change directory
+    \item argument is the path (relative or absolute) of the directory you want to change to
+    \item Usage: \Verblubrown{cd [destination]}
+    \item Example: \Verblubrown{cd /tmp{\Enter}}
+    \item The default destination directory is your home directory.
+    \item i.e. If you type \Verblubrown{cd{\Enter}}, you will end up in your home directory.
+    \item If you want to go back to the previous directory, type \Verblubrown{cd - {\Enter}}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Command: ls}
+  \begin{itemize}
+    \item \Verblubrown{ls} command lists the contents of a directory.
+    \item Usage: \Verblubrown{ls <options> <path>}
+    \item Example: \Verblubrown{ls{\Enter}}
+    \item The current working directory is the default path.
+    \item To list contents of another directory specify the path, relative or absolute
+    \item Common options to the \Verblubrown{ls} command 
+    \item[] \Verblubrown{-l}: show long listing format
+    \item[] \Verblubrown{-a}: show hidden files
+    \item[] \Verblubrown{-r}: reverse order while sorting
+    \item[] \Verblubrown{-t}: show modification times
+    \item[] \Verblubrown{-h}: use file sizes in SI units (bytes, kilobytes, megabytes etc ) default is bytes
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Command: alias}
+  \begin{itemize}
+    \item \Verblubrown{alias} is a command to create a shortcut to another command or name to execute a long string.
+    \item Usage 
+    \item[] \Verblubrown{bash/sh/ksh}: \Verblubrown{alias <name>="<actual command>"}
+    \item[] \Verblubrown{csh/tcsh}: \Verblubrown{alias <name> "<actual command>"}
+    \item Example: 
+    \item[] \Verblubrown{bash/sh/ksh}: \Verblubrown{alias lla="ls -al"}
+    \item[] \Verblubrown{csh/tcsh}: \Verblubrown{alias lls "ls -al"}
+    \item The \Verblubrown{alias} command is very useful tool to create shortcuts to other commands and is most often used by paranoid users to prevent accidental deletion of files. 
+    \item \Verblubrown{unalias} is a command to remove an alias.
+    \item Usage: \Verblubrown{unalias <name>}
+    \item Example: \Verblubrown{unalias lla} will remove the shortcut to \Verblubrown{ls -al}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Command: mkdir}
+  \begin{itemize}
+    \item \Verblubrown{mkdir} is a command to create a directory
+    \item Usage: \Verblubrown{mkdir <options> <directoryname>}
+    \item Example: \Verblubrown{mkdir -p \$HOME/test/testagain{\Enter}}
+    \item By default, the directory is created in the current directory or in a path relative to the current directory
+    \item The \Verblubrown{-p} option will create intermediate directories if they do not exist.
+    \item[e.g.] If the directory \Verblubrown{test} does not exist in \Verblubrown{\$HOME}, then 
+    \item[] \Verblubrown{mkdir \$HOME/test/testagain} will fail. 
+    \item[] The \Verblubrown{-p} option will create the \Verblubrown{test} directory within \Verblubrown{\$HOME} and then create \Verblubrown{testagain} within the newly created \Verblubrown{test} directory
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Command: cp}
+  \begin{itemize}
+    \item \Verblubrown{cp} is a command to copy a file or directory
+    \item Usage: \Verblubrown{cp <options> <source(s)> <destination>}
+    \item Example: \Verblubrown{cp \$HOME/.bashrc ../../tmp{\Enter}}
+    \item Common options to \Verblubrown{cp} command:
+    \item[] \Verblubrown{-r}: copy recursively, required when copying directories.
+    \item[] \Verblubrown{-i}: prompt if file exists on destination and can be copied over.
+    \item[] \Verblubrown{-p}: preserve file access times, ownership etc.
+    \item If there are more than one source files, then the destination (i.e. last entry or file) must be a directory.
+    \item If the source(s) is(are) a file(s) and the destination is a directory, then the file(s) will be copied into the directory
+    \item[e.g.]\Verblubrown{cp file1 file2 dir1{\Enter}}
+    \item[] \Verblubrown{dir1} will contain the files \Verblubrown{file1} and \Verblubrown{file2}
+    \item[] If \Verblubrown{dir1} is a file, then the above command will fail
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Command: rm}
+  \begin{itemize}
+    \item \Verblubrown{rm} command removes or deletes a file or directory
+    \item Usage: \Verblubrown{rm <options> <file or directory>}
+    \item Example: \Verblubrown{rm \$HOME/tmpfile{\Enter}}
+    \item Common options to \Verblubrown{rm} command:
+    \item[] \Verblubrown{-r}: remove recursively, required when copying directories.
+    \item[] \Verblubrown{-i}: prompt if file really needs to be deleted
+    \item[] \Verblubrown{-f}: force remove overrides the \Verblubrown{-i} option
+    \item {\color{red}{\large\textsc{be careful while using the }\textbf{rm}\textsc{ command, deleted files cannot be recovered}}}
+    \item To be on the safe side, create an \Verblubrown{alias} to the \Verblubrown{rm} command and only use the \Verblubrown{-f} option only if you are sure you want to delete the file or directory
+    \item[] \Verblubrown{sh/ksh/bash}: \Verblubrown{alias rm="rm -i"}
+    \item[] \Verblubrown{csh/tcsh}   : \Verblubrown{alias rm 'rm -i'}
+    \item delete empty directories using the \Verblubrown{rmdir} command.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Command: mv}
+  \begin{itemize}
+    \item \Verblubrown{mv} command moves or renames a file or directory
+    \item Usage: \Verblubrown{mv <options> <source> <destination>}
+    \item Example: \Verblubrown{mv test test1}
+    \item If there are more than one source file, then the last file is the destination and must be a directory.
+    \item Use the \Verblubrown{-i} option to prompt if a file or directory will be overwritten.
+    \item If the source(s) is(are) a file(s) and the destination is a directory, then the file(s) will be copied into the directory.
+    \item[e.g.]\Verblubrown{mv file1 file2 dir1{\Enter}}
+    \item[] \Verblubrown{dir1} will contain the files \Verblubrown{file1} and \Verblubrown{file2}
+    \item[] If \Verblubrown{dir1} is a file, then the above command will fail
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Pager Commands}
+  \begin{itemize}
+    \item To display a file to screen, *nix provides three commands at your disposal
+    \item \Verblubrown{cat}: Show contents of a file.
+    \item \Verblubrown{more}: Display contents one page at a time.
+    \item \Verblubrown{less}: Display contents one page at a time but allow forward/backward scrolling
+    \item[] \texttt{less > more} or \texttt{less is more, more or less}
+    \item Usage: \Verblubrown{cat/more/less <options> <filename>}
+    \item Example: \Verblubrown{cat .bashrc}
+    \item To scroll forward in \Verblubrown{more} or \Verblubrown{less}, use the space bar, \texttt{CNTRL-f/d} or "Page Down" key.
+    \item To scroll backwards in \Verblubrown{less} use \texttt{CNTRL-b/u} or "Page Up".
+    \item A rarely used command, \Verblubrown{tac} does the opposite of \Verblubrown{cat} i.e. show contents of a file in reverse.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]{Other Commands}
+  \begin{description}
+    \item[passwd:] change password %(\alert{does not work on LSU HPC and LONI systems})
+    \item[chsh:] change default shell %(\alert{does not work on LSU HPC and LONI systems})
+    \item[df:] report disk space usage by filesystem
+    \item[du:] estimate file space usage - space used under a particular directory or files on a file system.
+    \item[sudo:] run command as root (\alert{only if you have access})
+    \item[mount:] mount file system (\alert{root only})
+    \item[umount:] unmount file system (\alert{root only})
+    \item[shutdown:] reboot or turn off machine (\alert{root only})
+    \item[top:] Produces an ordered list of running processes
+    \item[free:] Display amount of free and used memory in the system
+    \item[file:] Determine file type
+    \item[touch:] change file timestamps or create file if not present
+    \item[date:] display or set date and time
+    \item[find]: Find a file
+    \item[] \Verblubrown{find /dir/to/search -name file-to-search}
+%    \framebreak
+%    \item[vi:] Edit a file using VI/VIM
+%    \item[emacs:] Edit a file using Emacs
+    \item[wc:] Count words, lines and characters in a file
+    \item[] \Verblubrown{wc -l .bashrc}
+    \item[grep:] Find patterns in a file
+    \item[] \Verblubrown{grep alias .bashrc}
+    \item[awk:] File processing and report generating
+    \item[] \Verblubrown{awk '\{print \$1\}' file1}
+    \item[sed:] Stream Editor
+    \item[] \Verblubrown{sed 's/home/HOME/g' .bashrc}
+    \item[set:] manipulate environment variables
+    \item[] \Verblubrown{set -o emacs}
+    \item[ln:] Link a file to another file
+    \item[] \Verblubrown{ln -s file1 file2}
+%    \item[\&:] run a job in background
+%    \item[CNTRL-Z:] suspend a running job
+%    \item[fg:] run a suspended job in foreground
+%    \item[bg:] run a suspended job in background
+%    \item[CNTRL-C:] Kill a running job
+%    \item[jobs:] Show list of background jobs
+    \item[wait:] wait until all backgrounded jobs have completed
+%    \item[kill:] kill a running job, need to provide process id
+    \item[which:] shows the full path of (shell) commands
+%    \item[who:] show who is logged on
+%    \item[whoami:] print effective userid
+%    \item[finger:] user information lookup program
+    \item[whatis:] display manual page descriptions
+    \item[!name:] rerun previously executed command with the same arguments as before, \Verblubrown{name <args>}.
+    \item[] Note that you do not always have to type the full command \Verblubrown{name}, just the minimum unique characters (no spaces) of \Verblubrown{name} need to be entered.
+    \item[] If you had entered two commands \Verblubrown{name <args>} and \Verblubrown{nbme <args>}, then to rerun \Verblubrown{name}, use the command \Verblubrown{!na{\Enter}}. 
+    \item[history:] display a list of last executed commands. Optional argument \Verblubrown{m} will list the last m commands. 
+    \item[] All previously executed commands will be listed with a number \Verbblue{n}.
+    \item[] To rerun a command from history which has number \Verbblue{n}, run the command \Verblubrown{!n{\Enter}} 
+  \end{description}
+  To learn more about these commands, type \Verblubrown{man {\em command}} on the command prompt
+\end{frame}
+
+
 \section{Basic *nix Utilities}
 \begin{frame}[fragile]{Filename Completion}
   \begin{itemize}
@@ -696,176 +1090,176 @@ setenv BIBINPUTS ".:/home/apacheco/TeX//:${BIBINPUTS}"
   \end{lstlisting}
 \end{frame}
 
-\section*{What is a scripting Language?}
-\begin{frame}
-  \begin{exampleblock}{What is a Scripting Language?}
-    \begin{itemize}
-      \item A \textbf{scripting language} or \textbf{script language} is a \emph{programming language} that supports the writing of \textbf{scripts}.
-      \item \textbf{Scripting Languages} provide a higher level of abstraction than standard programming languages.
-      \item Compared to programming languages, scripting languages do not distinguish between data types: integers, real values, strings, etc.
-      \item Scripting Languages tend to be good for automating the execution of other programs.
-      \begin{enumerate}
-          \item[$\vardiamond$] analyzing data
-          \item[$\vardiamond$] running daily backups
-      \end{enumerate}
-      \item They are also good for writing a program that is going to be used only once and then discarded.
-    \end{itemize}
-  \end{exampleblock}
-  \begin{exampleblock}{What is a script?}
-    \begin{itemize}
-      \item A \textbf{script} is a program written for a software environment that automate the execution of tasks which could alternatively be executed one-by-one by a human operator.
-      \item The majority of script programs are ``quick and dirty'', where the main goal is to get the program written quickly.
-    \end{itemize}
-  \end{exampleblock}
-\end{frame}
-
-\subsection*{Writing Scripts}
-\begin{frame}[fragile]
-  \frametitle{Writing your first script}
-  \begin{enumerate}
-    \item Write a script
-      \begin{itemize}
-        \item A shell script is a file that contains ASCII text. 
-        \item Create a file, \texttt{hello.sh} with the following lines 
-      \end{itemize}
-      \begin{lstlisting}[language=bash,basicstyle=\scriptsize\ttfamily]
-#!/bin/bash
-# My First Script
-echo "Hello World!"
-      \end{lstlisting}
-    \item Set permissions
-      \begin{Verbatim}[fontsize=\scriptsize,formatcom=\color{lupurple}]
-apacheco@apacheco:~/Tutorials/BASH/scripts> chmod 755 hello.sh 
-      \end{Verbatim}
-    \item Execute the script
-      \begin{Verbatim}[fontsize=\scriptsize,formatcom=\color{lupurple}]
-apacheco@apacheco:~/Tutorials/BASH/scripts> ./hello.sh 
-Hello World!
-      \end{Verbatim}
-  \end{enumerate}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Description of the script}
-  \begin{itemize}
-    \item My First Script
-      \begin{lstlisting}[language=bash]
-#!/bin/bash
-# My First Script
-echo "Hello World!"
-  \end{lstlisting}
-    \item The first line is called the "SheBang'' line. It tells the OS which interpreter to use. In the current example, bash
-    \item Other options are:
-    \begin{enumerate}
-        \item[sh]   : \lstinline[language=bash]|#!/bin/sh|
-        \item[ksh]  : \lstinline[language=bash]|#!/bin/ksh|
-        \item[csh]  : \lstinline[language=csh]|#!/bin/csh|
-        \item[tcsh] : \lstinline[language=csh]|#!/bin/tcsh|
-    \end{enumerate}
-    \item The second line is a comment. All comments begin with "\#".
-    \item The third line tells the OS to print "Hello World!" to the screen.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Special Characters}
-  \begin{description}
-    \item[\#:] starts a comment.
-    \item[\$:] indicates the name of a variable.
-    \item[$\backslash$:] escape character to display next character literally.
-    \item[\{ \}:] used to enclose name of variable.
-    \item[;] Command separator [semicolon]. Permits putting two or more commands on the same line.
-    \item[;;] Terminator in a case option [double semicolon].
-    \item[.] "dot" command [period]. Equivalent to source. This is a bash builtin.
-    \item[\$?] exit status variable.
-    \item[\$\$] process ID variable.
-    \item[{[\quad]}] test expression
-    \item[{[[\quad]]}] test expression, more flexible than [ ]
-    \item[{\$[\quad], ((\quad))}] integer expansion.
-    \item[{$||$, \&\&, !}] Logical OR, AND and NOT
-  \end{description}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Quotation}
-  \begin{itemize}
-    \item Double Quotation \texttt{" "}
-    \begin{itemize}
-        \item Enclosed string is expanded ("\$", "/" and "`")
-        \item Example: \Verblubrown{echo "\$myvar"} prints the value of \Verbblue{myvar}
-    \end{itemize}
-    \item Single Quotation \texttt{' '}
-    \begin{itemize}
-        \item Enclosed string is read literally
-        \item Example: \Verblubrown{echo '\$myvar'} prints \Verbblue{\$myvar}
-    \end{itemize}
-    \item Back Quotation \texttt{` `}
-    \begin{itemize}
-        \item Enclosed string is executed as a command
-        \item Example: \Verblubrown{echo `pwd`} prints the output of the \Verblubrown{pwd} command i.e. print the current working directory
-    \end{itemize}
-  \end{itemize}
-\end{frame}
-
-
-\begin{frame}[allowframebreaks]
-  \frametitle{\small Exercises}
-  \begin{itemize}
-    \item Login to a Linux machine and open a terminal
-    \item Enter the following commands or carry out operations asked for.
-    \item Understand what you are doing and ask for help if unsure. Some commands are incorrect or will fail, enter the correct
-    \begin{enumerate}
-      {\scriptsize
-      \item \texttt{echo hello world\Enter}
-      \item \texttt{pwd\Enter}
-      \item \texttt{whoami\Enter}
-      \item \texttt{cd /tmp \Enter}
-      \item \texttt{cd -\Enter}
-      \item \texttt{mkdir test/testagain\Enter}
-      \item \texttt{cd test/testagain\Enter}
-      \item \texttt{touch file\Enter}
-      \item Go back to your home directory.
-      \item Which shell are you using?
-      \item Review the commands you have just entered.
-      \item create an alias for removing files which prompt for confirmation and delete the file that you created.
-      \item From your home directory get a list of files and directory in long format in reverse order with file sizes listed in human readable format.
-      \item Find out the location of vi, emacs, firefox, google-chrome, thunderbird, latex, pdflatex, gnuplot, python, perl and matlab.
-      \item Change the permission of the testagain directory to be world writable.
-      \item open a few applications of choice in foreground one by one and then suspend them,
-      \item get a list of suspended jobsr,
-      \item foreground job 1 and close it,
-      \item background job 2,
-      \item kill job 3,
-      \item put job 2 in foreground and close it,
-      \item check if you still have any jobs running.
-      }
-    \end{enumerate}
-      \framebreak
-    \begin{enumerate}
-      {\scriptsize
-      \item Exercise courtesy \url{http://www.doc.ic.ac.uk/~wjk/UnixIntro/Exercise6.html}
-      \item Copy the file mole.txt
-      \item[] \texttt{wget \url{http://www.doc.ic.ac.uk/~wjk/UnixIntro/mole.txt}}
-      \item Go to the end of the document and type in the following paragraph:
-      \item[] \texttt{Joined the library. Got Care of the Skin, Origin of the Species, and a book by a woman my mother is always going on about. It is called Pride and Prejudice, by a woman called Jane Austen. I could tell the librarian was impressed. Perhaps she is an intellectual like me. She didn't look at my spot, so perhaps it is getting smaller.}
-      \item Correct  the three  spelling errors in the first three lines of the first paragraph (one  error per  line) and  remove the extra "Geography" in the 3rd line of the first paragraph.
-      \item Add the words "About time!" to the end of the second paragraph.
-      \item Delete  the sentence  "Time flies like an arrow but  fruit flies like a banana" and re-form the paragraph.
-      \item Replace all occurrences of "is" with "was".
-      \item Swap the two paragraphs.
-      \item Save the file and quit.
-      }
-    \end{enumerate}
-  \end{itemize}
-  \framebreak
-  \begin{exampleblock}{}
-Wednesday January 14th
-
-Joined the library. Got Care of the Skin, Origin of the Species, and a book by a woman my mother was always going on about. It was called Pride and Prejudice, by a woman called Jane Austen. I could tell the librarian was impressed. Perhaps she was an intellectual like me. She didn't look at my spot, so perhaps it was getting smaller.
-
-None of the teachers at school have noticed that I am an intellectual. They will be sorry when I am famous. There was a new girl in our class. She sits next to me in Geography. She was all right. Her name was Pandora, but she likes being called ``Box''.  Don't ask me why. I might fall in love with her. It's time I fell in love, after all I am 13 3/4 years old. About time!
-  \end{exampleblock}
-\end{frame}
+%\section*{What is a scripting Language?}
+%\begin{frame}
+%  \begin{exampleblock}{What is a Scripting Language?}
+%    \begin{itemize}
+%      \item A \textbf{scripting language} or \textbf{script language} is a \emph{programming language} that supports the writing of \textbf{scripts}.
+%      \item \textbf{Scripting Languages} provide a higher level of abstraction than standard programming languages.
+%      \item Compared to programming languages, scripting languages do not distinguish between data types: integers, real values, strings, etc.
+%      \item Scripting Languages tend to be good for automating the execution of other programs.
+%      \begin{enumerate}
+%          \item[$\vardiamond$] analyzing data
+%          \item[$\vardiamond$] running daily backups
+%      \end{enumerate}
+%      \item They are also good for writing a program that is going to be used only once and then discarded.
+%    \end{itemize}
+%  \end{exampleblock}
+%  \begin{exampleblock}{What is a script?}
+%    \begin{itemize}
+%      \item A \textbf{script} is a program written for a software environment that automate the execution of tasks which could alternatively be executed one-by-one by a human operator.
+%      \item The majority of script programs are ``quick and dirty'', where the main goal is to get the program written quickly.
+%    \end{itemize}
+%  \end{exampleblock}
+%\end{frame}
+%
+%\subsection*{Writing Scripts}
+%\begin{frame}[fragile]
+%  \frametitle{Writing your first script}
+%  \begin{enumerate}
+%    \item Write a script
+%      \begin{itemize}
+%        \item A shell script is a file that contains ASCII text. 
+%        \item Create a file, \texttt{hello.sh} with the following lines 
+%      \end{itemize}
+%      \begin{lstlisting}[language=bash,basicstyle=\scriptsize\ttfamily]
+%#!/bin/bash
+%# My First Script
+%echo "Hello World!"
+%      \end{lstlisting}
+%    \item Set permissions
+%      \begin{Verbatim}[fontsize=\scriptsize,formatcom=\color{lupurple}]
+%apacheco@apacheco:~/Tutorials/BASH/scripts> chmod 755 hello.sh 
+%      \end{Verbatim}
+%    \item Execute the script
+%      \begin{Verbatim}[fontsize=\scriptsize,formatcom=\color{lupurple}]
+%apacheco@apacheco:~/Tutorials/BASH/scripts> ./hello.sh 
+%Hello World!
+%      \end{Verbatim}
+%  \end{enumerate}
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%  \frametitle{Description of the script}
+%  \begin{itemize}
+%    \item My First Script
+%      \begin{lstlisting}[language=bash]
+%#!/bin/bash
+%# My First Script
+%echo "Hello World!"
+%  \end{lstlisting}
+%    \item The first line is called the "SheBang'' line. It tells the OS which interpreter to use. In the current example, bash
+%    \item Other options are:
+%    \begin{enumerate}
+%        \item[sh]   : \lstinline[language=bash]|#!/bin/sh|
+%        \item[ksh]  : \lstinline[language=bash]|#!/bin/ksh|
+%        \item[csh]  : \lstinline[language=csh]|#!/bin/csh|
+%        \item[tcsh] : \lstinline[language=csh]|#!/bin/tcsh|
+%    \end{enumerate}
+%    \item The second line is a comment. All comments begin with "\#".
+%    \item The third line tells the OS to print "Hello World!" to the screen.
+%  \end{itemize}
+%\end{frame}
+%
+%\begin{frame}
+%  \frametitle{Special Characters}
+%  \begin{description}
+%    \item[\#:] starts a comment.
+%    \item[\$:] indicates the name of a variable.
+%    \item[$\backslash$:] escape character to display next character literally.
+%    \item[\{ \}:] used to enclose name of variable.
+%    \item[;] Command separator [semicolon]. Permits putting two or more commands on the same line.
+%    \item[;;] Terminator in a case option [double semicolon].
+%    \item[.] "dot" command [period]. Equivalent to source. This is a bash builtin.
+%    \item[\$?] exit status variable.
+%    \item[\$\$] process ID variable.
+%    \item[{[\quad]}] test expression
+%    \item[{[[\quad]]}] test expression, more flexible than [ ]
+%    \item[{\$[\quad], ((\quad))}] integer expansion.
+%    \item[{$||$, \&\&, !}] Logical OR, AND and NOT
+%  \end{description}
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%  \frametitle{Quotation}
+%  \begin{itemize}
+%    \item Double Quotation \texttt{" "}
+%    \begin{itemize}
+%        \item Enclosed string is expanded ("\$", "/" and "`")
+%        \item Example: \Verblubrown{echo "\$myvar"} prints the value of \Verbblue{myvar}
+%    \end{itemize}
+%    \item Single Quotation \texttt{' '}
+%    \begin{itemize}
+%        \item Enclosed string is read literally
+%        \item Example: \Verblubrown{echo '\$myvar'} prints \Verbblue{\$myvar}
+%    \end{itemize}
+%    \item Back Quotation \texttt{` `}
+%    \begin{itemize}
+%        \item Enclosed string is executed as a command
+%        \item Example: \Verblubrown{echo `pwd`} prints the output of the \Verblubrown{pwd} command i.e. print the current working directory
+%    \end{itemize}
+%  \end{itemize}
+%\end{frame}
+%
+%
+%\begin{frame}[allowframebreaks]
+%  \frametitle{\small Exercises}
+%  \begin{itemize}
+%    \item Login to a Linux machine and open a terminal
+%    \item Enter the following commands or carry out operations asked for.
+%    \item Understand what you are doing and ask for help if unsure. Some commands are incorrect or will fail, enter the correct
+%    \begin{enumerate}
+%      {\scriptsize
+%      \item \texttt{echo hello world\Enter}
+%      \item \texttt{pwd\Enter}
+%      \item \texttt{whoami\Enter}
+%      \item \texttt{cd /tmp \Enter}
+%      \item \texttt{cd -\Enter}
+%      \item \texttt{mkdir test/testagain\Enter}
+%      \item \texttt{cd test/testagain\Enter}
+%      \item \texttt{touch file\Enter}
+%      \item Go back to your home directory.
+%      \item Which shell are you using?
+%      \item Review the commands you have just entered.
+%      \item create an alias for removing files which prompt for confirmation and delete the file that you created.
+%      \item From your home directory get a list of files and directory in long format in reverse order with file sizes listed in human readable format.
+%      \item Find out the location of vi, emacs, firefox, google-chrome, thunderbird, latex, pdflatex, gnuplot, python, perl and matlab.
+%      \item Change the permission of the testagain directory to be world writable.
+%      \item open a few applications of choice in foreground one by one and then suspend them,
+%      \item get a list of suspended jobsr,
+%      \item foreground job 1 and close it,
+%      \item background job 2,
+%      \item kill job 3,
+%      \item put job 2 in foreground and close it,
+%      \item check if you still have any jobs running.
+%      }
+%    \end{enumerate}
+%      \framebreak
+%    \begin{enumerate}
+%      {\scriptsize
+%      \item Exercise courtesy \url{http://www.doc.ic.ac.uk/~wjk/UnixIntro/Exercise6.html}
+%      \item Copy the file mole.txt
+%      \item[] \texttt{wget \url{http://www.doc.ic.ac.uk/~wjk/UnixIntro/mole.txt}}
+%      \item Go to the end of the document and type in the following paragraph:
+%      \item[] \texttt{Joined the library. Got Care of the Skin, Origin of the Species, and a book by a woman my mother is always going on about. It is called Pride and Prejudice, by a woman called Jane Austen. I could tell the librarian was impressed. Perhaps she is an intellectual like me. She didn't look at my spot, so perhaps it is getting smaller.}
+%      \item Correct  the three  spelling errors in the first three lines of the first paragraph (one  error per  line) and  remove the extra "Geography" in the 3rd line of the first paragraph.
+%      \item Add the words "About time!" to the end of the second paragraph.
+%      \item Delete  the sentence  "Time flies like an arrow but  fruit flies like a banana" and re-form the paragraph.
+%      \item Replace all occurrences of "is" with "was".
+%      \item Swap the two paragraphs.
+%      \item Save the file and quit.
+%      }
+%    \end{enumerate}
+%  \end{itemize}
+%  \framebreak
+%  \begin{exampleblock}{}
+%Wednesday January 14th
+%
+%Joined the library. Got Care of the Skin, Origin of the Species, and a book by a woman my mother was always going on about. It was called Pride and Prejudice, by a woman called Jane Austen. I could tell the librarian was impressed. Perhaps she was an intellectual like me. She didn't look at my spot, so perhaps it was getting smaller.
+%
+%None of the teachers at school have noticed that I am an intellectual. They will be sorry when I am famous. There was a new girl in our class. She sits next to me in Geography. She was all right. Her name was Pandora, but she likes being called ``Box''.  Don't ask me why. I might fall in love with her. It's time I fell in love, after all I am 13 3/4 years old. About time!
+%  \end{exampleblock}
+%\end{frame}
 
 \end{document}
 
