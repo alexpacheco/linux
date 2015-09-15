@@ -2,6 +2,13 @@
 
 \input{mypreamble}
 \beamertemplateballitem
+\usepackage{tabu}
+
+\newcolumntype{a}{>{\columncolor{lulime}}c}
+\newcolumntype{b}{>{\columncolor{lulime!50}}c}
+\newcolumntype{d}{>{\columncolor{lulime!40}}c}
+\newcolumntype{e}{>{\columncolor{lulime}}l}
+\newcolumntype{f}{>{\columncolor{lulime!50}}l}
 
 %% Tikz Distro Watch Table
 % Defining some symbols:
@@ -23,10 +30,10 @@
 {;\end{tikzpicture}}
 
 \title{Introduction to Linux}
-\subtitle{File Permission, Process Management \& Editors}
+\subtitle{Basic Commands \& Environment}
 \author{Alexander B. Pacheco}
 \institute{\href{http://researchcomputing.lehigh.edu}{LTS Research Computing}}%\\[2pt] \href{http://www.lehigh.edu}{Lehigh University}}
-\date{September 22, 2015}
+\date{September 15, 2015}
 
 % Delete this, if you do not want the table of contents to pop up at
 % the beginning of each subsection:
@@ -54,7 +61,73 @@
   \tableofcontents
 \end{frame}
 
-
+\section{Linux File System Heirarchy}
+\begin{frame}
+  \frametitle{Directory Structure}
+%    \vspace{-0.5cm}
+  \begin{itemize}
+    \item All files are arranged in a hierarchial structure, like an inverted tree.
+    \item The top of the hierarchy is traditionally called \textbf{root} (written as a slash / )
+  \end{itemize}
+\tikzstyle{every node}=[draw=black,thick,anchor=west]
+\tikzstyle{selected}=[draw=red,fill=red!30]
+\tikzstyle{optional}=[dashed,fill=gray!50]
+\begin{tikzpicture}[%
+  linux/.style={rectangle,draw,fill=blue!20},
+  hpc/.style={rectangle,draw,fill=red!80,rounded corners=.8ex},
+  grandchild/.style={grow=down,xshift=1em,anchor=west,
+    edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)}},
+  first/.style={level distance=12ex,sibling distance=10em,xshift=-6em},
+  second/.style={level distance=8ex,sibling distance=6em,xshift=-1.5em},
+  third/.style={level distance=26ex,sibling distance=7.5em,xshift=-2em},
+  fourth/.style={level distance=8ex},
+  fifth/.style={level distance=14ex},
+  sixth/.style={level distance=20ex},
+  seventh/.style={level distance=26ex},
+  eighth/.style={level distance=32ex},
+  level 1/.style={sibling distance=5.1em},
+  scale=0.58]
+    % Parents
+    \coordinate
+    child[grow=down,level distance=0ex]{node[linux]{ / }}
+    [edge from parent fork down]
+    % Children and grandchildren
+    child {node[linux] {bin}}
+    child {node[linux] {boot}}
+    child {node[linux] {dev}}
+    child {node[linux] {etc}}
+    child {node[linux] {home}
+      child [first] {node[linux] {user1}
+          child[grandchild,fourth] {node[linux] {Desktop}}
+          child[grandchild,fifth] {node[linux] {Documents}}
+          child[grandchild,sixth] {node[linux] {Downloads}}
+          child[grandchild,seventh] {node[linux] {Public}}
+          child[grandchild,eighth] {node[linux] {$\cdots$}}
+       }
+      child [first] {node[linux] {user2}
+       }
+      child [first] {node[linux] {$\cdots$}}
+    }
+    child [missing] {}
+    child {node[linux] {lib}}
+    child {node[linux] {mnt}}
+    child {node[linux] {tmp}}
+    child {node[linux] {usr}
+      child [third] {node[linux] {bin}}
+      child [third] {node[linux] {lib}}
+      child [third] {node[linux] {local}}
+      child [third] {node[linux] {include}}
+      child [third] {node[linux] {share}}
+    }
+    child {node[linux] {var}}
+    child {node[hpc] {zhome}
+      child [second] {node[hpc] {Apps}}
+      child [second] {node[hpc] {user1}}
+      child [second] {node[hpc] {user2}}
+      child [second] {node[hpc] {$\cdots$}}
+    };
+\end{tikzpicture}
+\end{frame}
 
 \begin{frame}
   \frametitle{Relative \& Absolute Path}
@@ -82,212 +155,208 @@
 \end{frame}
 
 
-\section{Variables}
-\begin{frame}[fragile,allowframebreaks]
-  \frametitle{Variables}
-  \begin{itemize}
-    \item *nix also permits the use of variables, similar to any programming language such as C, C++, Fortran etc
-    \item A variable is a named object that contains data used by one or more applications. 
-    \item There are two types of variables, Environment and User Defined and can contain  a number, character or a string of characters.
-    \item Environment Variables provides a simple way to share configuration settings between multiple applications and processes in Linux.
-    \item By Convention, enviromental variables are often named using all uppercase letters
-    \item[e.g.] \Verblubrown{PATH, LD\_LIBRARY\_PATH, LD\_INCLUDE\_PATH, TEXINPUTS,} etc
-    \item To reference a variable (environment or user defined) prepend \$ to the name of the variable
-    \item[e.g.] \Verblubrown{\$PATH, \$LD\_LIBRARY\_PATH}
-    \framebreak
-  \end{itemize}
-%\end{frame}
-%
-%\begin{frame}[allowframebreaks]
-%  \frametitle{\small Environment Variable}
-  \begin{itemize}
-    \item The command \Verblubrown{printenv} list the current environmental variables.
-    \item[$\mybigstar$] {Type \Verblubrown{printenv} on your command prompt to list all environment variables in your current session.}
-    \item The command \Verblubrown{env} is used to either print a list of environment variables or run another utility in an altered environment without having to modify the currently existing environment.
-    \item[$\mybigstar$] {Type \Verblubrown{env SHELL=/bin/tcsh xterm} to start an xterm session in tcsh}
-    \item[$\vardiamond$] {To execute the above command successfully, you need to be in GUI mode on the virtual OS or logged into a remote systems with X-Forwarding enabled.}
-  \end{itemize}
-  \framebreak
-  \begin{description}
-    \item[PATH:] A list of directory paths.
-    \item[HOME:] indicate where a user's home directory is located in the file system.
-    \item[PWD:] contains path to current working directory.
-    \item[OLDPWD:] contains path to previous working directory.
-    \item[TERM:] specifies the type of computer terminal or terminal emulator being used
-    \item[SHELL:] contains name of the running, interactive shell.
-    \item[PS1:] default command prompt
-    \item[PS2:] secondary command prompt
-    \item[LD\_LIBRARY\_PATH:] colon-separated set of directories where libraries should be searched for first
-    \item[HOSTNAME:] The systems host name
-    \item[USER:] Current logged in user's name
-    \item[DISPLAY:] Network name of the X11 display to connect to, if available.
-%    \item[LD\_INCLUDE\_PATH:] 
-  \end{description}
-  \framebreak
-  \begin{itemize}
-    \item You can edit the environment variables.
-    \item Command to do this depends on the shell
-    \item[$\mybigstar$] To add your bin directory to the \Verblubrown{PATH} variable
-    \item[] \Verblubrown{sh/ksh/bash}: \Verblubrown{export PATH=\$\{HOME\}/bin:\$\{PATH\}}
-    \item[] \Verblubrown{csh/tcsh}: \Verblubrown{setenv PATH \$\{HOME\}/bin:\$\{PATH\}}
-    \item[$\mybigstar$] Note the syntax for the above commands
-    \item[$\mybigstar$] \Verblubrown{sh/ksh/bash:} {no spaces except between \Verblubrown{export} and \Verblubrown{PATH}}
-    \item[$\mybigstar$] \Verblubrown{csh,tcsh:} {no = sign, just a space between \Verblubrown{PATH} and the absolute path}
-    \item[$\mybigstar$] \Verblubrown{all shells:} {colon(:) to separate different paths and the variable that is appended to}
-    \item \textbf{Yes, the order matters.} If you have a customized version of a software say perl in your home directory, if you append the perl path to \Verblubrown{PATH} at the end, your program will use the system wide perl not your locally installed version.
-      \framebreak
-    \item Rules for Variable Names
-    \begin{enumerate}
-      {%\scriptsize
-        \item Variable names must start with a letter or underscore
-        \item Number can be used anywhere else
-        \item DO NOT USE special characters such as \texttt{@, \#, \%, \$}
-        \item Case sensitive
-        \item Examples
-        \begin{itemize}
-          {%\scriptsize
-          \item Allowed: VARIABLE, VAR1234able, var\_name, \_VAR
-          \item Not Allowed: 1VARIABLE, \%NAME, \$myvar, VAR@NAME 
-          }
-        \end{itemize}
-      }
-    \end{enumerate}
-    \item Assigning value to a variable
+\section{Basic Commands}
+\begin{frame}[fragile]
+  \frametitle{Difference between Shell and Command}
+  \begin{block}{What is a Shell?}
+    \begin{itemize}
+    \item The command line interface is the primary interface to Linux/Unix operating systems.
+    \item Shells are how command-line interfaces are implemented in Linux/Unix.
+    \item Each shell has varying capabilities and features and the user should choose the shell that best suits their needs.
+    \item The shell is simply an application running on top of the kernel and provides a powerful interface to the system.
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{What is a command and how do you use it?}
+    \begin{itemize}
+    \item \textbf{command} is a directive to a computer program acting as an interpreter of some kind, in order to perform a specific task.
+    \item \textbf{command prompt} (or just \textbf{prompt}) is a sequence of (one or more) characters used in a command-line interface to indicate readiness to accept commands.
+    \item Its intent is to literally prompt the user to take action. 
+    \item A prompt usually ends with one of the characters \$, \%, \#, :, $>$ and often includes other information, such as the path of the current working directory.
+      %      \item[$\mybigstar$] Virtual Image: \Verb[formatcom=\color{lubrown},fontseries=b,commandchars=\\\{\}]|[user@localhost ~]\$|
+      %      \item[$\mybigstar$] QueenBee: \texttt{[apacheco@qb4 $\sim$]\$}
+      %      \item[$\mybigstar$] Mac OSX in \Verblubrown{tcsh}: \Verb[formatcom=\color{lubrown},fontseries=b,commandchars=\\\{\}]|[c8-bc-c8-ee-b8-9e:~] apacheco\%|
+      %      \item Each \textbf{command} consists of three parts: name, options, arguments
+      %      \item[] \Verb[formatcom=\color{lubrown},fontseries=b,commandchars=\\\{\}]|[user@localhost ~]\$ command options arguments|
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+  
+\begin{frame}
+  \frametitle{Types of Shell}
+    \begin{itemize}
+      \item[\texttt{sh}]: Bourne Shell
+      \begin{enumerate}
+        {%\scriptsize
+          \item[$\vardiamond$] Developed by Stephen Bourne at AT\&T Bell Labs
+        }
+      \end{enumerate}
+      \item[\texttt{csh}]: C Shell
+      \begin{enumerate}
+        {%\scriptsize
+          \item[$\vardiamond$] Developed by Bill Joy at University of California, Berkeley
+        }
+      \end{enumerate}
+      \item[\texttt{ksh}]: Korn Shell
+      \begin{enumerate}
+        {%\scriptsize
+          \item[$\vardiamond$] Developed by David Korn at AT\&T Bell Labs
+          \item[$\vardiamond$] backward-compatible with the Bourne shell and includes many features of the C shell
+        }
+      \end{enumerate}
+      \item[\texttt{bash}]: Bourne Again Shell
+      \begin{enumerate}
+        {%\scriptsize
+          \item[$\vardiamond$] Developed by Brian Fox for the GNU Project as a free software replacement for the Bourne shell (sh).
+          \item[$\vardiamond$] Default Shell on Linux and Mac OSX
+          \item[$\vardiamond$] The name is also descriptive of what it did, bashing together the features of sh, csh and ksh
+        }
+      \end{enumerate}
+      \item[\texttt{tcsh}]: TENEX C Shell
+      \begin{enumerate}
+        {%\scriptsize
+          \item[$\vardiamond$] Developed by Ken Greer at Carnegie Mellon University 
+          \item[$\vardiamond$] It is essentially the C shell with programmable command line completion, command-line editing, and a few other features.
+        }
+      \end{enumerate}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Shell Comparison}
+  \begin{columns}
+    \column{0.7\textwidth}
     \begin{center}
       \begin{tikzpicture}
         \node (tbl) {
-          \begin{tabularx}{0.65\textwidth}{ccc}
+          \begin{tabularx}{\textwidth}{cccccc}
             \arrayrulecolor{black}
-            \textcolor{white}{\textbf{Type} }& \textcolor{white}{\textbf{sh,ksh,bash}} &\textcolor{white}{\textbf {csh,tcsh}}\\
-            Shell \rule{0pt}{3.5ex} & name=value & set name = value \\
-            Environment & export name=value & setenv name value \\
+            \textcolor{white}{\textbf{Software} }& \textcolor{white}{\textbf{sh}} &\textcolor{white}{\textbf {csh}} & \textcolor{white}{\textbf{ksh}} & \textcolor{white}{\textbf{bash}} & \textcolor{white}{\textbf{tcsh}} \\
+            Programming Language\rule{0pt}{3.5ex} & \cmark & \cmark & \cmark & \cmark & \cmark \\
+            Shell Variables & \cmark & \cmark & \cmark & \cmark & \cmark \\
+            Command alias & \xmark & \cmark & \cmark & \cmark & \cmark \\
+            Command history & \xmark & \cmark & \cmark & \cmark & \cmark \\
+            Filename completion & \xmark & \smark & \smark & \cmark & \cmark \\
+            Command line editing & \xmark & \xmark & \smark & \cmark & \cmark \\
+            Job control & \xmark & \cmark & \cmark & \cmark & \cmark \\
             [1.0ex]
         \end{tabularx}};
         \begin{pgfonlayer}{background}
+          %\draw[rounded corners,top color=blue!30!black,bottom color=blue!10!white,
           \draw[rounded corners,top color=lupurple,bottom color=lupurple,
             draw=lubrown!30] ($(tbl.north west)+(0.14,0)$)
           rectangle ($(tbl.north east)-(0.13,0.9)$);
+          %\draw[rounded corners,top color=black,bottom color=lubrown!20,
+          %   middle color=lubrown!20,draw=lubrown!20] ($(tbl.south west)
+          %   +(0.12,0.5)$) rectangle ($(tbl.south east)-(0.12,0)$);
+          %\draw[rounded corners,top color=green!5,bottom color=green!5,draw=green!5]
           \draw[rounded corners,top color=lulime,bottom color=lulime,draw=lulime]
           ($(tbl.north east)-(0.13,0.6)$)
           rectangle ($(tbl.south west)+(0.13,0.2)$);
         \end{pgfonlayer}
       \end{tikzpicture}
+      \begin{itemize}
+        \item[\cmark]: Yes
+        \item[\xmark]: No
+        \item[\smark]: Yes, not set by default
+        \item[] {\fontsize{6}{7}\selectfont\url{http://www.cis.rit.edu/class/simg211/unixintro/Shell.html}}
+      \end{itemize}
     \end{center}
-    \item \Verblubrown{sh,ksh,bash} THERE IS NO SPACE ON EITHER SIDE OF =
-    \item \Verblubrown{csh,tcsh} space on either side of = is allowed for the \Verblubrown{set} command
-    \item \Verblubrown{csh,tcsh} There is no = in the \Verblubrown{setenv} command
-  \end{itemize}
-  \framebreak
-  \begin{exampleblock}{Exercise}
-    \begin{itemize}
-      \item Create two shell variables containing
-      \begin{enumerate}
-        {%\footnotesize
-          \item your name
-          \item[e.g.] MYNAME=Alex
-          \item a standard greeting
-          \item[e.g.] Greet=Hello
-        }
-      \end{enumerate}
-      \item We'll make use of this variables in a few slides when we learn some basic commands.
-    \end{itemize}
-  \end{exampleblock}
-\end{frame}
-
-
-\section{Basic Commands}
-\begin{frame}[fragile]
-  \frametitle{Basic Commands}
-  \begin{exampleblock}{What is a command and how do you use it?}
-    \begin{itemize}
-      \item \textbf{command} is a directive to a computer program acting as an interpreter of some kind, in order to perform a specific task.
-      \item \textbf{command prompt} (or just \textbf{prompt}) is a sequence of (one or more) characters used in a command-line interface to indicate readiness to accept commands.
-      \item Its intent is to literally prompt the user to take action. 
-      \item A prompt usually ends with one of the characters \$, \%, \#, :, $>$ and often includes other information, such as the path of the current working directory.
-      \item[$\mybigstar$] Virtual Image: \Verb[formatcom=\color{lubrown},fontseries=b,commandchars=\\\{\}]|[user@localhost ~]\$|
-%      \item[$\mybigstar$] QueenBee: \texttt{[apacheco@qb4 $\sim$]\$}
-      \item[$\mybigstar$] Mac OSX in \Verblubrown{tcsh}: \Verb[formatcom=\color{lubrown},fontseries=b,commandchars=\\\{\}]|[c8-bc-c8-ee-b8-9e:~] apacheco\%|
-      \item Each \textbf{command} consists of three parts: name, options, arguments
-      \item[] \Verb[formatcom=\color{lubrown},fontseries=b,commandchars=\\\{\}]|[user@localhost ~]\$ command options arguments|
-    \end{itemize}
-  \end{exampleblock}
+  \end{columns}
 \end{frame}
 
 \begin{frame}[fragile]{How to get more information with Linux}
-  \begin{itemize}
-    \item \Verblubrown{man} shows the manual for a command or program.
+  \begin{enumerate}
+  \item \Verblubrown{man} shows the manual for a command or program.
+    \begin{itemize}
     \item The manual is a file that shows you how to use the command and list the different options for the command in question.
     \item Usage: \Verblubrown{man [command]}
     \item Example: \Verblubrown{man ls{\Enter}}
-    \item \Verblubrown{apropos} shows you all of the man pages that may shed some light on a certain command.
+    \end{itemize}
+  \item \Verblubrown{info} similar to man, with a more robust structure for linking pages together.
+    \begin{itemize}
+    \item Usage: \Verblubrown{info [command]}
+    \item Example: \Verblubrown{info man{\Enter}}
+    \end{itemize}
+  \item[] To quit from \Verblubrown{man} or \Verblubrown{info}, type \Verblubrown{q}
+  \item \Verblubrown{apropos} shows you all of the man pages that may shed some light on a certain command.
+    \begin{itemize}
     \item Usage: \Verblubrown{appropos [keyword]}
     \item Example: \Verblubrown{appropos editor{\Enter}}
-  \end{itemize}
+    \end{itemize}
+  \item \Verblubrown{echo} is used to print information to screen
+    \begin{itemize}
+    \item Usage: \Verblubrown{echo [arguments]}
+    \item Example: \Verblubrown{echo Welcome to LTS Seminar on Linux Commands}
+    \end{itemize}
+  \end{enumerate}
 % leave space for info command
 \end{frame}
 
 
 
-\begin{frame}[fragile,allowframebreaks]
-  \frametitle{Input \& Output Commands}
-  \begin{itemize}
-    \item The basis I/O statements are \Verblubrown{echo} for displaying output to screen and \Verblubrown{read} for reading input from screen/keyboard/prompt
-    \item The \Verblubrown{read} statement takes all characters typed until the \Verblubrown{{\Enter}} key is pressed and stores them into a variable.
-    \item Usage: \Verblubrown{read <variable name>}
-    \item Example: \Verblubrown{read name{\Enter}}
-    \item[] \Verbblue[it]{Alex Pacheco{\Enter}}
-    \item In the above example, the name that you enter in stored in the variable \Verblubrown{name}.
-    \item[]
-    \item The \Verblubrown{echo arguments} command will print \Verblubrown{arguments} to screen or standard output. 
-    \item \Verblubrown{arguments} can be a (single or multiple) variable, string of characters or numbers.
-      \framebreak
-    \item Examples:
-      \begin{enumerate}
-        {%\footnotesize
-          \item \Verblubrown{echo \$LD\_LIBRARY\_PATH \$LD\_INCLUDE\_PATH{\Enter}}
-          \item \Verblubrown{echo Welcome to HPC {\quad} Training{\Enter}}
-        }
-      \end{enumerate}
-    \item By default, \Verblubrown{echo} eliminates redundant whitespace (multiple spaces and tabs) and replaces it with a single whitespace between arguments. 
-    \item To include redundant whitespace, enclose the arguments within double quotes
-    \item[e.g.] \Verblubrown{echo "Welcome to HPC{\quad\quad}Training"{\Enter}}
-  \end{itemize}
+%\begin{frame}[fragile,allowframebreaks]
+%  \frametitle{Input \& Output Commands}
+%  \begin{itemize}
+%    \item The basis I/O statements are \Verblubrown{echo} for displaying output to screen and \Verblubrown{read} for reading input from screen/keyboard/prompt
+%    \item The \Verblubrown{read} statement takes all characters typed until the \Verblubrown{{\Enter}} key is pressed and stores them into a variable.
+%    \item Usage: \Verblubrown{read <variable name>}
+%    \item Example: \Verblubrown{read name{\Enter}}
+%    \item[] \Verbblue[it]{Alex Pacheco{\Enter}}
+%    \item In the above example, the name that you enter in stored in the variable \Verblubrown{name}.
+%    \item[]
+%    \item The \Verblubrown{echo arguments} command will print \Verblubrown{arguments} to screen or standard output. 
+%    \item \Verblubrown{arguments} can be a (single or multiple) variable, string of characters or numbers.
+%      \framebreak
+%    \item Examples:
+%      \begin{enumerate}
+%        {%\footnotesize
+%          \item \Verblubrown{echo \$LD\_LIBRARY\_PATH \$LD\_INCLUDE\_PATH{\Enter}}
+%          \item \Verblubrown{echo Welcome to HPC {\quad} Training{\Enter}}
+%        }
+%      \end{enumerate}
+%    \item By default, \Verblubrown{echo} eliminates redundant whitespace (multiple spaces and tabs) and replaces it with a single whitespace between arguments. 
+%    \item To include redundant whitespace, enclose the arguments within double quotes
+%    \item[e.g.] \Verblubrown{echo "Welcome to HPC{\quad\quad}Training"{\Enter}}
+%  \end{itemize}
+%
+%  \begin{exampleblock}{Exercise}
+%    \begin{itemize}
+%      \item Print out the variable you created a few slides back
+%      \item[] \Verblubrown{echo \$MYNAME{\Enter}}
+%      \item[] \Verblubrown{echo \$Greet{\Enter}}
+%      \item Read a variable for greeting message
+%      \item[] \Verblubrown{read message{\Enter}}
+%      \item[] \Verbblue[it]{Welcome to HPC{\Enter}}
+%      \item Combine and print your name, the greeting and the message
+%      \item[] \Verblubrown{echo \$Greet \$MYNAME \$message{\Enter}}
+%      \item What is the output of the following command?
+%      \item[] \Verblubrown{echo \$Greet \$MYNAME, \$message Training{\Enter}}
+%    \end{itemize}
+%  \end{exampleblock}
+%\end{frame}
 
-  \begin{exampleblock}{Exercise}
+\begin{frame}[c,fragile,allowframebreaks]{Basic Commands}
+  \begin{enumerate}
+  \item \Verblubrown{pwd}
     \begin{itemize}
-      \item Print out the variable you created a few slides back
-      \item[] \Verblubrown{echo \$MYNAME{\Enter}}
-      \item[] \Verblubrown{echo \$Greet{\Enter}}
-      \item Read a variable for greeting message
-      \item[] \Verblubrown{read message{\Enter}}
-      \item[] \Verbblue[it]{Welcome to HPC{\Enter}}
-      \item Combine and print your name, the greeting and the message
-      \item[] \Verblubrown{echo \$Greet \$MYNAME \$message{\Enter}}
-      \item What is the output of the following command?
-      \item[] \Verblubrown{echo \$Greet \$MYNAME, \$message Training{\Enter}}
-    \end{itemize}
-  \end{exampleblock}
-\end{frame}
-
-\begin{frame}[fragile]{Commands: pwd \& cd}
-  \begin{itemize}
-    \item \Verblubrown{pwd} command prints the current working directory.
+    \item prints the current working directory.
     \item Usage: \Verblubrown{pwd}
     \item Example: \Verblubrown{pwd{\Enter}}
-    \item[]{}
-    \item \Verblubrown{cd} command allows one to change directory
+    \end{itemize}
+  \item \Verblubrown{cd}
+    \begin{itemize}
+    \item allows one to change directory
     \item argument is the path (relative or absolute) of the directory you want to change to
     \item Usage: \Verblubrown{cd [destination]}
     \item Example: \Verblubrown{cd /tmp{\Enter}}
     \item The default destination directory is your home directory.
     \item i.e. If you type \Verblubrown{cd{\Enter}}, you will end up in your home directory.
     \item If you want to go back to the previous directory, type \Verblubrown{cd - {\Enter}}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Command: ls}
-  \begin{itemize}
-    \item \Verblubrown{ls} command lists the contents of a directory.
+    \end{itemize}
+    \framebreak
+  \item \Verblubrown{ls}
+    \begin{itemize}
+    \item lists the contents of a directory.
     \item Usage: \Verblubrown{ls <options> <path>}
     \item Example: \Verblubrown{ls{\Enter}}
     \item The current working directory is the default path.
@@ -298,12 +367,11 @@
     \item[] \Verblubrown{-r}: reverse order while sorting
     \item[] \Verblubrown{-t}: show modification times
     \item[] \Verblubrown{-h}: use file sizes in SI units (bytes, kilobytes, megabytes etc ) default is bytes
-  \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Command: alias}
-  \begin{itemize}
-    \item \Verblubrown{alias} is a command to create a shortcut to another command or name to execute a long string.
+    \end{itemize}
+    \framebreak
+  \item \Verblubrown{alias}
+    \begin{itemize}
+    \item  create a shortcut to another command or name to execute a long string.
     \item Usage 
     \item[] \Verblubrown{bash/sh/ksh}: \Verblubrown{alias <name>="<actual command>"}
     \item[] \Verblubrown{csh/tcsh}: \Verblubrown{alias <name> "<actual command>"}
@@ -314,12 +382,11 @@
     \item \Verblubrown{unalias} is a command to remove an alias.
     \item Usage: \Verblubrown{unalias <name>}
     \item Example: \Verblubrown{unalias lla} will remove the shortcut to \Verblubrown{ls -al}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Command: mkdir}
-  \begin{itemize}
-    \item \Verblubrown{mkdir} is a command to create a directory
+    \end{itemize}
+    \framebreak
+  \item \Verblubrown{mkdir} 
+    \begin{itemize}
+    \item create a directory
     \item Usage: \Verblubrown{mkdir <options> <directoryname>}
     \item Example: \Verblubrown{mkdir -p \$HOME/test/testagain{\Enter}}
     \item By default, the directory is created in the current directory or in a path relative to the current directory
@@ -327,12 +394,11 @@
     \item[e.g.] If the directory \Verblubrown{test} does not exist in \Verblubrown{\$HOME}, then 
     \item[] \Verblubrown{mkdir \$HOME/test/testagain} will fail. 
     \item[] The \Verblubrown{-p} option will create the \Verblubrown{test} directory within \Verblubrown{\$HOME} and then create \Verblubrown{testagain} within the newly created \Verblubrown{test} directory
-  \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Command: cp}
-  \begin{itemize}
-    \item \Verblubrown{cp} is a command to copy a file or directory
+    \end{itemize}
+    \framebreak
+  \item \Verblubrown{cp}
+    \begin{itemize}
+    \item copy a file or directory
     \item Usage: \Verblubrown{cp <options> <source(s)> <destination>}
     \item Example: \Verblubrown{cp \$HOME/.bashrc ../../tmp{\Enter}}
     \item Common options to \Verblubrown{cp} command:
@@ -344,12 +410,11 @@
     \item[e.g.]\Verblubrown{cp file1 file2 dir1{\Enter}}
     \item[] \Verblubrown{dir1} will contain the files \Verblubrown{file1} and \Verblubrown{file2}
     \item[] If \Verblubrown{dir1} is a file, then the above command will fail
-  \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Command: rm}
-  \begin{itemize}
-    \item \Verblubrown{rm} command removes or deletes a file or directory
+    \end{itemize}
+    \framebreak
+  \item \Verblubrown{rm} 
+    \begin{itemize}
+    \item removes or deletes a file or directory
     \item Usage: \Verblubrown{rm <options> <file or directory>}
     \item Example: \Verblubrown{rm \$HOME/tmpfile{\Enter}}
     \item Common options to \Verblubrown{rm} command:
@@ -361,35 +426,39 @@
     \item[] \Verblubrown{sh/ksh/bash}: \Verblubrown{alias rm="rm -i"}
     \item[] \Verblubrown{csh/tcsh}   : \Verblubrown{alias rm 'rm -i'}
     \item delete empty directories using the \Verblubrown{rmdir} command.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Command: mv}
-  \begin{itemize}
-    \item \Verblubrown{mv} command moves or renames a file or directory
-    \item Usage: \Verblubrown{mv <options> <source> <destination>}
-    \item Example: \Verblubrown{mv test test1}
-    \item If there are more than one source file, then the last file is the destination and must be a directory.
-    \item Use the \Verblubrown{-i} option to prompt if a file or directory will be overwritten.
-    \item If the source(s) is(are) a file(s) and the destination is a directory, then the file(s) will be copied into the directory.
-    \item[e.g.]\Verblubrown{mv file1 file2 dir1{\Enter}}
-    \item[] \Verblubrown{dir1} will contain the files \Verblubrown{file1} and \Verblubrown{file2}
-    \item[] If \Verblubrown{dir1} is a file, then the above command will fail
-  \end{itemize}
+    \end{itemize}
+    \framebreak
+  \item \Verblubrown{mv} 
+    \begin{itemize}
+      \item moves or renames a file or directory
+      \item Usage: \Verblubrown{mv <options> <source> <destination>}
+      \item Example: \Verblubrown{mv test test1}
+      \item If there are more than one source file, then the last file is the destination and must be a directory.
+      \item Use the \Verblubrown{-i} option to prompt if a file or directory will be overwritten.
+      \item If the source(s) is(are) a file(s) and the destination is a directory, then the file(s) will be copied into the directory.
+      \item[e.g.]\Verblubrown{mv file1 file2 dir1{\Enter}}
+      \item[] \Verblubrown{dir1} will contain the files \Verblubrown{file1} and \Verblubrown{file2}
+      \item[] If \Verblubrown{dir1} is a file, then the above command will fail
+    \end{itemize}
+  \end{enumerate}
 \end{frame}
 
 \begin{frame}[fragile]{Pager Commands}
   \begin{itemize}
     \item To display a file to screen, *nix provides three commands at your disposal
+  \end{itemize}
+  \begin{enumerate}
     \item \Verblubrown{cat}: Show contents of a file.
     \item \Verblubrown{more}: Display contents one page at a time.
     \item \Verblubrown{less}: Display contents one page at a time but allow forward/backward scrolling
-    \item[] \texttt{less > more} or \texttt{less is more, more or less}
-    \item Usage: \Verblubrown{cat/more/less <options> <filename>}
-    \item Example: \Verblubrown{cat .bashrc}
-    \item To scroll forward in \Verblubrown{more} or \Verblubrown{less}, use the space bar, \texttt{CNTRL-f/d} or "Page Down" key.
-    \item To scroll backwards in \Verblubrown{less} use \texttt{CNTRL-b/u} or "Page Up".
-    \item A rarely used command, \Verblubrown{tac} does the opposite of \Verblubrown{cat} i.e. show contents of a file in reverse.
+  \end{enumerate}
+  \begin{itemize}
+  \item Usage: \Verblubrown{cat/more/less <options> <filename>}
+  \item Example: \Verblubrown{cat .bashrc}
+  \item To scroll forward in \Verblubrown{more} or \Verblubrown{less}, use the space bar, \texttt{CNTRL-f/d} or "Page Down" key.
+  \item To scroll backwards in \Verblubrown{less} use \texttt{CNTRL-b/u} or "Page Up".
+  \item To quit from \Verblubrown{more} or \Verblubrown{less}, use \texttt{q}
+  \item A rarely used command, \Verblubrown{tac} does the opposite of \Verblubrown{cat} i.e. show contents of a file in reverse.
   \end{itemize}
 \end{frame}
 
@@ -404,27 +473,23 @@
     \item[umount:] unmount file system (\alert{root only})
     \item[shutdown:] reboot or turn off machine (\alert{root only})
     \item[top:] Produces an ordered list of running processes
+    \item[htop:] An interactive process viewer for Linux (\alert(not installed by default))
     \item[free:] Display amount of free and used memory in the system
     \item[file:] Determine file type
     \item[touch:] change file timestamps or create file if not present
     \item[date:] display or set date and time
-    \item[find]: Find a file
-    \item[] \Verblubrown{find /dir/to/search -name file-to-search}
-%    \framebreak
-%    \item[vi:] Edit a file using VI/VIM
-%    \item[emacs:] Edit a file using Emacs
-    \item[wc:] Count words, lines and characters in a file
-    \item[] \Verblubrown{wc -l .bashrc}
-    \item[grep:] Find patterns in a file
-    \item[] \Verblubrown{grep alias .bashrc}
-    \item[awk:] File processing and report generating
-    \item[] \Verblubrown{awk '\{print \$1\}' file1}
-    \item[sed:] Stream Editor
-    \item[] \Verblubrown{sed 's/home/HOME/g' .bashrc}
-    \item[set:] manipulate environment variables
-    \item[] \Verblubrown{set -o emacs}
-    \item[ln:] Link a file to another file
-    \item[] \Verblubrown{ln -s file1 file2}
+    \item[find]: Find a file \Verblubrown{find /dir/to/search -name file-to-search}
+    \item[wc:] Count words, lines and characters in a file \Verblubrown{wc -l .bashrc}
+    \item[grep:] Find patterns in a file \Verblubrown{grep alias .bashrc}
+    \item[awk:] File processing and report generating \Verblubrown{awk '\{print \$1\}' file1}
+    \item[sed:] Stream Editor \Verblubrown{sed 's/home/HOME/g' .bashrc}
+    \item[set:] manipulate environment variables \Verblubrown{set -o emacs}
+    \item[ln:] Link a file to another file \Verblubrown{ln -s file1 file2}
+    \item[head:] Display first lines of a file \Verblubrown{head file1}
+    \item[tail:] Display last lines of a file \Verblubrown{tail file1}
+    \item[] By default, 10 lines are displayed in \Verblubrown{head} and \Verblubrown{tail}
+    \item[] To display more lines, say x, use the flag \Verblubrown{-n x} where
+    \item[] Adding \Verblubrown{-f} flag to \Verblubrown{tail} will wait for additional data to be appended to the file.
 %    \item[\&:] run a job in background
 %    \item[CNTRL-Z:] suspend a running job
 %    \item[fg:] run a suspended job in foreground
@@ -445,11 +510,9 @@
     \item[] All previously executed commands will be listed with a number \Verbblue{n}.
     \item[] To rerun a command from history which has number \Verbblue{n}, run the command \Verblubrown{!n{\Enter}} 
   \end{description}
-  To learn more about these commands, type \Verblubrown{man {\em command}} on the command prompt
+  To learn more about these commands, type \Verblubrown{man {\em command}} or  \Verblubrown{info {\em command}} on the command prompt
 \end{frame}
 
-
-\section{Basic *nix Utilities}
 \begin{frame}[fragile]{Filename Completion}
   \begin{itemize}
     \item Filename or Tab completion is a default feature in \Verblubrown{bash} and \Verblubrown{tcsh}.
@@ -566,18 +629,18 @@ Documents/ Downloads/
     \item Common options
     \item[] \Verblubrown{-c}: create an archive file
     \item[] \Verblubrown{-x}: extract to disk from archive
+    \item[] \Verblubrown{-t}: list contents of archive
     \item[] \Verblubrown{-z}: filter the archive through gzip (adds/requires extension .gz)
     \item[] \Verblubrown{-j}: filter the archive through bzip2 (adds/requires extension .bz2)
-    \item[] \Verblubrown{-t}: list contents of archive
     \item[] \Verblubrown{-v}: verbosely list files processed
+    \item[] \Verblubrown{-f}: read the archive from or write the archive to the specified file
     \item[e.g.] \Verblubrown{tar -cvzf myhome.tar.gz \$\{HOME\}/*}
     \item This becomes useful for creating a backup of your files and directories that you can store at some storage facility e.g. external disk
   \end{itemize}
 \end{frame}
 
-\section{Redirection}
 \begin{frame}
-  \frametitle{\small I/O Redirection}
+  \frametitle{I/O Redirection}
   \begin{itemize}
     \item There are three file descriptors for I/O streams
     \begin{enumerate}
@@ -610,10 +673,8 @@ Documents/ Downloads/
   \end{itemize}
 \end{frame}
 
-\section{File Permissions}
-
 \begin{frame}[fragile, allowframebreaks]
-  \frametitle{\small File Permissions}
+  \frametitle{File Permissions}
   \begin{itemize}
     \item Since *NIX OS's are designed for multi user environment, it is necessary to restrict access of files to other users on the system.
     \item In *NIX OS's, you have three types of file permissions
@@ -696,8 +757,7 @@ drwxr-xr-x. 2 user user 4096 Jan 28  2013 Videos
   \end{itemize}
 \end{frame}
 
-\section{Process Management}
-\begin{frame}[fragile,allowframebreaks]{\small Processes and Jobs}
+\begin{frame}[fragile,allowframebreaks]{Processes and Jobs}
   \begin{itemize}
     \item A process is an executing program identified by a unique PID
     \item[$\mybigstar$] To see information about your running processes and their PID and status,
@@ -737,286 +797,7 @@ drwxr-xr-x. 2 user user 4096 Jan 28  2013 Videos
   \end{itemize}
 \end{frame}
 
-\section{Editors}
-\begin{frame}
-  \frametitle{\small File Editing}
-  \begin{itemize}
-    \item The two most commonly used editors on Linux/Unix systems are:
-    \begin{enumerate}
-      {\scriptsize
-      \item \Verblubrown{vi} or \Verblubrown{vim} (vi improved)
-      \item \Verblubrown{emacs}
-      }
-    \end{enumerate}
-    \item \Verblubrown{vi/vim} is installed by default on Linux/Unix systems and has only a command line interface (CLI).
-    \item \Verblubrown{emacs} has both a CLI and a graphical user interface (GUI).
-    \item[$\vardiamond$] If \Verblubrown{emacs} GUI is installed then use \Verblubrown{emacs -nw} to open file in console.
-    \item Other editors that you may come across on *nix systems
-    \item[] \Verblubrown{kate}: {default editor for KDE.}
-    \item[] \Verblubrown{gedit}: {default text editor for GNOME desktop environment.}
-    \item[] \Verblubrown{gvim}: {GUI version of }\Verblubrown{vim}
-    \item[] \Verblubrown{pico}: {console based plain text editor }
-    \item[] \Verblubrown{nano}: {GNU.org clone of }\Verblubrown{pico}
-    \item[] \Verblubrown{kwrite}: {editor by KDE.}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}[allowframebreaks]
-  \frametitle{\small Editor Cheatsheets}
-% Page 1
-  \begin{itemize}
-    \item \textbf{\color{lubrown}vi/vim} and \textbf{\color{lubrown}emacs} are the two most popular *nix file editors.
-    \item Which one to use is up to you.
-    \item \textbf{\color{lubrown}vi/vim} has two modes:
-    \begin{enumerate}
-      {\scriptsize
-        \item Editing mode
-        \item Command mode
-      }
-    \end{enumerate}
-    \item \textbf{\color{lubrown}emacs} has only one mode as in any editor that you use.
-  \end{itemize}
-  {\scriptsize
-  \begin{columns}[t]
-    \column{0.6\textwidth}
-    \begin{exampleblock}{Insert/Appending Text}
-    \begin{itemize}
-      \item insert at cursor 
-      \item insert at beginning of line
-      \item append after cursor
-      \item append at end of line
-      \item newline after cursor in insert mode
-      \item newline before cursor in insert mode
-      \item append at end of line
-      \item exit insert mode
-    \end{itemize}
-    \end{exampleblock}
-    \column{0.2\textwidth}
-    \begin{exampleblock}{vi}
-    \begin{itemize}
-      \item \texttt{i}
-      \item \texttt{I}
-      \item \texttt{a}
-      \item \texttt{A}
-      \item \texttt{o}
-      \item \texttt{O}
-      \item \texttt{ea}
-      \item \texttt{ESC}
-    \end{itemize}
-    \end{exampleblock}
-  \end{columns}
-  }
-  \framebreak
-% Page 2
-  \vspace{-0.6cm}
-  {\scriptsize
-  \begin{columns}
-    \column{0.35\textwidth}
-    \begin{exampleblock}{Cursor Movement}
-    \begin{itemize}
-      \item move left 
-      \item move down
-      \item move up
-      \item move right
-      \item jump to beginning of line
-      \item jump to end of line
-      \item goto line \texttt{n}
-      \item goto top of file
-      \item goto end of file
-      \item move one page up
-      \item move one page down
-    \end{itemize}
-    \end{exampleblock}
-    \column{0.2\textwidth}
-    \begin{exampleblock}{vi}
-    \begin{itemize}
-      \item \texttt{h}
-      \item \texttt{j}
-      \item \texttt{k}
-      \item \texttt{l}
-      \item \texttt{\^}
-      \item \texttt{\$}
-      \item \texttt{nG}
-      \item \texttt{1G}
-      \item \texttt{G}
-      \item \texttt{C-u}
-      \item \texttt{C-d}
-    \end{itemize}
-    \end{exampleblock}
-    \column{0.35\textwidth}
-    \begin{exampleblock}{emacs}
-    \begin{itemize}
-      \item \texttt{C-b}
-      \item \texttt{C-n}
-      \item \texttt{C-p}
-      \item \texttt{C-f}
-      \item \texttt{C-a}
-      \item \texttt{C-e}
-      \item \texttt{M-x goto-line \enter\, n}
-      \item \texttt{M-<}
-      \item \texttt{M->}
-      \item \texttt{M-v}
-      \item \texttt{C-v}
-    \end{itemize}
-    \end{exampleblock}
-  \end{columns}
-  }
-  \vspace{-0.1cm}
-  \begin{columns}
-    \column{0.6\textwidth}
-    \begin{itemize}
-      {\scriptsize
-      \item[C]: Control Key
-      \item[M]: Meta or ESCAPE (ESC) Key
-      \item[{\enter}]: Enter Key
-      }
-    \end{itemize}
-  \end{columns}
-  \framebreak
-% Page 3
-  {\scriptsize
-   \begin{columns}
-    \column{0.45\textwidth}
-     \vspace{-0.5cm}
-    \begin{exampleblock}{File Manipulation}
-    \begin{itemize}
-      \item save file
-      \item save file and exit
-      \item quit
-      \item quit without saving
-      \item delete a line
-      \item delete \texttt{\textit{n}} lines
-      \item paste deleted line after cursor
-      \item paste before cursor
-      \item undo edit
-      \item delete from cursor to end of line
-      \item search forward for \textit{patt}
-      \item search backward for \textit{patt}
-      \item search again forward (backward)
-    \end{itemize}
-    \end{exampleblock}
-    \column{0.20\textwidth}
-     \vspace{-0.5cm}
-    \begin{exampleblock}{vi}
-    \begin{itemize}
-      \item \texttt{:w}
-      \item \texttt{:wq, ZZ}
-      \item \texttt{:q}
-      \item \texttt{:q!}
-      \item \texttt{dd}
-      \item \texttt{\textit{n}dd}
-      \item \texttt{p}
-      \item \texttt{P}
-      \item \texttt{u}
-      \item \texttt{D}
-      \item \texttt{$\backslash$\textit{patt}}
-      \item \texttt{?\textit{patt}}
-      \item \texttt{n}
-    \end{itemize}
-    \end{exampleblock}
-    \column{0.25\textwidth}
-     \vspace{-0.5cm}
-    \begin{exampleblock}{emacs}
-    \begin{itemize}
-      \item \texttt{C-x C-s}
-      \item \texttt{}
-      \item \texttt{C-x C-c}
-      \item \texttt{}
-      \item \texttt{C-a C-k}
-      \item \texttt{C-a M-\textit{n} C-k}
-      \item \texttt{C-y}
-      \item
-      \item \texttt{C-\_}
-      \item \texttt{C-k}
-      \item \texttt{C-s \textit{patt}}
-      \item \texttt{C-r \textit{patt}}
-      \item \texttt{C-s(r)}
-    \end{itemize}
-    \end{exampleblock}
-  \end{columns}
-  }
-  \framebreak
-% Page 4
-  {\scriptsize
-  \begin{columns}
-    \column{0.4\textwidth}
-     \vspace{-0.5cm}
-    \begin{exampleblock}{File Manipulation (contd)}
-    \begin{itemize}
-      \item replace a character
-      \item join next line to current
-      \item change a line
-      \item change a word
-      \item change to end of line
-      \item delete a character
-      \item delete a word
-      \item edit/open file \textit{file}
-      \item insert file \textit{file}
-      \item split window horizontally
-      \item split window vertically
-      \item switch windows
-    \end{itemize}
-    \end{exampleblock}
-    \column{0.30\textwidth}
-     \vspace{-0.5cm}
-    \begin{exampleblock}{vi}
-    \begin{itemize}
-      \item \texttt{r}
-      \item \texttt{J}
-      \item \texttt{cc}
-      \item \texttt{cw}
-      \item \texttt{c\$}
-      \item \texttt{x}
-      \item \texttt{dw}
-      \item \texttt{:e \texttt{file}}
-      \item \texttt{:r \texttt{file}}
-      \item \texttt{:split or C-ws}
-      \item \texttt{:vsplit or C-wv}
-      \item \texttt{C-ww}
-    \end{itemize}
-    \end{exampleblock}
-    \column{0.25\textwidth}
-     \vspace{-0.5cm}
-    \begin{exampleblock}{emacs}
-    \begin{itemize}
-      \item 
-      \item 
-      \item 
-      \item
-      \item
-      \item \texttt{C-d}
-      \item \texttt{M-d}
-      \item \texttt{C-x C-f \textit{file}}
-      \item \texttt{C-x i \textit{file}}
-      \item \texttt{C-x 2}
-      \item \texttt{C-x 3}
-      \item \texttt{C-x o}
-    \end{itemize}
-    \end{exampleblock}
-  \end{columns}
-  }
-  \framebreak
-% Page 5
-  \begin{itemize}
-    \item Do a google search for more detailed cheatsheets
-    \item[\texttt{vi}] \url{https://www.google.com/search?q=vi+cheatsheet}
-    \item[\texttt{emacs}] \url{https://www.google.com/search?q=emacs+cheatsheet}
-  \end{itemize}
-  \begin{block}{More on the \textbf{set -o} command}
-    \begin{itemize}
-      \item The \textbf{\color{lubrown}set -o} command can be used to change the command line editor mode among other things (Do \textbf{\color{lubrown}man set\Enter} to find out more)
-      \begin{enumerate}
-        {\scriptsize
-        \item \textbf{\color{lubrown}set -o emacs}: emacs style in-line editor for command entry, this is the default
-        \item \textbf{\color{lubrown}set -o vi}: vi style in-line editor for command entry.
-        }
-      \end{enumerate}
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-
-\section*{Basic Shell Scripting}
+\section{Environment \& Environment Variables}
 \begin{frame}
   \frametitle{Start Up Scripts}
   \begin{itemize}
@@ -1089,6 +870,282 @@ setenv TEXINPUTS ".:/usr/share/texmf//:/home/apacheco/LaTeX//:${TEXINPUTS}"
 setenv BIBINPUTS ".:/home/apacheco/TeX//:${BIBINPUTS}"
   \end{lstlisting}
 \end{frame}
+
+\begin{frame}[fragile,allowframebreaks]
+  \frametitle{Variables}
+  \begin{itemize}
+    \item *nix also permits the use of variables, similar to any programming language such as C, C++, Fortran etc
+    \item A variable is a named object that contains data used by one or more applications. 
+    \item There are two types of variables, Environment and User Defined and can contain  a number, character or a string of characters.
+    \item Environment Variables provides a simple way to share configuration settings between multiple applications and processes in Linux.
+    \item By Convention, enviromental variables are often named using all uppercase letters
+    \item[e.g.] \Verblubrown{PATH, LD\_LIBRARY\_PATH, LD\_INCLUDE\_PATH, TEXINPUTS,} etc
+    \item To reference a variable (environment or user defined) prepend \$ to the name of the variable
+    \item[e.g.] \Verblubrown{\$PATH, \$LD\_LIBRARY\_PATH}
+    \framebreak
+  \end{itemize}
+%\end{frame}
+%
+%\begin{frame}[allowframebreaks]
+%  \frametitle{Environment Variable}
+  \begin{itemize}
+    \item The command \Verblubrown{printenv} list the current environmental variables.
+    \item[$\mybigstar$] {Type \Verblubrown{printenv} on your command prompt to list all environment variables in your current session.}
+    \item The command \Verblubrown{env} is used to either print a list of environment variables or run another utility in an altered environment without having to modify the currently existing environment.
+    \item[$\mybigstar$] {Type \Verblubrown{env SHELL=/bin/tcsh xterm} to start an xterm session in tcsh}
+    \item[$\vardiamond$] {To execute the above command successfully, you need to be in GUI mode on the virtual OS or logged into a remote systems with X-Forwarding enabled.}
+  \end{itemize}
+  \framebreak
+  \begin{description}
+    \item[PATH:] A list of directory paths.
+    \item[HOME:] indicate where a user's home directory is located in the file system.
+    \item[PWD:] contains path to current working directory.
+    \item[OLDPWD:] contains path to previous working directory.
+    \item[TERM:] specifies the type of computer terminal or terminal emulator being used
+    \item[SHELL:] contains name of the running, interactive shell.
+    \item[PS1:] default command prompt
+    \item[PS2:] secondary command prompt
+    \item[LD\_LIBRARY\_PATH:] colon-separated set of directories where libraries should be searched for first
+    \item[HOSTNAME:] The systems host name
+    \item[USER:] Current logged in user's name
+    \item[DISPLAY:] Network name of the X11 display to connect to, if available.
+%    \item[LD\_INCLUDE\_PATH:] 
+  \end{description}
+  \framebreak
+  \begin{itemize}
+    \item You can edit the environment variables.
+    \item Command to do this depends on the shell
+    \item[$\mybigstar$] To add your bin directory to the \Verblubrown{PATH} variable
+    \item[] \Verblubrown{sh/ksh/bash}: \Verblubrown{export PATH=\$\{HOME\}/bin:\$\{PATH\}}
+    \item[] \Verblubrown{csh/tcsh}: \Verblubrown{setenv PATH \$\{HOME\}/bin:\$\{PATH\}}
+    \item[$\mybigstar$] Note the syntax for the above commands
+    \item[$\mybigstar$] \Verblubrown{sh/ksh/bash:} {no spaces except between \Verblubrown{export} and \Verblubrown{PATH}}
+    \item[$\mybigstar$] \Verblubrown{csh,tcsh:} {no = sign, just a space between \Verblubrown{PATH} and the absolute path}
+    \item[$\mybigstar$] \Verblubrown{all shells:} {colon(:) to separate different paths and the variable that is appended to}
+    \item \textbf{Yes, the order matters.} If you have a customized version of a software say perl in your home directory, if you append the perl path to \Verblubrown{PATH} at the end, your program will use the system wide perl not your locally installed version.
+      \framebreak
+    \item Rules for Variable Names
+    \begin{enumerate}
+      {%\scriptsize
+        \item Variable names must start with a letter or underscore
+        \item Number can be used anywhere else
+        \item DO NOT USE special characters such as \texttt{@, \#, \%, \$}
+        \item Case sensitive
+        \item Examples
+        \begin{itemize}
+          {%\scriptsize
+          \item Allowed: VARIABLE, VAR1234able, var\_name, \_VAR
+          \item Not Allowed: 1VARIABLE, \%NAME, \$myvar, VAR@NAME 
+          }
+        \end{itemize}
+      }
+    \end{enumerate}
+    \item Assigning value to a variable
+    \begin{center}
+      \begin{tikzpicture}
+        \node (tbl) {
+          \begin{tabularx}{0.65\textwidth}{ccc}
+            \arrayrulecolor{black}
+            \textcolor{white}{\textbf{Type} }& \textcolor{white}{\textbf{sh,ksh,bash}} &\textcolor{white}{\textbf {csh,tcsh}}\\
+            Shell \rule{0pt}{3.5ex} & name=value & set name = value \\
+            Environment & export name=value & setenv name value \\
+            [1.0ex]
+        \end{tabularx}};
+        \begin{pgfonlayer}{background}
+          \draw[rounded corners,top color=lupurple,bottom color=lupurple,
+            draw=lubrown!30] ($(tbl.north west)+(0.14,0)$)
+          rectangle ($(tbl.north east)-(0.13,0.9)$);
+          \draw[rounded corners,top color=lulime,bottom color=lulime,draw=lulime]
+          ($(tbl.north east)-(0.13,0.6)$)
+          rectangle ($(tbl.south west)+(0.13,0.2)$);
+        \end{pgfonlayer}
+      \end{tikzpicture}
+    \end{center}
+    \item \Verblubrown{sh,ksh,bash} THERE IS NO SPACE ON EITHER SIDE OF =
+    \item \Verblubrown{csh,tcsh} space on either side of = is allowed for the \Verblubrown{set} command
+    \item \Verblubrown{csh,tcsh} There is no = in the \Verblubrown{setenv} command
+  \end{itemize}
+%  \framebreak
+%  \begin{exampleblock}{Exercise}
+%    \begin{itemize}
+%      \item Create two shell variables containing
+%      \begin{enumerate}
+%        {%\footnotesize
+%          \item your name
+%          \item[e.g.] MYNAME=Alex
+%          \item a standard greeting
+%          \item[e.g.] Greet=Hello
+%        }
+%      \end{enumerate}
+%      \item We'll make use of this variables in a few slides when we learn some basic commands.
+%    \end{itemize}
+%  \end{exampleblock}
+\end{frame}
+
+\section{Editors}
+\begin{frame}
+  \frametitle{File Editing}
+  \begin{itemize}
+    \item The two most commonly used editors on Linux/Unix systems are:
+    \begin{enumerate}
+      {\scriptsize
+      \item \Verblubrown{vi} or \Verblubrown{vim} (vi improved)
+      \item \Verblubrown{emacs}
+      }
+    \end{enumerate}
+    \item \Verblubrown{vi/vim} is installed by default on Linux/Unix systems and has only a command line interface (CLI).
+    \item \Verblubrown{emacs} has both a CLI and a graphical user interface (GUI).
+    \item[$\vardiamond$] If \Verblubrown{emacs} GUI is installed then use \Verblubrown{emacs -nw} to open file in console.
+    \item Other editors that you may come across on *nix systems
+    \item[] \Verblubrown{kate}: {default editor for KDE.}
+    \item[] \Verblubrown{gedit}: {default text editor for GNOME desktop environment.}
+    \item[] \Verblubrown{gvim}: {GUI version of }\Verblubrown{vim}
+    \item[] \Verblubrown{pico}: {console based plain text editor }
+    \item[] \Verblubrown{nano}: {GNU.org clone of }\Verblubrown{pico}
+    \item[] \Verblubrown{kwrite}: {editor by KDE.}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks,fragile]
+  \frametitle{Editor Cheatsheets}
+% Page 1
+  \begin{itemize}
+    \item \textbf{\color{lubrown}vi/vim} and \textbf{\color{lubrown}emacs} are the two most popular *nix file editors.
+    \item Which one to use is up to you.
+    \item \textbf{\color{lubrown}vi/vim} has two modes:
+    \begin{enumerate}
+      {\scriptsize
+        \item Editing mode
+        \item Command mode
+      }
+    \end{enumerate}
+    \item \textbf{\color{lubrown}emacs} has only one mode as in any editor that you use.
+  \end{itemize}
+  \begin{center}
+    \taburulecolor{lublue}
+    \begin{tabular}{a|b}
+      %\rowcolor{lublue}\multicolumn{2}{c}{Insert/Appending Text}\\
+      \rowcolor{lublue}{Insert/Appending Text} & {vi}\\
+       \rowcolor{lulime}insert at cursor & \texttt{i}\\
+       \rowcolor{lulime!50}insert at beginning of line& \texttt{I}\\
+       \rowcolor{lulime}append after cursor& \texttt{a}\\
+       \rowcolor{lulime!50}append at end of line& \texttt{A}\\
+       \rowcolor{lulime}newline after cursor in insert mode& \texttt{o}\\
+       \rowcolor{lulime!50}newline before cursor in insert mode& \texttt{O}\\
+       \rowcolor{lulime}append at end of line& \texttt{ea}\\
+       \rowcolor{lulime!50}exit insert mode& \texttt{ESC}\\
+   \end{tabular}
+  \end{center}
+
+% Page 2
+
+  \begin{center}
+    \taburulecolor{lublue}
+    \begin{tabular}{a|b|b}
+      \rowcolor{lublue}Cursor Movement & vi & emacs \\
+      \rowcolor{lulime}move left       & h  & \Ctrl-b \\
+      \rowcolor{lulime!50}move down       & j  & \Ctrl-n \\
+      \rowcolor{lulime}move up         & k  & \Ctrl-p \\
+      \rowcolor{lulime!50}move right      & l  & \Ctrl-f \\
+      \rowcolor{lulime}jump to begining of line & \Verb|^| & \Ctrl-a \\
+      \rowcolor{lulime!50}jump to end of line      & \$       & \Ctrl-e \\
+      \rowcolor{lulime}goto line \texttt{n}     & nG       & \Esc x goto-line \Enter\,n \\
+      \rowcolor{lulime!50}goto top of file         & 1G       & \Esc $<$ \\
+      \rowcolor{lulime}goto end of file         &  G       & \Esc $>$ \\
+      \rowcolor{lulime!50}move one page up         & \Ctrl-u  & \Esc v \\
+      \rowcolor{lulime}move one page down       & \Ctrl-d  & \Ctrl-v \\
+    \end{tabular}
+  \end{center}
+
+% Page 3
+
+  \begin{center}
+    \taburulecolor{lublue}
+    \begin{tabular}{a|b|b}
+      \rowcolor{lublue}File Manipulation & vi & emacs \\
+      \rowcolor{lulime}edit/open file \textit{file}  & :e \textit{file} & \Ctrl-x \Ctrl-f \textit{file}\\
+      \rowcolor{lulime!50}insert file \textit{file}  & :r \textit{file} & \Ctrl-x i \textit{file}\\
+      \rowcolor{lulime}save file            & :w       & \Ctrl-x\Ctrl-s \\
+      \rowcolor{lulime!50}save file and exit   & :wq, ZZ (if file exists) & \\
+      \rowcolor{lulime}quit                 & :q       & \Ctrl-x\Ctrl-c \\
+      \rowcolor{lulime!50}quit without saving  & :q!      & \\
+    \end{tabular}
+  \end{center}
+
+  \begin{center}
+    \taburulecolor{lublue}
+    \begin{tabular}{a|b|b}
+      \rowcolor{lublue}Text Manipulation & vi & emacs \\
+      \rowcolor{lulime}delete a line        & dd      & \Ctrl-a\Ctrl-k \\
+      \rowcolor{lulime!50}delete \texttt{n} lines & \texttt{n}dd  & \Ctrl-a\Esc n\Ctrl-k \\
+      \rowcolor{lulime}paste deleted line after cursor & p & \Ctrl-y \\
+      \rowcolor{lulime!50}paste deleted line before curosr & P & \\
+      \rowcolor{lulime}undo edit            & u       & \Ctrl-\_ or  \Ctrl-x u \\
+      \rowcolor{lulime!50}delete cursor to end of line & D & \Ctrl-k \\
+      \rowcolor{lulime}search forward for \textit{patt} & \texttt{$\backslash$\textit{patt}} & \Ctrl-s \textit{patt} \\
+      \rowcolor{lulime!50}search backward for \textit{patt} & ?\textit{patt} & \Ctrl-r \textit{patt} \\
+      \rowcolor{lulime}search again forward (backward) & n & \Ctrl-s(r) \\
+      \rowcolor{lulime!50}replace a character  & r &\\
+      \rowcolor{lulime}join next line to current  & J &  \\
+      \rowcolor{lulime!50}change a line  & cc &\\
+      \rowcolor{lulime}change a word  & cw & \\
+      \rowcolor{lulime!50}change to end of line  & c\$ & \\
+      \rowcolor{lulime}delete a character  & x & \Ctrl-d\\
+      \rowcolor{lulime!50}delete a word  & dw & \Esc-d \\
+    \end{tabular}
+  \end{center}
+
+  \begin{center}
+    \taburulecolor{lublue}
+    \begin{tabular}{a|b|b}
+      \rowcolor{lublue}Window Management & vi & emacs \\
+      \rowcolor{lulime}split window horizontally  & :split or \Ctrl-w s & \Ctrl-x 2\\
+      \rowcolor{lulime!50}split window vertically & :vsplit or \Ctrl-w v & \Ctrl-x 3\\
+      \rowcolor{lulime}switch windows & \Ctrl-w w & \Ctrl-x o\\
+    \end{tabular}
+  \end{center}
+
+  \begin{itemize}
+    \item Do a google search for more detailed cheatsheets
+    \item[\texttt{vi}] \url{https://www.google.com/search?q=vi+cheatsheet}
+    \item[\texttt{emacs}] \url{https://www.google.com/search?q=emacs+cheatsheet}
+  \end{itemize}
+  \begin{block}{More on the \textbf{set -o} command}
+    \begin{itemize}
+      \item The \textbf{\color{lubrown}set -o} command can be used to change the command line editor mode among other things (Do \textbf{\color{lubrown}man set\Enter} to find out more)
+      \begin{enumerate}
+        {\scriptsize
+        \item \textbf{\color{lubrown}set -o emacs}: emacs style in-line editor for command entry, this is the default
+        \item \textbf{\color{lubrown}set -o vi}: vi style in-line editor for command entry.
+        }
+      \end{enumerate}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{}
+  \color{blue}{
+  \begin{center}
+    {\fontsize{40}{60}\selectfont The End}\\
+    \vspace{1cm}
+    {\fontsize{20}{30}\selectfont Any Questions?}\\
+    \vspace{0.5cm}
+    {\fontsize{15}{30}\selectfont
+        Subscribe to \href{http://groups.google.com/a/lehigh.edu/group/lehigh-linux-list/}{Lehigh Linux Google Group} via email to\\
+        \url{lehigh-linux-list+subscribe@lehigh.edu}\\
+    }
+    \vspace{0.5cm}
+    {\fontsize{15}{30}\selectfont
+      \color{red!80!black}{Sep 22: Research Computing Resources at Lehigh}\\
+      \color{red!80!black}{Sep 29 \& Oct 6: Shell Scripting}\\
+    }
+    \vspace{0.5cm}
+%    {\fontsize{15}{20}\selectfont Survey: \color{red!90!white}{\url{http://www.hpc.lsu.edu/survey}}}
+  \end{center}
+  }
+\end{frame}
+
 
 %\section*{What is a scripting Language?}
 %\begin{frame}
@@ -1203,7 +1260,7 @@ setenv BIBINPUTS ".:/home/apacheco/TeX//:${BIBINPUTS}"
 %
 %
 %\begin{frame}[allowframebreaks]
-%  \frametitle{\small Exercises}
+%  \frametitle{Exercises}
 %  \begin{itemize}
 %    \item Login to a Linux machine and open a terminal
 %    \item Enter the following commands or carry out operations asked for.
