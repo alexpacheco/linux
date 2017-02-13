@@ -62,101 +62,75 @@
   \tableofcontents
 \end{frame}
 
-\section{Linux File System Heirarchy}
+\section{Introduction}
 \begin{frame}
-  \frametitle{Directory Structure}
-%    \vspace{-0.5cm}
+  \frametitle{What is Linux?}
   \begin{itemize}
-    \item All files are arranged in a hierarchial structure, like an inverted tree.
-    \item The top of the hierarchy is traditionally called \textbf{root} (written as a slash / )
-  \end{itemize}
-\tikzstyle{every node}=[draw=black,thick,anchor=west]
-\tikzstyle{selected}=[draw=red,fill=red!30]
-\tikzstyle{optional}=[dashed,fill=gray!50]
-\begin{tikzpicture}[%
-  linux/.style={rectangle,draw,fill=blue!20},
-  hpc/.style={rectangle,draw,fill=red!80,rounded corners=.8ex},
-  grandchild/.style={grow=down,xshift=1em,anchor=west,
-    edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)}},
-  first/.style={level distance=12ex,sibling distance=10em,xshift=-6em},
-  second/.style={level distance=8ex,sibling distance=6em,xshift=-1.5em},
-  third/.style={level distance=26ex,sibling distance=7.5em,xshift=-2em},
-  fourth/.style={level distance=8ex},
-  fifth/.style={level distance=14ex},
-  sixth/.style={level distance=20ex},
-  seventh/.style={level distance=26ex},
-  eighth/.style={level distance=32ex},
-  level 1/.style={sibling distance=5.1em},
-  scale=0.58]
-    % Parents
-    \coordinate
-    child[grow=down,level distance=0ex]{node[linux]{ / }}
-    [edge from parent fork down]
-    % Children and grandchildren
-    child {node[linux] {bin}}
-    child {node[linux] {boot}}
-    child {node[linux] {dev}}
-    child {node[linux] {etc}}
-    child {node[linux] {home}
-      child [first] {node[linux] {user1}
-          child[grandchild,fourth] {node[linux] {Desktop}}
-          child[grandchild,fifth] {node[linux] {Documents}}
-          child[grandchild,sixth] {node[linux] {Downloads}}
-          child[grandchild,seventh] {node[linux] {Public}}
-          child[grandchild,eighth] {node[linux] {$\cdots$}}
-       }
-      child [first] {node[linux] {user2}
-       }
-      child [first] {node[linux] {$\cdots$}}
-    }
-    child [missing] {}
-    child {node[linux] {lib}}
-    child {node[linux] {mnt}}
-    child {node[linux] {tmp}}
-    child {node[linux] {usr}
-      child [third] {node[linux] {bin}}
-      child [third] {node[linux] {lib}}
-      child [third] {node[linux] {local}}
-      child [third] {node[linux] {include}}
-      child [third] {node[linux] {share}}
-    }
-    child {node[linux] {var}}
-    child {node[hpc] {zhome}
-      child [second] {node[hpc] {Apps}}
-      child [second] {node[hpc] {user1}}
-      child [second] {node[hpc] {user2}}
-      child [second] {node[hpc] {$\cdots$}}
-    };
-\end{tikzpicture}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Relative \& Absolute Path}
-  \begin{itemize}
-    \item \textit{Path} means a position in the directory tree.
-    \item You can use either the \textit{relative path} or \textit{absolute path}
-    \item In \textit{relative path} expression
-    \begin{itemize}
-      {%\scriptsize
-        \item . (one dot or period) is the current working directory
-        \item .. (two dots or periods) is one directory up
-        \item You can combine . and .. to navigate the file system hierarchy.
-        \item the path is not defined uniquely and does depend on the current path.
-        \item \texttt{../../tmp} is unique only if your current working directory is your home directory.
-      }
-    \end{itemize}
-    \item In \textit{absolute path} expression 
-    \begin{itemize}
-      {%\scriptsize
-        \item the path is defined uniquely and does not depend on the current path
-        \item \texttt{/tmp} is unique since /tmp is the \textit{abolute path}
-      }
-    \end{itemize}
+    \item Linux is an operating system that evolved from a kernel created by Linus Torvalds when he was a student at the University of Helsinki. 
+    \item It's meant to be used as an alternative to other operating systems, Windows, Mac OS, MS-DOS, Solaris and others. 
+    \item Linux is the most popular OS used in a Supercomputer\let\thefootnote\relax\footnote{\tiny \url{http://www.top500.org/statistics/list/}}\let\thefootnote\relax\footnote{\tiny Novement 2016 List}
+      \input{top500}
+    \item If you are using a Supercomputer/High Performance Computer for your research, it will be based on a *nix OS.
+    \item It is required/neccessary/mandatory to learn Linux Programming (commands, shell scripting) if your research involves use of High Performance Computing or Supercomputing resources.
   \end{itemize}
 \end{frame}
 
+\begin{frame}
+  \frametitle{Where is Linux used?}
+  \begin{itemize}
+    \item Linux distributions are tailored to different requirements such as
+    \begin{enumerate}
+      {%\scriptsize
+        \item Server
+        \item Desktop
+        \item Workstation
+        \item Routers
+        \item Embedded devices
+        \item Mobile devices (Android is a Linux-based OS)
+      }
+    \end{enumerate}
+    \item Almost any software that you use on windows has a roughly equivalent software on Linux, most often multiple equivalent software
+    \item[e.g.] Microsoft Office equivalents are OpenOffice.org, LibreOffice, KOffice
+    \item For complete list, visit \url{http://wiki.linuxquestions.org/wiki/Linux_software_equivalent_to_Windows_software}
+    \item Linux offers you freedom, to choose your desktop environment, software.
+  \end{itemize}
+\end{frame}
 
-\section{Basic Commands}
+\begin{frame}
+  \frametitle{What is a Linux OS, Distro, Desktop Environment?}
+  \begin{itemize}
+    \item Many software vendors release their own packaged Linux OS (kernel, applications) known as distribution
+    \item Linux distribution = Linux kernel + GNU system utilities and libraries + Installation scripts + Management utilities etc.
+    \begin{enumerate}
+      {%\scriptsize
+        \item Debian, Ubuntu, Mint
+        \item Red Hat, Fedora, \textbf{CentOS}
+        \item Slackware, openSUSE, SLES, SLED
+        \item Gentoo
+      }
+    \end{enumerate}
+    \item Application packages on Linux can be installed from source or from customized packages
+    \begin{enumerate}
+      {%\scriptsize
+        \item deb: Debian based distros e.g. Debian, Ubuntu, Mint
+        \item rpm: Red Hat based distros, Slackware based distros.
+      }
+    \end{enumerate}
+    \item Linux distributions offer a variety of desktop environment.
+    \begin{enumerate}
+      {%\scriptsize
+        \item K Desktop Environment (KDE)
+        \item GNOME 
+        \item Xfce
+        \item Lightweight X11 Desktop Environment (LXDE)
+        \item Cinnamon
+        \item MATE
+        \item Dynamic Window Manager
+      }
+    \end{enumerate}
+  \end{itemize}
+\end{frame}
+
 \begin{frame}[fragile]
   \frametitle{Difference between Shell and Command}
   \begin{block}{What is a Shell?}
@@ -264,6 +238,103 @@
     \end{center}
   \end{columns}
 \end{frame}
+
+\section{Linux File System Heirarchy}
+\begin{frame}
+  \frametitle{Directory Structure}
+%    \vspace{-0.5cm}
+  \begin{itemize}
+    \item All files are arranged in a hierarchial structure, like an inverted tree.
+    \item The top of the hierarchy is traditionally called \textbf{root} (written as a slash / )
+  \end{itemize}
+\tikzstyle{every node}=[draw=black,thick,anchor=west]
+\tikzstyle{selected}=[draw=red,fill=red!30]
+\tikzstyle{optional}=[dashed,fill=gray!50]
+\begin{tikzpicture}[%
+  linux/.style={rectangle,draw,fill=blue!20},
+  hpc/.style={rectangle,draw,fill=red!80,rounded corners=.8ex},
+  grandchild/.style={grow=down,xshift=1em,anchor=west,
+    edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)}},
+  first/.style={level distance=12ex,sibling distance=10em,xshift=-6em},
+  second/.style={level distance=8ex,sibling distance=6em,xshift=-1.5em},
+  third/.style={level distance=26ex,sibling distance=7.5em,xshift=-2em},
+  fourth/.style={level distance=8ex},
+  fifth/.style={level distance=14ex},
+  sixth/.style={level distance=20ex},
+  seventh/.style={level distance=26ex},
+  eighth/.style={level distance=32ex},
+  level 1/.style={sibling distance=5.1em},
+  scale=0.58]
+    % Parents
+    \coordinate
+    child[grow=down,level distance=0ex]{node[linux]{ / }}
+    [edge from parent fork down]
+    % Children and grandchildren
+    child {node[linux] {bin}}
+    child {node[linux] {boot}}
+    child {node[linux] {dev}}
+    child {node[linux] {etc}}
+    child {node[linux] {home}
+      child [first] {node[linux] {user1}
+          child[grandchild,fourth] {node[linux] {Desktop}}
+          child[grandchild,fifth] {node[linux] {Documents}}
+          child[grandchild,sixth] {node[linux] {Downloads}}
+          child[grandchild,seventh] {node[linux] {Public}}
+          child[grandchild,eighth] {node[linux] {$\cdots$}}
+       }
+      child [first] {node[linux] {user2}
+       }
+      child [first] {node[linux] {$\cdots$}}
+    }
+    child [missing] {}
+    child {node[linux] {lib}}
+    child {node[linux] {mnt}}
+    child {node[linux] {tmp}}
+    child {node[linux] {usr}
+      child [third] {node[linux] {bin}}
+      child [third] {node[linux] {lib}}
+      child [third] {node[linux] {local}}
+      child [third] {node[linux] {include}}
+      child [third] {node[linux] {share}}
+    }
+    child {node[linux] {var}}
+    child {node[hpc] {share}
+      child [second] {node[hpc] {Apps}}
+    }
+%      child [second] {node[hpc] {user1}}
+%      child [second] {node[hpc] {user2}}
+%      child [second] {node[hpc] {$\cdots$}}
+    ;
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Relative \& Absolute Path}
+  \begin{itemize}
+    \item \textit{Path} means a position in the directory tree.
+    \item You can use either the \textit{relative path} or \textit{absolute path}
+    \item In \textit{relative path} expression
+    \begin{itemize}
+      {%\scriptsize
+        \item . (one dot or period) is the current working directory
+        \item .. (two dots or periods) is one directory up
+        \item You can combine . and .. to navigate the file system hierarchy.
+        \item the path is not defined uniquely and does depend on the current path.
+        \item \texttt{../../tmp} is unique only if your current working directory is your home directory.
+      }
+    \end{itemize}
+    \item In \textit{absolute path} expression 
+    \begin{itemize}
+      {%\scriptsize
+        \item the path is defined uniquely and does not depend on the current path
+        \item \texttt{/tmp} is unique since /tmp is the \textit{abolute path}
+      }
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+\section{Basic Commands}
 
 \begin{frame}[fragile]{How to get more information with Linux}
   \begin{enumerate}
