@@ -12,6 +12,10 @@ file permissions, process management, editors (vi and emacs) and basic shell scr
   * LTS Seminar Series at Lehigh University on
     + Feb. 2015
     + Sep. 2016
+    + Feb. 2017
+    + Sep. 2017
+    + Feb. 2018
+    + Jun. 2018
 
 
 # Contributer
