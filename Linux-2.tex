@@ -401,7 +401,7 @@
 %
 %  \begin{exampleblock}{Exercise}
 %    \begin{itemize}
-%      \item Print out the variable you created a few slides back
+%     \item Print out the variable you created a few slides back
 %      \item[] \Verblubrown{echo \$MYNAME{\Enter}}
 %      \item[] \Verblubrown{echo \$Greet{\Enter}}
 %      \item Read a variable for greeting message
@@ -644,6 +644,8 @@ Documents/ Downloads/
     \item[i.e.] \Verblubrown{ssh -p <port number> <user>@<remote host>}
     \item If you need to forward the display of an application from the remote system to your local system, add the \Verblubrown{-X} option to \Verblubrown{ssh}
     \item[] Example: \Verblubrown{ssh -X alp514@ssh.cc.lehigh.edu}
+    \item Using a jump host, add \Verblubrown{-J host} option to \Verblubrown{ssh}
+    \item[] Example: \Verblubrown{ssh -J alp514@ssh.cc.lehigh.edu alp514@sol.cc.lehigh.edu}
   \end{itemize}
 \end{frame}
 
@@ -654,11 +656,14 @@ Documents/ Downloads/
     \Verblubrown{{\qquad}<user>@<host>:/path/to/destination/file/or/directory}
     \item[e.g.] You want to copy files between Polaris Cluster and your Linux Desktop/Laptop
     \item[] \Verblubrown{scp alp514@polaris.cc.lehigh.edu:/home/alp514/octave-tutorial.tar.gz .}
-    \item[] \Verblubrown{scp -r Public apacheco@polaris.cc.lehigh.edu:$\sim$/}
+    \item[] \Verblubrown{scp -r Public alp514@polaris.cc.lehigh.edu:$\sim$/}
     \item You can omit the \Verblubrown{<user>@} part of the argument if the username is the same on both systems.
     \item You can omit the \Verblubrown{<user>@<host>:} for your local machine.
     \item Common options are \Verblubrown{-r} and \Verblubrown{-p}, same meaning as \Verblubrown{cp}.
     \item add \Verblubrown{-P <port number>} option for non default ports.
+    \item Using a jump host, add \Verblubrown{-o 'ProxyJump host'} option to \Verblubrown{ssh}
+    \item[] Example: \Verblubrown{scp -o 'ProxyJump alp514@ssh.cc.lehigh.edu' {\textbackslash}}\\ 
+     \Verblubrown{{\qquad}alp514@sol.cc.lehigh.edu:$\sim$/myscript.log .}
       \framebreak
     \item \Verblubrown{rsync} is another utility that can be used to copy files locally and remotely.
     \item Usage: \Verblubrown{rsync <option> <source> <destination>}
@@ -719,6 +724,148 @@ Documents/ Downloads/
   \end{itemize}
 \end{frame}
 
+\section{Editors}
+\begin{frame}
+  \frametitle{File Editing}
+  \begin{itemize}
+    \item The two most commonly used editors on Linux/Unix systems are:
+    \begin{enumerate}
+      {\scriptsize
+      \item \Verblubrown{vi} or \Verblubrown{vim} (vi improved)
+      \item \Verblubrown{emacs}
+      }
+    \end{enumerate}
+    \item \Verblubrown{vi/vim} is installed by default on Linux/Unix systems and has only a command line interface (CLI).
+    \item \Verblubrown{emacs} has both a CLI and a graphical user interface (GUI).
+    \item[$\vardiamond$] If \Verblubrown{emacs} GUI is installed then use \Verblubrown{emacs -nw} to open file in console.
+    \item Other editors that you may come across on *nix systems
+    \item[] \Verblubrown{kate}: {default editor for KDE.}
+    \item[] \Verblubrown{gedit}: {default text editor for GNOME desktop environment.}
+    \item[] \Verblubrown{gvim}: {GUI version of }\Verblubrown{vim}
+    \item[] \Verblubrown{pico}: {console based plain text editor }
+    \item[] \Verblubrown{nano}: {GNU.org clone of }\Verblubrown{pico}
+    \item[] \Verblubrown{kwrite}: {editor by KDE.}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks,fragile]
+  \frametitle{Editor Cheatsheets}
+% Page 1
+  \begin{itemize}
+    \item \textbf{\color{lubrown}vi/vim} and \textbf{\color{lubrown}emacs} are the two most popular *nix file editors.
+    \item Which one to use is up to you.
+    \item \textbf{\color{lubrown}vi/vim} has two modes:
+    \begin{enumerate}
+      {\scriptsize
+        \item Editing mode
+        \item Command mode
+      }
+    \end{enumerate}
+    \item \textbf{\color{lubrown}emacs} has only one mode as in any editor that you use.
+  \end{itemize}
+  \begin{center}
+    \taburulecolor{lublue}
+    \begin{tabular}{a|b}
+      %\rowcolor{lublue}\multicolumn{2}{c}{Insert/Appending Text}\\
+      \rowcolor{lublue}{Insert/Appending Text} & {vi}\\
+       \rowcolor{lulime}insert at cursor & \texttt{i}\\
+       \rowcolor{lulime!50}insert at beginning of line& \texttt{I}\\
+       \rowcolor{lulime}append after cursor& \texttt{a}\\
+       \rowcolor{lulime!50}append at end of line& \texttt{A}\\
+       \rowcolor{lulime}newline after cursor in insert mode& \texttt{o}\\
+       \rowcolor{lulime!50}newline before cursor in insert mode& \texttt{O}\\
+       \rowcolor{lulime}append at end of line& \texttt{ea}\\
+       \rowcolor{lulime!50}exit insert mode& \texttt{ESC}\\
+   \end{tabular}
+  \end{center}
+
+% Page 2
+
+  \begin{center}
+    \taburulecolor{lublue}
+    \begin{tabular}{a|b|b}
+      \rowcolor{lublue}Cursor Movement & vi & emacs \\
+      \rowcolor{lulime}move left       & h  & \Ctrl-b \\
+      \rowcolor{lulime!50}move down       & j  & \Ctrl-n \\
+      \rowcolor{lulime}move up         & k  & \Ctrl-p \\
+      \rowcolor{lulime!50}move right      & l  & \Ctrl-f \\
+      \rowcolor{lulime}jump to begining of line & \Verb|^| & \Ctrl-a \\
+      \rowcolor{lulime!50}jump to end of line      & \$       & \Ctrl-e \\
+      \rowcolor{lulime}goto line \texttt{n}     & nG       & \Esc x goto-line \Enter\,n \\
+      \rowcolor{lulime!50}goto top of file         & 1G       & \Esc $<$ \\
+      \rowcolor{lulime}goto end of file         &  G       & \Esc $>$ \\
+      \rowcolor{lulime!50}move one page up         & \Ctrl-u  & \Esc v \\
+      \rowcolor{lulime}move one page down       & \Ctrl-d  & \Ctrl-v \\
+    \end{tabular}
+  \end{center}
+
+% Page 3
+
+  \begin{center}
+    \taburulecolor{lublue}
+    \begin{tabular}{a|b|b}
+      \rowcolor{lublue}File Manipulation & vi & emacs \\
+      \rowcolor{lulime}edit/open file \textit{file}  & :e \textit{file} & \Ctrl-x \Ctrl-f \textit{file}\\
+      \rowcolor{lulime!50}insert file \textit{file}  & :r \textit{file} & \Ctrl-x i \textit{file}\\
+      \rowcolor{lulime}save file            & :w       & \Ctrl-x\Ctrl-s \\
+      \rowcolor{lulime!50}save file and exit   & :wq, ZZ (if file exists) & \\
+      \rowcolor{lulime}quit                 & :q       & \Ctrl-x\Ctrl-c \\
+      \rowcolor{lulime!50}quit without saving  & :q!      & \\
+    \end{tabular}
+  \end{center}
+
+  \begin{center}
+    \taburulecolor{lublue}
+    \begin{tabular}{a|b|b}
+      \rowcolor{lublue}Text Manipulation & vi & emacs \\
+      \rowcolor{lulime}delete a line        & dd      & \Ctrl-a\Ctrl-k \\
+      \rowcolor{lulime!50}delete \texttt{n} lines & \texttt{n}dd  & \Ctrl-a\Esc n\Ctrl-k \\
+      \rowcolor{lulime}paste deleted line after cursor & p & \Ctrl-y \\
+      \rowcolor{lulime!50}paste deleted line before curosr & P & \\
+      \rowcolor{lulime}undo edit            & u       & \Ctrl-\_ or  \Ctrl-x u \\
+      \rowcolor{lulime!50}delete cursor to end of line & D & \Ctrl-k \\
+      \rowcolor{lulime}search forward for \textit{patt} & \texttt{$\backslash$\textit{patt}} & \Ctrl-s \textit{patt} \\
+      \rowcolor{lulime!50}search backward for \textit{patt} & ?\textit{patt} & \Ctrl-r \textit{patt} \\
+      \rowcolor{lulime}search again forward (backward) & n & \Ctrl-s(r) \\
+      \rowcolor{lulime!50}replace a character  & r &\\
+      \rowcolor{lulime}join next line to current  & J &  \\
+      \rowcolor{lulime!50}change a line  & cc &\\
+      \rowcolor{lulime}change a word  & cw & \\
+      \rowcolor{lulime!50}change to end of line  & c\$ & \\
+      \rowcolor{lulime}delete a character  & x & \Ctrl-d\\
+      \rowcolor{lulime!50}delete a word  & dw & \Esc-d \\
+    \end{tabular}
+  \end{center}
+
+  \begin{center}
+    \taburulecolor{lublue}
+    \begin{tabular}{a|b|b}
+      \rowcolor{lublue}Window Management & vi & emacs \\
+      \rowcolor{lulime}split window horizontally  & :split or \Ctrl-w s & \Ctrl-x 2\\
+      \rowcolor{lulime!50}split window vertically & :vsplit or \Ctrl-w v & \Ctrl-x 3\\
+      \rowcolor{lulime}switch windows & \Ctrl-w w & \Ctrl-x o\\
+    \end{tabular}
+  \end{center}
+
+  \begin{itemize}
+    \item Do a google search for more detailed cheatsheets
+    \item[\texttt{vi}] \url{https://www.google.com/search?q=vi+cheatsheet}
+    \item[\texttt{emacs}] \url{https://www.google.com/search?q=emacs+cheatsheet}
+  \end{itemize}
+  \begin{block}{More on the \textbf{set -o} command}
+    \begin{itemize}
+      \item The \textbf{\color{lubrown}set -o} command can be used to change the command line editor mode among other things (Do \textbf{\color{lubrown}man set\Enter} to find out more)
+      \begin{enumerate}
+        {\scriptsize
+        \item \textbf{\color{lubrown}set -o emacs}: emacs style in-line editor for command entry, this is the default
+        \item \textbf{\color{lubrown}set -o vi}: vi style in-line editor for command entry.
+        }
+      \end{enumerate}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\section{File \& Job Manipulation}
 \begin{frame}
   \frametitle{I/O Redirection}
   \begin{itemize}
@@ -1062,147 +1209,6 @@ setenv BIBINPUTS ".:/home/apacheco/TeX//:${BIBINPUTS}"
 %  \end{exampleblock}
 \end{frame}
 
-\section{Editors}
-\begin{frame}
-  \frametitle{File Editing}
-  \begin{itemize}
-    \item The two most commonly used editors on Linux/Unix systems are:
-    \begin{enumerate}
-      {\scriptsize
-      \item \Verblubrown{vi} or \Verblubrown{vim} (vi improved)
-      \item \Verblubrown{emacs}
-      }
-    \end{enumerate}
-    \item \Verblubrown{vi/vim} is installed by default on Linux/Unix systems and has only a command line interface (CLI).
-    \item \Verblubrown{emacs} has both a CLI and a graphical user interface (GUI).
-    \item[$\vardiamond$] If \Verblubrown{emacs} GUI is installed then use \Verblubrown{emacs -nw} to open file in console.
-    \item Other editors that you may come across on *nix systems
-    \item[] \Verblubrown{kate}: {default editor for KDE.}
-    \item[] \Verblubrown{gedit}: {default text editor for GNOME desktop environment.}
-    \item[] \Verblubrown{gvim}: {GUI version of }\Verblubrown{vim}
-    \item[] \Verblubrown{pico}: {console based plain text editor }
-    \item[] \Verblubrown{nano}: {GNU.org clone of }\Verblubrown{pico}
-    \item[] \Verblubrown{kwrite}: {editor by KDE.}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}[allowframebreaks,fragile]
-  \frametitle{Editor Cheatsheets}
-% Page 1
-  \begin{itemize}
-    \item \textbf{\color{lubrown}vi/vim} and \textbf{\color{lubrown}emacs} are the two most popular *nix file editors.
-    \item Which one to use is up to you.
-    \item \textbf{\color{lubrown}vi/vim} has two modes:
-    \begin{enumerate}
-      {\scriptsize
-        \item Editing mode
-        \item Command mode
-      }
-    \end{enumerate}
-    \item \textbf{\color{lubrown}emacs} has only one mode as in any editor that you use.
-  \end{itemize}
-  \begin{center}
-    \taburulecolor{lublue}
-    \begin{tabular}{a|b}
-      %\rowcolor{lublue}\multicolumn{2}{c}{Insert/Appending Text}\\
-      \rowcolor{lublue}{Insert/Appending Text} & {vi}\\
-       \rowcolor{lulime}insert at cursor & \texttt{i}\\
-       \rowcolor{lulime!50}insert at beginning of line& \texttt{I}\\
-       \rowcolor{lulime}append after cursor& \texttt{a}\\
-       \rowcolor{lulime!50}append at end of line& \texttt{A}\\
-       \rowcolor{lulime}newline after cursor in insert mode& \texttt{o}\\
-       \rowcolor{lulime!50}newline before cursor in insert mode& \texttt{O}\\
-       \rowcolor{lulime}append at end of line& \texttt{ea}\\
-       \rowcolor{lulime!50}exit insert mode& \texttt{ESC}\\
-   \end{tabular}
-  \end{center}
-
-% Page 2
-
-  \begin{center}
-    \taburulecolor{lublue}
-    \begin{tabular}{a|b|b}
-      \rowcolor{lublue}Cursor Movement & vi & emacs \\
-      \rowcolor{lulime}move left       & h  & \Ctrl-b \\
-      \rowcolor{lulime!50}move down       & j  & \Ctrl-n \\
-      \rowcolor{lulime}move up         & k  & \Ctrl-p \\
-      \rowcolor{lulime!50}move right      & l  & \Ctrl-f \\
-      \rowcolor{lulime}jump to begining of line & \Verb|^| & \Ctrl-a \\
-      \rowcolor{lulime!50}jump to end of line      & \$       & \Ctrl-e \\
-      \rowcolor{lulime}goto line \texttt{n}     & nG       & \Esc x goto-line \Enter\,n \\
-      \rowcolor{lulime!50}goto top of file         & 1G       & \Esc $<$ \\
-      \rowcolor{lulime}goto end of file         &  G       & \Esc $>$ \\
-      \rowcolor{lulime!50}move one page up         & \Ctrl-u  & \Esc v \\
-      \rowcolor{lulime}move one page down       & \Ctrl-d  & \Ctrl-v \\
-    \end{tabular}
-  \end{center}
-
-% Page 3
-
-  \begin{center}
-    \taburulecolor{lublue}
-    \begin{tabular}{a|b|b}
-      \rowcolor{lublue}File Manipulation & vi & emacs \\
-      \rowcolor{lulime}edit/open file \textit{file}  & :e \textit{file} & \Ctrl-x \Ctrl-f \textit{file}\\
-      \rowcolor{lulime!50}insert file \textit{file}  & :r \textit{file} & \Ctrl-x i \textit{file}\\
-      \rowcolor{lulime}save file            & :w       & \Ctrl-x\Ctrl-s \\
-      \rowcolor{lulime!50}save file and exit   & :wq, ZZ (if file exists) & \\
-      \rowcolor{lulime}quit                 & :q       & \Ctrl-x\Ctrl-c \\
-      \rowcolor{lulime!50}quit without saving  & :q!      & \\
-    \end{tabular}
-  \end{center}
-
-  \begin{center}
-    \taburulecolor{lublue}
-    \begin{tabular}{a|b|b}
-      \rowcolor{lublue}Text Manipulation & vi & emacs \\
-      \rowcolor{lulime}delete a line        & dd      & \Ctrl-a\Ctrl-k \\
-      \rowcolor{lulime!50}delete \texttt{n} lines & \texttt{n}dd  & \Ctrl-a\Esc n\Ctrl-k \\
-      \rowcolor{lulime}paste deleted line after cursor & p & \Ctrl-y \\
-      \rowcolor{lulime!50}paste deleted line before curosr & P & \\
-      \rowcolor{lulime}undo edit            & u       & \Ctrl-\_ or  \Ctrl-x u \\
-      \rowcolor{lulime!50}delete cursor to end of line & D & \Ctrl-k \\
-      \rowcolor{lulime}search forward for \textit{patt} & \texttt{$\backslash$\textit{patt}} & \Ctrl-s \textit{patt} \\
-      \rowcolor{lulime!50}search backward for \textit{patt} & ?\textit{patt} & \Ctrl-r \textit{patt} \\
-      \rowcolor{lulime}search again forward (backward) & n & \Ctrl-s(r) \\
-      \rowcolor{lulime!50}replace a character  & r &\\
-      \rowcolor{lulime}join next line to current  & J &  \\
-      \rowcolor{lulime!50}change a line  & cc &\\
-      \rowcolor{lulime}change a word  & cw & \\
-      \rowcolor{lulime!50}change to end of line  & c\$ & \\
-      \rowcolor{lulime}delete a character  & x & \Ctrl-d\\
-      \rowcolor{lulime!50}delete a word  & dw & \Esc-d \\
-    \end{tabular}
-  \end{center}
-
-  \begin{center}
-    \taburulecolor{lublue}
-    \begin{tabular}{a|b|b}
-      \rowcolor{lublue}Window Management & vi & emacs \\
-      \rowcolor{lulime}split window horizontally  & :split or \Ctrl-w s & \Ctrl-x 2\\
-      \rowcolor{lulime!50}split window vertically & :vsplit or \Ctrl-w v & \Ctrl-x 3\\
-      \rowcolor{lulime}switch windows & \Ctrl-w w & \Ctrl-x o\\
-    \end{tabular}
-  \end{center}
-
-  \begin{itemize}
-    \item Do a google search for more detailed cheatsheets
-    \item[\texttt{vi}] \url{https://www.google.com/search?q=vi+cheatsheet}
-    \item[\texttt{emacs}] \url{https://www.google.com/search?q=emacs+cheatsheet}
-  \end{itemize}
-  \begin{block}{More on the \textbf{set -o} command}
-    \begin{itemize}
-      \item The \textbf{\color{lubrown}set -o} command can be used to change the command line editor mode among other things (Do \textbf{\color{lubrown}man set\Enter} to find out more)
-      \begin{enumerate}
-        {\scriptsize
-        \item \textbf{\color{lubrown}set -o emacs}: emacs style in-line editor for command entry, this is the default
-        \item \textbf{\color{lubrown}set -o vi}: vi style in-line editor for command entry.
-        }
-      \end{enumerate}
-    \end{itemize}
-  \end{block}
-\end{frame}
-
 \begin{frame}
   \frametitle{}
   \color{blue}{
@@ -1225,178 +1231,6 @@ setenv BIBINPUTS ".:/home/apacheco/TeX//:${BIBINPUTS}"
   \end{center}
   }
 \end{frame}
-
-
-%\section*{What is a scripting Language?}
-%\begin{frame}
-%  \begin{exampleblock}{What is a Scripting Language?}
-%    \begin{itemize}
-%      \item A \textbf{scripting language} or \textbf{script language} is a \emph{programming language} that supports the writing of \textbf{scripts}.
-%      \item \textbf{Scripting Languages} provide a higher level of abstraction than standard programming languages.
-%      \item Compared to programming languages, scripting languages do not distinguish between data types: integers, real values, strings, etc.
-%      \item Scripting Languages tend to be good for automating the execution of other programs.
-%      \begin{enumerate}
-%          \item[$\vardiamond$] analyzing data
-%          \item[$\vardiamond$] running daily backups
-%      \end{enumerate}
-%      \item They are also good for writing a program that is going to be used only once and then discarded.
-%    \end{itemize}
-%  \end{exampleblock}
-%  \begin{exampleblock}{What is a script?}
-%    \begin{itemize}
-%      \item A \textbf{script} is a program written for a software environment that automate the execution of tasks which could alternatively be executed one-by-one by a human operator.
-%      \item The majority of script programs are ``quick and dirty'', where the main goal is to get the program written quickly.
-%    \end{itemize}
-%  \end{exampleblock}
-%\end{frame}
-%
-%\subsection*{Writing Scripts}
-%\begin{frame}[fragile]
-%  \frametitle{Writing your first script}
-%  \begin{enumerate}
-%    \item Write a script
-%      \begin{itemize}
-%        \item A shell script is a file that contains ASCII text. 
-%        \item Create a file, \texttt{hello.sh} with the following lines 
-%      \end{itemize}
-%      \begin{lstlisting}[language=bash,basicstyle=\scriptsize\ttfamily]
-%#!/bin/bash
-%# My First Script
-%echo "Hello World!"
-%      \end{lstlisting}
-%    \item Set permissions
-%      \begin{Verbatim}[fontsize=\scriptsize,formatcom=\color{lupurple}]
-%apacheco@apacheco:~/Tutorials/BASH/scripts> chmod 755 hello.sh 
-%      \end{Verbatim}
-%    \item Execute the script
-%      \begin{Verbatim}[fontsize=\scriptsize,formatcom=\color{lupurple}]
-%apacheco@apacheco:~/Tutorials/BASH/scripts> ./hello.sh 
-%Hello World!
-%      \end{Verbatim}
-%  \end{enumerate}
-%\end{frame}
-%
-%\begin{frame}[fragile]
-%  \frametitle{Description of the script}
-%  \begin{itemize}
-%    \item My First Script
-%      \begin{lstlisting}[language=bash]
-%#!/bin/bash
-%# My First Script
-%echo "Hello World!"
-%  \end{lstlisting}
-%    \item The first line is called the "SheBang'' line. It tells the OS which interpreter to use. In the current example, bash
-%    \item Other options are:
-%    \begin{enumerate}
-%        \item[sh]   : \lstinline[language=bash]|#!/bin/sh|
-%        \item[ksh]  : \lstinline[language=bash]|#!/bin/ksh|
-%        \item[csh]  : \lstinline[language=csh]|#!/bin/csh|
-%        \item[tcsh] : \lstinline[language=csh]|#!/bin/tcsh|
-%    \end{enumerate}
-%    \item The second line is a comment. All comments begin with "\#".
-%    \item The third line tells the OS to print "Hello World!" to the screen.
-%  \end{itemize}
-%\end{frame}
-%
-%\begin{frame}
-%  \frametitle{Special Characters}
-%  \begin{description}
-%    \item[\#:] starts a comment.
-%    \item[\$:] indicates the name of a variable.
-%    \item[$\backslash$:] escape character to display next character literally.
-%    \item[\{ \}:] used to enclose name of variable.
-%    \item[;] Command separator [semicolon]. Permits putting two or more commands on the same line.
-%    \item[;;] Terminator in a case option [double semicolon].
-%    \item[.] "dot" command [period]. Equivalent to source. This is a bash builtin.
-%    \item[\$?] exit status variable.
-%    \item[\$\$] process ID variable.
-%    \item[{[\quad]}] test expression
-%    \item[{[[\quad]]}] test expression, more flexible than [ ]
-%    \item[{\$[\quad], ((\quad))}] integer expansion.
-%    \item[{$||$, \&\&, !}] Logical OR, AND and NOT
-%  \end{description}
-%\end{frame}
-%
-%\begin{frame}[fragile]
-%  \frametitle{Quotation}
-%  \begin{itemize}
-%    \item Double Quotation \texttt{" "}
-%    \begin{itemize}
-%        \item Enclosed string is expanded ("\$", "/" and "`")
-%        \item Example: \Verblubrown{echo "\$myvar"} prints the value of \Verbblue{myvar}
-%    \end{itemize}
-%    \item Single Quotation \texttt{' '}
-%    \begin{itemize}
-%        \item Enclosed string is read literally
-%        \item Example: \Verblubrown{echo '\$myvar'} prints \Verbblue{\$myvar}
-%    \end{itemize}
-%    \item Back Quotation \texttt{` `}
-%    \begin{itemize}
-%        \item Enclosed string is executed as a command
-%        \item Example: \Verblubrown{echo `pwd`} prints the output of the \Verblubrown{pwd} command i.e. print the current working directory
-%    \end{itemize}
-%  \end{itemize}
-%\end{frame}
-%
-%
-%\begin{frame}[allowframebreaks]
-%  \frametitle{Exercises}
-%  \begin{itemize}
-%    \item Login to a Linux machine and open a terminal
-%    \item Enter the following commands or carry out operations asked for.
-%    \item Understand what you are doing and ask for help if unsure. Some commands are incorrect or will fail, enter the correct
-%    \begin{enumerate}
-%      {\scriptsize
-%      \item \texttt{echo hello world\Enter}
-%      \item \texttt{pwd\Enter}
-%      \item \texttt{whoami\Enter}
-%      \item \texttt{cd /tmp \Enter}
-%      \item \texttt{cd -\Enter}
-%      \item \texttt{mkdir test/testagain\Enter}
-%      \item \texttt{cd test/testagain\Enter}
-%      \item \texttt{touch file\Enter}
-%      \item Go back to your home directory.
-%      \item Which shell are you using?
-%      \item Review the commands you have just entered.
-%      \item create an alias for removing files which prompt for confirmation and delete the file that you created.
-%      \item From your home directory get a list of files and directory in long format in reverse order with file sizes listed in human readable format.
-%      \item Find out the location of vi, emacs, firefox, google-chrome, thunderbird, latex, pdflatex, gnuplot, python, perl and matlab.
-%      \item Change the permission of the testagain directory to be world writable.
-%      \item open a few applications of choice in foreground one by one and then suspend them,
-%      \item get a list of suspended jobsr,
-%      \item foreground job 1 and close it,
-%      \item background job 2,
-%      \item kill job 3,
-%      \item put job 2 in foreground and close it,
-%      \item check if you still have any jobs running.
-%      }
-%    \end{enumerate}
-%      \framebreak
-%    \begin{enumerate}
-%      {\scriptsize
-%      \item Exercise courtesy \url{http://www.doc.ic.ac.uk/~wjk/UnixIntro/Exercise6.html}
-%      \item Copy the file mole.txt
-%      \item[] \texttt{wget \url{http://www.doc.ic.ac.uk/~wjk/UnixIntro/mole.txt}}
-%      \item Go to the end of the document and type in the following paragraph:
-%      \item[] \texttt{Joined the library. Got Care of the Skin, Origin of the Species, and a book by a woman my mother is always going on about. It is called Pride and Prejudice, by a woman called Jane Austen. I could tell the librarian was impressed. Perhaps she is an intellectual like me. She didn't look at my spot, so perhaps it is getting smaller.}
-%      \item Correct  the three  spelling errors in the first three lines of the first paragraph (one  error per  line) and  remove the extra "Geography" in the 3rd line of the first paragraph.
-%      \item Add the words "About time!" to the end of the second paragraph.
-%      \item Delete  the sentence  "Time flies like an arrow but  fruit flies like a banana" and re-form the paragraph.
-%      \item Replace all occurrences of "is" with "was".
-%      \item Swap the two paragraphs.
-%      \item Save the file and quit.
-%      }
-%    \end{enumerate}
-%  \end{itemize}
-%  \framebreak
-%  \begin{exampleblock}{}
-%Wednesday January 14th
-%
-%Joined the library. Got Care of the Skin, Origin of the Species, and a book by a woman my mother was always going on about. It was called Pride and Prejudice, by a woman called Jane Austen. I could tell the librarian was impressed. Perhaps she was an intellectual like me. She didn't look at my spot, so perhaps it was getting smaller.
-%
-%None of the teachers at school have noticed that I am an intellectual. They will be sorry when I am famous. There was a new girl in our class. She sits next to me in Geography. She was all right. Her name was Pandora, but she likes being called ``Box''.  Don't ask me why. I might fall in love with her. It's time I fell in love, after all I am 13 3/4 years old. About time!
-%  \end{exampleblock}
-%\end{frame}
 
 \end{document}
 

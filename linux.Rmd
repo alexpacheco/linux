@@ -1,0 +1,827 @@
+---
+title: "Linux: Command & Environments"
+subtitle: "@ Lehigh University"
+author: "Library &amp; Technology Services"
+institute: "https://researchcomputing.lehigh.edu"
+date: ""
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:10"
+      yolo: false
+      beforeInit: "addons/imgscale.js"
+    css: [addons/lehigh.css, addons/lehigh-fonts.css]
+--- 
+class: inverse, middle
+
+# Brief Introduction
+# File System Hierarchy
+# Basic Commands
+# Editors
+# File & Process Management
+# Environment Variables
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+library(tidyverse)
+library(knitr)
+```
+
+---
+
+# What is Linux?
+
+* Linux is an operating system that evolved from a kernel created by Linus Torvalds when he was a student at the University of Helsinki.
+* It’s meant to be used as an alternative to other operating systems, Windows, Mac OS, MS-DOS, Solaris and others.
+* Linux is the most popular OS used in a Supercomputer
+
+| OS Family | Count | Share % |
+|:---------:| -----:| -------:|
+| Linux | 498 | 99.6 |
+| Unix  |   2 |   .4 |
+
+* If you are using a Supercomputer/High Performance Computer for your research, it will be based on a \*nix OS.
+* It is required/neccessary/mandatory to learn Linux Programming (commands, shell scripting) if your research involves use of High Performance Computing or Supercomputing resources.
+
+
+---
+
+# Where is Linux used?
+
+* Linux distributions are tailored to different requirements such as
+- Server
+- Desktop
+- Workstation
+- Routers
+- Embedded devices
+- Mobile devices (Android is a Linux-based OS)
+* Almost any software that you use on windows has a roughly equivalent software on Linux, most often multiple equivalent software
+- e.g. Microsoft Office equivalents are OpenOffice.org, LibreOffice, KOffice
+- [ Visit for complete list ](http://wiki.linuxquestions.org/wiki/Linux_software_equivalent_to_Windows_software)
+* Linux offers you freedom, to choose your desktop environment, software.
+
+
+---
+
+# What is a Linux OS and Distro?
+
+* Many software vendors release their own packaged Linux OS (kernel, applications) known as distribution
+* Linux distribution = Linux kernel + GNU system utilities and libraries + Installation scripts + Management utilities etc.
+- Debian, Ubuntu, Mint
+- Red Hat, Fedora, __CentOS__
+- Slackware, openSUSE, SLES, SLED
+- Gentoo
+* Application packages on Linux can be installed from source or from customized packages
+- deb: Debian based distros e.g. Debian, Ubuntu, Mint
+- rpm: Red Hat based distros, Slackware based distros.
+
+
+---
+
+# What is a Desktop Environment?
+
+
+* Linux distributions offer a variety of desktop environment.
+- K Desktop Environment (KDE)
+- GNOME
+- __XFCE__
+- Lightweight X11 Desktop Environment (LXDE)
+- Cinnamon
+- __MATE__
+- Dynamic Window Manager
+
+
+---
+
+# Shell versus Command
+
+* What is a Shell?
+  - The command line interface is the primary interface to Linux/Unix operating
+systems.
+  - Shells are how command-line interfaces are implemented in Linux/Unix.
+  - Each shell has varying capabilities and features and the user should choose the shell that best suits their needs.
+  - The shell is simply an application running on top of the kernel and provides a powerful interface to the system.
+* What is a command and how do you use it?
+  - __command__ is a directive to a computer program acting as an interpreter of some kind,
+in order to perform a specific task.
+  - __command prompt__ (or just __prompt__) is a sequence of (one or more) characters used in a command-line interface to indicate readiness to accept commands.
+  - Its intent is to literally prompt the user to take action.
+  - A prompt usually ends with one of the characters $, %, #, :, > and often includes other information, such as the path of the current working directory.
+
+
+---
+
+# Types of Shell
+
+* __sh__ : Bourne Shell
+  - Developed by Stephen Bourne at AT&T Bell Labs
+* __csh__ : C Shell
+  - Developed by Bill Joy at University of California, Berkeley
+* __ksh__ : Korn Shell
+  - Developed by David Korn at AT&T Bell Labs
+  - backward-compatible with the Bourne shell and includes many features of the C shell
+* __bash__ : Bourne Again Shell
+  - Developed by Brian Fox for the GNU Project as a free software replacement for the Bourne shell (sh).
+  - Default Shell on Linux and Mac OSX
+* __tcsh__ : TENEX C Shell
+  - Developed by Ken Greer at Carnegie Mellon University
+  - It is essentially the C shell with programmable command line completion, command-line editing, and a few other features.
+
+
+---
+
+# Shell Comparison
+
+| Software | sh  | csh | ksh | bash | tcsh |
+|:--------:|:---:|:---:|:---:|:----:|:----:|
+| Programming Languages | &#10004; | &#10004; | &#10004; | &#10004; | &#10004; |
+| Shell Variables |  &#10004; | &#10004; | &#10004; | &#10004; | &#10004; |
+| Command alias | &#10008; | &#10004; | &#10004; | &#10004; | &#10004; |
+| Command history | &#10008; | &#10004; | &#10004; | &#10004; | &#10004; |
+| Filename completion | &#10008; | &#10070; | &#10070; | &#10004; | &#10004; |
+| Command line editing | &#10008; | &#10008; | &#10070; | &#10004; | &#10004; |
+| Job control | &#10008; | &#10004; | &#10004; | &#10004; | &#10004; |
+
+
+&#10004; : Yes
+
+&#10008; : No
+
+&#10070; : Yes, not set by default
+
+http://www.cis.rit.edu/class/simg211/unixintro/Shell.html 
+
+---
+class: inverse, middle
+
+# File System Hierarchy
+
+
+---
+
+
+# Directory Structure
+
+* All files are arranged in a hierarchial structure, like an inverted tree.
+*  The top of the hierarchy is traditionally called __root__ (written as a slash / )
+
+![scale: 90%](../lurc/assets/img/LinuxFS.png)
+
+
+---
+
+# Relative & Absolute Path
+
+* Path means a position in the directory tree.
+* You can use either the relative path or absolute path
+* In relative path expression
+-  . (one dot or period) is the current working directory
+-  .. (two dots or periods) is one directory up
+-  You can combine . and .. to navigate the filee system hierarchy.
+-  the path is not defined uniquely and does depend on the current path.
+-  ../../tmp is unique only if your current working directory is your home directory.
+* In absolute path expression
+-  the path is defined uniquely and does not depend on the current path
+-  /tmp is unique since /tmp is the abolute path
+
+
+---
+class: inverse, middle
+
+# Commands
+
+
+---
+# Commands
+
+* `man` shows the manual for a command or program.
+  - `man pwd`
+* `pwd`: print working directory, gives the absolute path of your current location in the directory hierarchy
+* `echo`: prints whatever follows to the screen
+  - `echo $HOME`: prints the contents of the variable __HOME__ i.e. your home directory to the screen
+* `cd dirname`: change to folder called `dirname`
+  - default `dirname` is your home directory
+  - Useful option 
+    - `cd -` go to previous directory
+* `mkdir dirname`: create a directory called `dirname`
+  - Create a directory, any name you want and cd to that directory 
+  - `mkdir me450` followed by `cd me450`
+  - Useful option
+    - `mkdir -p dir1/dir2/dir3` create intermediate directories if they do not exist
+
+
+---
+
+# Commands (contd)
+
+* `cp file1 file2`: command to copy file1 to file2
+  - `cp -r /home/alp514/Workshop/sum2017 .` copy directories recursively
+  - `cp -p ~alp514/in.lj ~/` preserve time stamps
+* `rm file1`: delete a file called file1 
+  - `rm -i` to be prompted for confirmation
+  - `rm -r` to delete directories recursively 
+  - `rm -f` delete without prompting - VERY DANGEROUS
+* `ls dirname`: list contents of _dirname_ (leave blank for current directory)
+  - `ls -l` show long form listing
+  - `ls -a` show hidden files
+  - `ls -t` sort by timestamp newest first, best when combined with `-l`
+  - `ls -r` reverse sort (default alphabetical), best when combined with `-l -t` or `-lt`
+* `alias`: create a shortcut to another command or name to execute a long string.
+  - `alias rm="/bin/rm -i"`
+
+
+---
+
+# Commands (contd)
+
+* To display a file to screen, \*nix provides three commands at your disposal
+  *  `cat` : Show contents of a file.
+  * `more`  : Display contents one page at a time.
+  * `less` : Display contents one page at a time but allow forward/backward scrolling
+
+* Usage: `<command> <options> <filename>`
+* Example: `cat .bashrc`
+
+* To scroll forward in `more` or `less`, use the space bar, `CNTRL-f/d` or \"Page Down\" key.
+* To scroll backwards in `less` use `CNTRL-b/u` or \"Page Up\".
+* To quit from `more` or `less`, use `q`
+* A rarely used command, `tac` does the opposite of `cat` i.e. show contents of a file in reverse.
+
+
+---
+
+# Commands (contd)
+
+* `date`:  display or set date and time
+  - `date +%Y-%m-%dT%H:%M:%S`
+* `file`: Determine file type.
+  - `file .bashrc`
+* `touch`: change file timestamps or create file if not present.
+  - `touch file.dat`
+* `ln`: Link a file to another file aka create shortcuts.
+  - `ln -s`: create symbolic link, can span filesystems.
+  - `ln`: create hardline within same filesystem.
+  - you can create symbolic link to a directory, hardlinks to files only.
+* `head`/`tail`: Display first/last few lines of a file.
+* `head .bashrc`
+  * By default, 10 lines are displayed.
+  * `tail -n 20 .bashrc`: display last 20 lines.
+  * `tail -f output.dat`: do not exit command but continue displaying file if it is appended.
+
+
+---
+
+# Commands (contd)
+
+* `df`: report disk space usage by filesystem.
+  * `df -h /home`
+* `du`: estimate file space usage - space used under a particular directory or files on a file system.
+  * `du -sh /home`
+* `top`: Produces an ordered list of running processes.
+* `htop`: An interactive process viewer for Linux (not installed by default).
+* `free`: Display amount of free and used memory in the system.
+  * `free -m`: show free/used memory in MB
+  * `free -h`: show free/used memory in human readable format
+* `find`: Find a file
+  * `find <path> <expression>`
+  * `find . -name ".bashrc"`
+  * `find . -name "*txt" -exec ls -l {} \; `
+  * Learn more at https://www.tecmint.com/35-practical-examples-of-linux-find-command/
+
+
+---
+
+# Commands (contd)
+
+* `wc`: Count words, lines and characters in a file.
+* `grep`: Find patterns in a file
+* `awk`: File processing and report generating
+* `sed`: Stream Editor
+* `set`: manipulate environment variables
+* `wait`: wait until all backgrounded jobs have completed
+* `which`: shows the full path of (shell) commands
+* `whatis`: display manual page descriptions
+* `passwd`: change password
+* `chsh`: change default shell
+* If you have admin or root access
+  * `sudo`: run command as root 
+  * `mount`: mount file system 
+  * `umount`: unmount file system 
+  * `shutdown`: reboot or turn off machine 
+  * `reboot`: reboot the machine
+
+
+---
+
+# Commands (contd)
+
+* `!name`: rerun previously executed command with the same arguments as before, `name <args>`.
+  * Note that you do not always have to type the full command `name`, just the minimum unique characters (no spaces) of `name` need to be entered.
+  * If you had entered two commands `name <args>` and `nbme <args>`, then to rerun `name`, use the command `!na`.
+* `history`: display a list of last executed commands. Optional argument will list the last m commands.
+  * All previously executed commands will be listed with a number `n`.
+  * To rerun a command from history which has number `n`, run the command `!n`
+
+
+---
+
+# Filename Completion
+
+-  Filename or Tab completion is a default feature in `bash` and `tcsh`.
+- It allows to a user to automatically complete the file, directory or command name you are typing upto the next unique characters using the &#8633; key.
+- Example: Your home directory contains directories `Desktop`, `Documents` and `Downloads`.
+- If you enter the command `ls D` &#8863; you will be prompted with above the three directory names.
+
+<script id="asciicast-LpO7Jv3rvR0AQtBhc0QiODSD2" src="https://asciinema.org/a/LpO7Jv3rvR0AQtBhc0QiODSD2.js" async data-rows=10></script>
+
+
+---
+
+# Wildcards
+
+-   \*nix shells have the ability to refer to more than one file by name using special characters called Wildcards.
+-   Wildcards can be used with \*nix utilities such as ls, cp, mv, rm, tar and g(un)zip.
+* `?`:  match a single character 
+* `*`:  match zero or more characters 
+* `[abc]`:  match list of characters in the list specified
+*  `[!abc]` : match characters not in the list specified 
+
+<script id="asciicast-MEzM8j69TuapsXd3SN5khKzGm" src="https://asciinema.org/a/MEzM8j69TuapsXd3SN5khKzGm.js" async data-rows=10></script>
+
+
+
+---
+
+# Login to remote systems
+
+* Most Linux/UNIX systems allow secure shell connections from other systems.
+* Usage: `ssh <username>@<host>`
+* Example: `ssh alp514@ssh.cc.lehigh.edu`
+
+<script id="asciicast-m8nL11w1ax7lPVUTr9v2vispM" src="http://asciinema.org/a/m8nL11w1ax7lPVUTr9v2vispM.js" async data-rows=35></script>
+
+
+
+---
+
+# Transferring Files
+
+- `scp` is a command to copy files/directories between two \*nix hosts over the SSH protocol.
+- Usage: `scp <options> <user>@<host>:/path/to/source/file <user>@<host>:/path/to/destination/file/or/directory`
+- Common options
+  - `-r` copy directories recursively
+  - `-p` preserve time stamps
+
+<script id="asciicast-b6xwnNELhI7SNoFpi0sIFslx2" src="http://asciinema.org/a/b6xwnNELhI7SNoFpi0sIFslx2.js" async data-rows=35></script>
+
+
+---
+
+# Transferring Files
+
+* `rsync` is another utility that can be used to copy files locally and remotely.
+* Usage: `rsync <option> <source> <destination>`
+* It is famous for its delta-transfer algorithm 
+  - i.e. sending only the differences between the source files and the existing files in the destination.
+* Rsync is widely used for backups and mirroring and as an improved copy command for everyday use.
+* Common options:
+  * `-a`:  archive mode
+  * `-r`:  recurse into directories
+  * `-v`:  increase verbosity
+  * `-z`:  compress file data during the transfer
+  * `-u`:  skip files that are newer on the receiver
+  * `-t`:  preserve modification times
+  * `-n`:  dry-run, perform a trial run with no changes made
+* Example: `rsync -avtzu sol.cc.lehigh.edu:∼/* .`
+
+
+---
+
+# Compressing and Archiving
+
+* Quite often you need to compress and uncompress files to reduce storage usage or bandwidth while transferring files.
+* \*nix systems have built-in utilities to compress/uncompress files
+* Compress: `gzip`, `zip`, `bzip2` 
+* Uncompress: `gunzip`, `unzip`, `bunzip2` 
+* Gzipped files have an extension `.gz`,`.z` or `.Z`
+* zipped files have an extension `.Zip` or `.zip`
+* Bzipped files have an extension `.bz2` , `.bz`
+
+<script id="asciicast-mEPHge0EgcmWPEzRxFakNrNTf" src="https://asciinema.org/a/mEPHge0EgcmWPEzRxFakNrNTf.js" async data-autoplay="true" data-rows=10></script>
+
+---
+
+# Tar
+
+* \*nix provides the `tar` package to create and manipulate streaming archive of files.
+* Usage: `tar <options> <file> <patterns>`
+  - `file` is the name of the tar archive file, usually with extension `.tar`
+  - `patterns` are pathnames for files/directories being archived
+* Common options
+  - `-c`:  create an archive file
+  - `-x`:  extract to disk from archive
+  - `-t`:  list contents of archive
+  - `-z/-j`:  filter the archive through gzip/bzip2 (adds/requires extension .gz/bz2)
+  - `-v`:  verbosely list files processed
+  - `-f`:  read the archive from or write the archive to the specified file
+* Example:  `tar -cvzf myhome.tar.gz ${HOME}/*`
+* This becomes useful for creating a backup of your files and directories that you can store at some storage facility e.g.  external disk
+
+---
+
+# Tar (contd)
+
+<script id="asciicast-pggVE8DvEHS2cFQHegnJM3gUs" src="https://asciinema.org/a/pggVE8DvEHS2cFQHegnJM3gUs.js" async data-autoplay="true" data-rows=25></script>
+
+
+---
+
+# File Editing
+
+* The two most commonly used editors on Linux/Unix systems are:
+  -  `vi` or `vim` (vi improved)
+  -  `emacs`
+* `vi/vim` is installed by default on Linux/Unix systems and has only a command line interface (CLI).
+* `emacs` has both a CLI and a graphical user interface (GUI).
+* Other editors that you may come across on \*nix systems
+  - `kate`: default editor for KDE.
+  - `gedit`: default text editor for GNOME desktop environment.
+  - `gvim`: GUI version of vim
+  - `pico`: console based plain text editor
+  - `nano`: GNU.org clone of pico
+  - `kwrite`: editor by KDE.
+
+---
+
+# vi/emacs commands
+
+* `vi/vim` and `emacs` are the two most popular \*nix file editors.
+* Which one to use is up to you.
+* `vi/vim` has two modes
+  * Editing mode
+  * Command mode
+* `emacs` has only one mode as in any editor that you use.
+
+| Inserting/Appending Text | Command |
+|:------------------------:|:-------:|
+| insert at cursor | i |
+| insert at beginning of line | I |
+| append after cursor | a |
+| append at end of line | A |
+| newline after cursor in insert mode | o |
+| newline before cursor in insert mode | O |
+| append at end of line | ea |
+| exit insert mode | ESC |
+
+
+---
+
+# Editor Commands
+
+.pull-left[
+| Cursor Movement | vi | emacs |
+|:---------------:|:-------:|:-----:|
+| move left | h | Ctrl-b |
+| move down | j | Ctrl-n |
+| move up | k | Ctrl-p |
+| move right | l | Ctrl-f |
+| jump to beginning of line | ^ | Ctrl-a |
+| jump to end of line | $ | Ctrl-e |
+| goto line n | nG | ESC-x goto-line Enter n |
+| goto top of file | 1G | ESC-< |
+| goto end of file | G | ESC-> |
+| move one page up | CNTRL-u | ESC-v |
+| move one page down | CNTRL-d | Ctrl-v |
+]
+
+.pull-right[
+| File Manipulation | vi | emacs |
+|:-----------------:|:-------:|:-----:|
+| edit/open a __file__ | :e __file__ | Ctrl-x Ctrl-f __file__ |
+| insert file __file__ | :r __file__ | Ctrl-x i __file__ |
+| save file | :w | Ctrl-x Ctrl-s | 
+| save file and exit | :wq |  |
+| quit without saving | :q! |   |
+| exit | :q |  Ctrl-x Ctrl-c | 
+
+
+| Window Management | vim | emacs |
+|:-----------------:|:---:|:-----:|
+| split window horizontally | :split or Ctrl-w s  | Ctrl-x 2 |
+| split window vertically   | :vsplit or Ctrl-w v | Ctrl-x 3 |
+| switch windows | Ctrl-w w | Ctrl-x o | 
+
+]
+
+
+---
+
+# Editor Commands
+
+| Text Manipulation | vi | emacs |
+|:-----------------:|:-------:|:-----:|
+| delete a line | dd | Ctrl-a Ctrl-k |
+| delete n lines | ndd | Ctrl-a Esc n Ctrl-k |
+| paste deleted line after cursor | p | Ctrl-y |
+| paste before cursor | P | |
+| undo edit | u | Ctrl-\_ or Ctrl-x u | 
+| delete from cursor to end of line | D | Ctrl-k |
+| replace a character | r | |
+| join next line to current | J | | 
+| change a line | cc | |
+| change a word | cw | |
+| change to end of line | c$ | |
+| delete a character | x | Ctrl-d |
+| delete a word | dw | Esc-d |
+
+
+---
+
+# Editor Cheatsheets
+
+- Do a google search for more detailed cheatsheets
+   * [vi](https://www.google.com/search?q=vi+cheatsheet)
+   *   [emacs](https://www.google.com/search?q=emacs+cheatsheet)
+
+- More on the **set -o** command
+   *   The **set -o** command can be used to change the command line editor mode among other things (Do **man set** to find out more)
+
+
+
+---
+class: inverse, middle
+
+#File & Process Management
+
+
+
+---
+
+# I/O Redirection
+
+* There are three file descriptors for I/O streams
+  - __STDIN__: Standard Input
+  - __STDOUT__: Standard Output
+  - __STDERR__: Standard Error
+* 1 represents STDOUT and 2 represents STDERR
+* I/O redirection allows users to connect applications
+  - `<`: connects a file to STDIN of an application
+  - `>`: connects STDOUT of an application to a file
+  - `>>`: connects STDOUT of an application by appending to a file
+  - `|`:  connects the STDOUT of an application to STDIN of another application.
+
+<script id="asciicast-1hsMzlXmeohjLUkAFb8WNCK9A" src="https://asciinema.org/a/1hsMzlXmeohjLUkAFb8WNCK9A.js" async data-autoplay="true" data-rows=10></script>
+
+
+
+---
+
+# File Permissions
+
+- Since \*NIX OS’s are designed for multi user environment, it is necessary to restrict access of files to other users on the system.
+- In \*NIX OS’s, you have three types of file permissions
+   1. read (r)
+   2. write (w)
+   3. execute (x)
+- for three types of users
+   1. user (u)
+   2. group (g)
+   3. world (o) i.e.  everyone else who has access to the system
+
+
+
+---
+
+# File Permissions (contd)
+
+<script id="asciicast-uqai4femuaYOAoZjReXNI5qwv" src="https://asciinema.org/a/uqai4femuaYOAoZjReXNI5qwv.js" async data-autoplay="true" data-rows=16></script>
+
+* The first character signifies the type of the file
+  - _d_ for directory
+  - _l_ for symbolic link
+  - _-_ for normal file
+* The next three characters of first triad signifies what the owner can do
+* The second triad signifies what group member can do
+* The third triad signifies what everyone else can do
+
+
+---
+
+# File Permissions (contd)
+
+* Read carries a weight of 4
+* Write carries a weight of 2
+* Execute carries a weight of 1
+* The weights are added to give a value of 7 (rwx) , 6(rw), 5(rx) or 3(wx) permissions.
+* `chmod` is a \*NIX command to change permissions on a file.
+* Usage: `chmod <option> <permissions> <file or directory name>`
+* To give user rwx, group rx and world x permission, the command is
+  - `chmod 751 filename`
+* Instead of using numerical permissions you can also use symbolic mode
+  - __u/g/o__ or __a__: for user/group/world or all i.e.  __ugo__ 
+  - __+/-__:  Add/remove
+  - __r/w/x__  read/write/execute permission
+* Give everyone execute permission:
+  - `chmod a+x hello.sh` or `chmod ugo+x hello.sh`
+* Remove group and world read & write permission:
+  - `chmod go-rw hello.sh`
+
+
+---
+
+# Process Management
+
+* A process is an executing program identified by a unique PID
+* `ps`: To see information about your running processes and their PID and status.
+  * By default `ps` only shows processes in the current shell.
+  * `ps a` or `ps -e` shows all running processes
+* A process may be in foreground, background or be suspended.
+  * `program`: Start a program in foreground.
+  * `program &`: Start program and run in background. 
+  * `CTRL-z`: Suspend an application running in the foreground.
+  * `fg`: continue running the suspended application in the foreground.
+  * `bg`: continue running the suspended application in the background.
+* `jobs`: show list of backgrounded processes in the current shell.
+  * `fg %jobnumber`: put process listed as _jobnumber_ from `jobs` command in foreground. 
+  * `bg %jobnumber`: put process listed as _jobnumber_ from `jobs` command in background.
+
+---
+
+# Process Management (contd)
+
+* `CTRL-c`: kill a foregrounded process.
+* Killing backgrounded process in current shell
+  * `kill %jobnumber`: where _jobnumber_ is the backgrounded process from `jobs` commands
+* To Kill or Terminate a process
+  * First use `ps a` or `ps -e` to get PID
+  * `kill pid`: job process with PID _pid_
+* The `kill` command can take options specific to UNIX signals
+* The most common option is `-9` for the `SIGKILL` signal
+* `pstree`:  display a tree of processes
+* `pkill`:  kill process by its name, user name, group name, terminal, UID, EUID, and GID.
+
+
+
+
+---
+class: inverse, middle
+
+# Environment Variables
+
+
+---
+
+# Environment Variables
+
+* \*nix permits the use of variables, similar to any programming.
+* A variable is a named object that contains data used by one or more applications.
+* There are two types of variables, __Environment__ and __User Defined__.
+* __Environment Variables__ provides a simple way to share configuration settings between multiple applications and processes in Linux.
+* By Convention, enviromental variables are often named using all uppercase letters
+  * e.g. `PATH`, `LD_LIBRARY_PATH`, `LD_INCLUDE_PATH`, `TEXINPUTS`, etc
+* To reference a variable (environment or user defined) prepend `$` to the name of thevariable
+  * e.g. `$PATH`, `$LD_LIBRARY_PATH`
+* `printenv`: list the current environmental variables.
+* `env` print a list of environment variables or run another utility in an altered environment without having to modify the currently existing environment.
+  - `env SHELL=/bin/tcsh xterm`: start an xterm session in __tcsh__
+
+
+---
+
+# Frequently used Environment Variables 
+
+* __PATH__:  colon-separated list of directories to search for commands.
+* __HOME__:  indicate where a user’s home directory is located in the file system.
+* __PWD__:  contains path to current working directory.
+* __OLDPWD__:  contains path to previous working directory.
+* __TERM__:  specifies the type of computer terminal or terminal emulator being used.
+* __SHELL__:  contains name of the running, interactive shell.
+* __PS1__:  default command prompt.
+* __PS2__:  secondary command prompt
+* __LD\_LIBRARY\_PATH__:  colon-separated set of directories where libraries should be searched for first.
+* __HOSTNAME__:  The system host name.
+* __USER__:  Current logged in user’s name
+* __DISPLAY__:  Network name of the X11 display to connect to, if available.
+
+
+
+---
+
+# Modifying Environment Variables
+
+* You can edit the environment variables.
+* Command to do this depends on the shell
+* To add your bin directory to the __PATH__ variable in 
+   * __sh/ksh/bash__: `export PATH=${HOME}/bin:${PATH}`
+   * __csh/tcsh__: `setenv PATH` `$HOME/bin:$PATH`
+* Note the syntax for the above commands
+   * __sh/ksh/bash__: no spaces except between `export` and `PATH`
+   * __csh,tcsh__: no `=` sign, just a space between `PATH` and the absolute path 
+   * __all shells__: colon(`:`)  to separate different paths and the variable that is appended to.
+* __Yes, the order matters__. 
+   * Suppose you have a customized version of a software say `perl` in your home directory, 
+      * if you append the perl path to __PATH__ at the end, your program will use the system wide perl not your locally installed version.
+      * to use your version of perl, you need to prepend __PATH__
+
+
+---
+
+# User Defined Variables
+
+
+* Rules for Variable Names
+  - Variable names must start with a letter or underscore
+  - Number can be used anywhere else
+  - DO NOT USE special characters such as @, #, %, $
+  - Case sensitive
+  - Examples
+      - __Allowed__:  VARIABLE, VAR1234able, varname,VAR
+      - __Not Allowed__:  1VARIABLE, %NAME, $myvar, VAR@NAME
+* Assigning value to a variable
+
+| Type | sh,ksh,bash | csh,tcsh | 
+|:----:|:-----------:|:---------:|
+| Shell | `name=value` | `set name = value` |
+| Environment | `export name=value` | `setenv name value` |
+
+
+
+---
+
+# Start Up scripts
+
+* When you login to a \*NIX computer, shell scripts are automatically loaded depending on your default shell
+* __sh,ksh__
+   * /etc/profile
+   * $HOME/.profile
+* __bash__
+   * /etc/profile, login terminal only
+   * /etc/bashrc or /etc/bash/bashrc
+   * $HOME/.bash_profile, login terminal only
+   * $HOME/.bashrc
+* __csh,tcsh__ 
+   * /etc/csh.cshrc
+   * $HOME/.tcshrc
+   * $HOME/.cshrc if .tcshrc is not present
+* The .bashrc, .tcshrc, .cshrc, .bash\_profile are script files where users can define their own aliases, environment variables, modify paths etc.
+   * e.g.  the `alias` command covered earlier 
+
+
+
+---
+
+# Example .bashrc and .tcshrc file
+
+```{bash eval=F}
+# .bashrc
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+        . /etc/bashrc
+fi
+# User specific aliases and functions
+alias c="clear"
+alias rm="/bin/rm -i"
+alias psu="ps -u apacheco"
+alias em="emacs -nw"
+alias ll="ls -lF"
+alias la="ls -al"
+export PATH=/home/apacheco/bin:${PATH}
+export g09root=/home/apacheco/Software/Gaussian09
+export GAUSS_SCRDIR=/home/apacheco/Software/scratch
+source $g09root/g09/bsd/g09.profile
+export TEXINPUTS=.:/usr/share/texmf//:/home/apacheco/LaTeX//:${TEXINPUTS}
+export BIBINPUTS=.:/home/apacheco/TeX//:${BIBINPUTS}
+```
+
+
+```{tcsh eval=F}
+# .tcshrc
+# User specific aliases and functions
+alias c clear
+alias rm "/bin/rm -i"
+alias psu "ps -u apacheco"
+alias em "emacs -nw"
+alias ll "ls -lF"
+alias la "ls -al"
+setenv PATH "/home/apacheco/bin:${PATH}"
+setenv g09root "/home/apacheco/Software/Gaussian09"
+setenv GAUSS_SCRDIR "/home/apacheco/Software/scratch"
+source $g09root/g09/bsd/g09.login
+setenv TEXINPUTS ".:/usr/share/texmf//:/home/apacheco/LaTeX//:${TEXINPUTS}"
+setenv BIBINPUTS ".:/home/apacheco/TeX//:${BIBINPUTS}"
+```
+
+---
+class: inverse, middle
+
+# Thank You!
+# Questions?
+
+Subscribe to [Lehigh Linux Google Group](http://groups.google.com/a/lehigh.edu/group/lehigh-linux-list/) 
+
+email lehigh-linux-list+subscribe@lehigh.edu
