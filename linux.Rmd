@@ -1,6 +1,6 @@
 ---
 title: "Linux: Command & Environments"
-subtitle: "@ Lehigh University"
+subtitle: "Research Computing"
 author: "Library &amp; Technology Services"
 institute: "https://researchcomputing.lehigh.edu"
 date: ""
