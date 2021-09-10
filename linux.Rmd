@@ -38,7 +38,7 @@ library(knitr)
 
 * Linux is an operating system that evolved from a kernel created by Linus Torvalds when he was a student at the University of Helsinki.
 * It’s meant to be used as an alternative to other operating systems, Windows, Mac OS, MS-DOS, Solaris and others.
-* Linux is the most popular OS used in a Supercomputer
+* Linux is the most popular OS used in a Supercomputer<sup>a</sup>
 
 | OS Family | Count | Share % |
 |:---------:| -----:| -------:|
@@ -48,6 +48,9 @@ library(knitr)
 * If you are using a Supercomputer/High Performance Computer for your research, it will be based on a \*nix OS.
 * It is required/neccessary/mandatory to learn Linux Programming (commands, shell scripting) if your research involves use of High Performance Computing or Supercomputing resources.
 
+.footnote[
+a: Top 500 List June 2015 
+]
 
 ---
 
@@ -92,7 +95,7 @@ library(knitr)
 - __XFCE__
 - Lightweight X11 Desktop Environment (LXDE)
 - Cinnamon
-- __MATE__
+- MATE
 - Dynamic Window Manager
 
 
@@ -197,6 +200,14 @@ class: inverse, middle
 
 
 ---
+# Commands
+
+
+<script id="asciicast-44JH2pHsDUgTOB7NVDtWtyCdH" src="https://asciinema.org/a/44JH2pHsDUgTOB7NVDtWtyCdH.js" async data-rows=25></script>
+
+
+---
+
 # Commands
 
 * `man` shows the manual for a command or program.
@@ -799,7 +810,7 @@ export BIBINPUTS=.:/home/apacheco/TeX//:${BIBINPUTS}
 ```
 
 
-```{tcsh eval=F}
+```{bash eval=F}
 # .tcshrc
 # User specific aliases and functions
 alias c clear
